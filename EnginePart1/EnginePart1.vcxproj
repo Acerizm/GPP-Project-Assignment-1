@@ -103,6 +103,7 @@
     <ClInclude Include="graphics.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="lastManStanding.h" />
     <ClInclude Include="spacewar.h" />
     <ClInclude Include="textureManager.h" />
   </ItemGroup>
