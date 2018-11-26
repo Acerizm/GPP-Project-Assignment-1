@@ -15,11 +15,17 @@ class LastManStanding : public Game
 private:
 	// variables
 	
-	//the textures here
+	//the textures & images here
 	TextureManager LEVEL1_TILE_TEXTURE;
 	Image LEVEL1_TILE_IMAGE;
 
-	// the images here
+	TextureManager PLAYER_SHOOTING_TILE_TEXTURE;
+	Image PLAYER_SHOOTING_TILE_IMAGE;
+	
+	TextureManager PLAYER_RELOADING_TEXTURE;
+	Image PLAYER_RELOADING_IMAGE;
+
+
 
 
 public:

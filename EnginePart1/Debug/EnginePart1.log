@@ -1,13 +1,2 @@
-﻿  game.cpp
-  Generating Code...
-  Compiling...
-  winmain.cpp
-  textureManager.cpp
-  lastManStanding.cpp
-  input.cpp
-  image.cpp
-  graphics.cpp
-  Generating Code...
-  Skipping... (no relevant changes detected)
-  spacewar.cpp
+﻿  lastManStanding.cpp
   EnginePart1.vcxproj -> C:\Users\Haiqel\Documents\GitHub\GPP-Project-Assignment-1\EnginePart1\Debug\EnginePart1.exe
