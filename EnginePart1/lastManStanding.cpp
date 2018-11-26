@@ -54,7 +54,7 @@ void LastManStanding::initialize(HWND hwnd)
 	PLAYER_SHOOTING_TILE_IMAGE.setX(GAME_WIDTH / 4);
 	PLAYER_SHOOTING_TILE_IMAGE.setY(GAME_WIDTH / 4);
 	PLAYER_SHOOTING_TILE_IMAGE.setFrames(PLAYER_SHOOTING_START_FRAME, PLAYER_SHOOTING_END_FRAME);
-	PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(PLAYER_SHOOTING_ANIMATION_DELAY);
+	
 
 	PLAYER_RELOADING_IMAGE.setX(GAME_WIDTH / 6);
 	PLAYER_RELOADING_IMAGE.setY(GAME_WIDTH / 6);
@@ -72,6 +72,32 @@ void LastManStanding::update()
 	//update the animation here
 	PLAYER_RELOADING_IMAGE.update(frameTime);
 	PLAYER_SHOOTING_TILE_IMAGE.update(frameTime);
+	PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(PLAYER_SHOOTING_ANIMATION_DELAY);
+	if (input->isKeyDown(VK_LEFT))  //left arrow key is pressed down
+	{
+		PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - frameTime * PLAYER_MOVEMENTSPEED);
+		PLAYER_SHOOTING_TILE_IMAGE.setDegrees(180);
+		
+	}
+	else if (input->isKeyDown(VK_RIGHT)) //right arrow key is pressed down
+	{
+		PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() + frameTime * PLAYER_MOVEMENTSPEED);
+		PLAYER_SHOOTING_TILE_IMAGE.setDegrees(0);
+	}
+	else if (input->isKeyDown(VK_UP)) // up arrow key is pressed down
+	{
+		PLAYER_SHOOTING_TILE_IMAGE.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - frameTime * PLAYER_MOVEMENTSPEED);
+		PLAYER_SHOOTING_TILE_IMAGE.setDegrees(270);
+	}
+	else if (input->isKeyDown(VK_DOWN))// down arrow key is pressed down
+	{
+		PLAYER_SHOOTING_TILE_IMAGE.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() + frameTime * PLAYER_MOVEMENTSPEED);
+		PLAYER_SHOOTING_TILE_IMAGE.setDegrees(90);
+	}
+	else
+	{
+		PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(999);
+	}
 
 }
 
