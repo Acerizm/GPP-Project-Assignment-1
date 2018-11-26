@@ -25,11 +25,11 @@
 //                  Constants
 //-----------------------------------------------
 // window
-const char CLASS_NAME[] = "Spacewar";
-const char GAME_TITLE[] = "Spacewar";
+const char CLASS_NAME[] = "LastManStanding";
+const char GAME_TITLE[] = "LastManStanding";
 const bool FULLSCREEN = false;              // windowed or fullscreen
-const UINT GAME_WIDTH =  640;               // width of game in pixels
-const UINT GAME_HEIGHT = 480;               // height of game in pixels
+const UINT GAME_WIDTH =  600;               // width of game in pixels
+const UINT GAME_HEIGHT = 600;               // height of game in pixels
  
 // game
 const double PI = 3.14159265;
@@ -50,11 +50,9 @@ const UCHAR SHIP_UP_KEY = VK_UP;
 const UCHAR SHIP_DOWN_KEY = VK_DOWN;
 
 // graphic images
-const char NEBULA_IMAGE[] = "pictures\\orion.jpg";  // photo source NASA/courtesy of nasaimages.org 
-const char PLANET_IMAGE[] = "pictures\\planet.png"; // picture of planet
-const char SHIP_IMAGE[] = "pictures\\ship.png";   // spaceship
-const char SHIP2_IMAGE[] = "pictures\\ship2.png";
-
+// add the tile here
+const char LEVEL1_TILE[] = "pictures\\stonetile.png";
+const float LEVEL1_TILE_SCALE = 5.0f;
 
 const int  SHIP_START_FRAME = 0;         // starting frame of ship animation
 const int  SHIP_END_FRAME = 3;           // last frame of ship animation
@@ -65,7 +63,10 @@ const int  SHIP_HEIGHT = 32;             // height of ship image
 const float ROTATION_RATE = 180.0f;             // degrees per second
 const float SCALE_RATE = 0.2f;                  // % change per second
 const float SHIP_SPEED = 100.0f;                // pixels per second
-const float SHIP_SCALE = 1.5f;                  // starting ship scale
+//const float SHIP_SCALE = 1.5f;                  // starting ship scale
+
+const int LEVEL1_TILE_HEIGHT = 600;
+const int LEVEL1_TILE_WIDTH = 600;
 
 
 #endif

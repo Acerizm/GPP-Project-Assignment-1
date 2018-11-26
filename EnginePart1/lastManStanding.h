@@ -1,6 +1,6 @@
-#pragma once
-#ifndef _SPACEWAR_H             // prevent multiple definitions if this 
-#define _SPACEWAR_H             // ..file is included in more than one place
+
+#ifndef _LASTMANSTANDING_H             // prevent multiple definitions if this 
+#define _LASTMANSTANDING_H             // ..file is included in more than one place
 #define WIN32_LEAN_AND_MEAN
 
 #include "game.h"
@@ -16,7 +16,8 @@ private:
 	// variables
 	
 	//the textures here
-
+	TextureManager LEVEL1_TILE_TEXTURE;
+	Image LEVEL1_TILE_IMAGE;
 
 	// the images here
 
