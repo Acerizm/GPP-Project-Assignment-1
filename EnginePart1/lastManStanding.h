@@ -25,8 +25,14 @@ private:
 	TextureManager PLAYER_RELOADING_TEXTURE;
 	Image PLAYER_RELOADING_IMAGE;
 
+	TextureManager healthBarRedTexture;
+	Image healthBarRed;
 
+	TextureManager healthBarGreenTexture;
+	Image healthBarGreen;
 
+	TextureManager healthBarBackGroundTexture;
+	Image healthBarBackGround;
 
 public:
 	// Constructor
