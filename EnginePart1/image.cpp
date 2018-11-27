@@ -31,6 +31,7 @@ Image::Image()
 	animComplete = false;
 	graphics = NULL;                // link to graphics system
 	colorFilter = graphicsNS::WHITE; // WHITE for no change
+	fullWidth = 256;
 }
 
 //=============================================================================
@@ -117,6 +118,11 @@ void Image::update(float frameTime)
 			setRect();                      // set spriteData.rect
 		}
 	}
+}
+void Image::setPercentage(float currentHPPercentage)
+{
+	
+	spriteData.width =  fullWidth* currentHPPercentage;
 }
 
 void Image::setCurrentFrame(int c)

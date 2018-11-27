@@ -26,7 +26,7 @@ class Image
 		bool    visible;        // true when visible
 		bool    initialized;    // true when successfully initialized
 		bool    animComplete;   // true when loop is false and endFrame has finished 
-								// displaying
+		int fullWidth;				// displaying
 
 	public:
 		// Constructor
@@ -158,6 +158,7 @@ class Image
 		{
 			textureManager = textureM;
 		}
+		void Image::setPercentage(float currentHPPercentage);
 
 };
 

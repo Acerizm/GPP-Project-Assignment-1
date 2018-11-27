@@ -85,4 +85,6 @@ const int PLAYER_RELOADING_HEIGHT = 217;
 const int PLAYER_RELOADING_WIDTH = 322;
 const float PLAYER_RELOADING_SCALE = 0.5f;
 
+//HP Bar
+const float PLAYER_MAXHP = 100.0f;
 #endif

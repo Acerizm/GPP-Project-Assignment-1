@@ -34,6 +34,7 @@ private:
 	TextureManager healthBarBackGroundTexture;
 	Image healthBarBackGround;
 
+	float currentHP;
 public:
 	// Constructor
 	LastManStanding();
