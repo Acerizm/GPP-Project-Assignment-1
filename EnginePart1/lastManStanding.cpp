@@ -146,11 +146,20 @@ void LastManStanding::update()
 	else if (input->wasKeyPressed(VK_SPACE))
 	{
 		input->clearAll();
+		//Shooting animation
 		PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+		//To minus HP of Player by 5.
 		currentHP = currentHP - 5;
 		float currentHpBarPercentage = currentHP / PLAYER_MAXHP;
 		healthBarGreen.setPercentage(currentHpBarPercentage);
 		input->clearAll();
+	}
+	else if (input->wasKeyPressed(VK_F2))
+	{
+		//To Recover 5 health.
+		currentHP = currentHP + 5;
+		float currentHpBarPercentage = currentHP / PLAYER_MAXHP;
+		healthBarGreen.setPercentage(currentHpBarPercentage);
 	}
 	else
 	{ 
