@@ -143,17 +143,22 @@ void LastManStanding::update()
 			PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
 		}
 	}
-	else if (input->isKeyDown(VK_SPACE))
+	else if (input->wasKeyPressed(VK_SPACE))
 	{
+		input->clearAll();
 		PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
 		currentHP = currentHP - 5;
+		float currentHpBarPercentage = currentHP / PLAYER_MAXHP;
+		healthBarGreen.setPercentage(currentHpBarPercentage);
+		input->clearAll();
 	}
 	else
 	{ 
 		PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(999);
 	}
-	float currentHpBarPercentage = currentHP / PLAYER_MAXHP;
-	healthBarGreen.setPercentage(currentHpBarPercentage);
+
+	
+	
 	healthBarGreen.setRect();
 	healthBarGreen.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
 	healthBarGreen.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
