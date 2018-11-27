@@ -118,6 +118,10 @@ void Image::update(float frameTime)
 		}
 	}
 }
+void Image::setPercentage(float currentHPPercentage)
+{
+	spriteData.width = spriteData.width * currentHPPercentage;
+}
 
 void Image::setCurrentFrame(int c)
 {

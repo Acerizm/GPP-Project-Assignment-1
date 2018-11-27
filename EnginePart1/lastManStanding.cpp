@@ -12,7 +12,6 @@ LastManStanding::~LastManStanding()
 {
 	releaseAll();           // call onLostDevice() for every graphics item
 }
-
 //=============================================================================
 // Initializes the game
 // Throws GameError on error
@@ -21,6 +20,8 @@ void LastManStanding::initialize(HWND hwnd)
 {
 	// this is where i implement the painter's algorithm here
 	Game::initialize(hwnd); // throws GameError
+
+	
 
 	//implement the LEVEl1_TILE_TEXTURE texture here
 	if (!LEVEL1_TILE_TEXTURE.initialize(graphics, LEVEL1_TILE))
@@ -79,6 +80,8 @@ void LastManStanding::initialize(HWND hwnd)
 	PLAYER_RELOADING_IMAGE.setFrames(PLAYER_RELOADING_START_FRAME, PLAYER_RELOADING_END_FRAME);
 	PLAYER_RELOADING_IMAGE.setFrameDelay(PLAYER_RELOADING_ANIMATION_DELAY);
 
+	currentHP = PLAYER_MAXHP;
+
 	healthBarGreen.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
 	healthBarGreen.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
 	healthBarBackGround.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
@@ -103,27 +106,55 @@ void LastManStanding::update()
 	{
 		PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - frameTime * PLAYER_MOVEMENTSPEED);
 		PLAYER_SHOOTING_TILE_IMAGE.setDegrees(180);
+
+		if (input->isKeyDown(VK_SPACE))
+		{
+			PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+		}
 		
 	}
 	else if (input->isKeyDown(VK_RIGHT)) //right arrow key is pressed down
 	{
 		PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() + frameTime * PLAYER_MOVEMENTSPEED);
 		PLAYER_SHOOTING_TILE_IMAGE.setDegrees(0);
+
+		if (input->isKeyDown(VK_SPACE))
+		{
+			PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+		}
 	}
 	else if (input->isKeyDown(VK_UP)) // up arrow key is pressed down
 	{
 		PLAYER_SHOOTING_TILE_IMAGE.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - frameTime * PLAYER_MOVEMENTSPEED);
 		PLAYER_SHOOTING_TILE_IMAGE.setDegrees(270);
+
+		if (input->isKeyDown(VK_SPACE))
+		{
+			PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+		}
 	}
 	else if (input->isKeyDown(VK_DOWN))// down arrow key is pressed down
 	{
 		PLAYER_SHOOTING_TILE_IMAGE.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() + frameTime * PLAYER_MOVEMENTSPEED);
 		PLAYER_SHOOTING_TILE_IMAGE.setDegrees(90);
+
+		if (input->isKeyDown(VK_SPACE))
+		{
+			PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+		}
+	}
+	else if (input->isKeyDown(VK_SPACE))
+	{
+		PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+		currentHP = currentHP - 5;
 	}
 	else
-	{
+	{ 
 		PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(999);
 	}
+	float currentHpBarPercentage = currentHP / PLAYER_MAXHP;
+	healthBarGreen.setPercentage(currentHpBarPercentage);
+	healthBarGreen.setRect();
 	healthBarGreen.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
 	healthBarGreen.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
 	healthBarBackGround.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);

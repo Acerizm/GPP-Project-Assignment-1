@@ -158,6 +158,7 @@ class Image
 		{
 			textureManager = textureM;
 		}
+		void Image::setPercentage(float currentHPPercentage);
 
 };
 
