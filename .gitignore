@@ -4,3 +4,12 @@
 *.obj*
 *.db*
 */EnginePart1/.vs/EnginePart1/v15/Browse.VC.db*
+*.log
+*.pdb
+*.tlog
+*.obj
+*.vcxproj
+*.ipch
+*.lastbuildstate
+*.idb
+*.pdb
