@@ -65,6 +65,14 @@ void LastManStanding::initialize(HWND hwnd)
 	if (!PLAYER_RELOADING_IMAGE.initialize(graphics, PLAYER_RELOADING_WIDTH, PLAYER_RELOADING_HEIGHT, PLAYER_RELOADING_COLS, &PLAYER_RELOADING_TEXTURE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing "));
 
+	//implement the zombie's moving texture here
+	if (!ZOMBIE_MOVING_TEXTURE.initialize(graphics,ZOMBIE_MOVING_TILE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing texture"));
+
+	//implement the zombie's moving image here
+	if (!ZOMBIE_MOVING_IMAGE.initialize(graphics, ZOMBIE_MOVING_HEIGHT,ZOMBIE_MOVING_WIDTH,ZOMBIE_MOVING_COLS,&ZOMBIE_MOVING_TEXTURE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing image"));
+
 	//set x or set y for the initial position vector of the object
 	LEVEL1_TILE_IMAGE.setScale(LEVEL1_TILE_SCALE);
 	PLAYER_SHOOTING_TILE_IMAGE.setScale(PLAYER_SHOOTING_SCALE);
@@ -85,6 +93,14 @@ void LastManStanding::initialize(HWND hwnd)
 	healthBarBackGround.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
 	healthBarGreen.setScale(0.5f);
 	healthBarBackGround.setScale(0.5f);
+
+	//set the zombie's mock location
+	ZOMBIE_MOVING_IMAGE.setX(GAME_WIDTH / 10);
+	ZOMBIE_MOVING_IMAGE.setY(GAME_WIDTH / 2);
+	ZOMBIE_MOVING_IMAGE.setScale(ZOMBIE_MOVING_SCALE);
+	ZOMBIE_MOVING_IMAGE.setFrames(ZOMBIE_MOVING_START_FRAME, ZOMBIE_MOVING_END_FRAME);
+	ZOMBIE_MOVING_IMAGE.setFrameDelay(ZOMBIE_MOVING_ANIMATION_DELAY);
+
 	return;
 }
 
@@ -99,6 +115,7 @@ void LastManStanding::update()
 	healthBarBackGround.update(frameTime);
 	healthBarRed.update(frameTime);
 	PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(PLAYER_SHOOTING_ANIMATION_DELAY);
+	ZOMBIE_MOVING_IMAGE.update(frameTime);
 	if (input->isKeyDown(VK_LEFT))  //left arrow key is pressed down
 	{
 		PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - frameTime * PLAYER_MOVEMENTSPEED);
@@ -157,7 +174,7 @@ void LastManStanding::render()
 	PLAYER_RELOADING_IMAGE.draw();
 	healthBarBackGround.draw();
 	healthBarGreen.draw();
-
+	ZOMBIE_MOVING_IMAGE.draw();
 	graphics->spriteEnd();                  // end drawing sprites
 
 

@@ -34,6 +34,9 @@ private:
 	TextureManager healthBarBackGroundTexture;
 	Image healthBarBackGround;
 
+	TextureManager ZOMBIE_MOVING_TEXTURE;
+	Image ZOMBIE_MOVING_IMAGE;
+
 public:
 	// Constructor
 	LastManStanding();

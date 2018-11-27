@@ -85,4 +85,14 @@ const int PLAYER_RELOADING_HEIGHT = 217;
 const int PLAYER_RELOADING_WIDTH = 322;
 const float PLAYER_RELOADING_SCALE = 0.5f;
 
+//zombie moving
+const char ZOMBIE_MOVING_TILE[] = "pictures\\ZombieMoveSet1.png";
+const int ZOMBIE_MOVING_START_FRAME = 0;
+const int ZOMBIE_MOVING_END_FRAME = 9;
+const float ZOMBIE_MOVING_ANIMATION_DELAY = 0.2f;
+const int ZOMBIE_MOVING_COLS = 3;
+const int ZOMBIE_MOVING_HEIGHT = 311;
+const int ZOMBIE_MOVING_WIDTH = 288;
+const float ZOMBIE_MOVING_SCALE = 0.2f;
+
 #endif
