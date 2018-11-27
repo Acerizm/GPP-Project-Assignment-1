@@ -37,7 +37,24 @@ void LastManStanding::initialize(HWND hwnd)
 	//implement the player's image here
 	if (!PLAYER_SHOOTING_TILE_IMAGE.initialize(graphics, PLAYER_SHOOTING_WIDTH, PLAYER_SHOOTING_HEIGHT, PLAYER_SHOOTING_COLS, &PLAYER_SHOOTING_TILE_TEXTURE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing "));
+	
+	if(!healthBarRedTexture.initialize(graphics,HEALTHBARRED_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed texture"));
 
+	if(!healthBarRed.initialize(graphics,256,32,1,&healthBarRedTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed"));
+
+	if (!healthBarGreenTexture.initialize(graphics, HEALTHBARGREEN_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarGreen texture"));
+
+	if (!healthBarGreen.initialize(graphics, 256, 32, 1, &healthBarGreenTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarGreen"));
+
+	if (!healthBarBackGroundTexture.initialize(graphics, HEALTHBARBACKGROUND_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarBackGround texture"));
+
+	if (!healthBarBackGround.initialize(graphics, 256, 32, 1, &healthBarBackGroundTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarBackGround"));
 
 	//implement the player's reloading texture here
 	if (!PLAYER_RELOADING_TEXTURE.initialize(graphics, PLAYER_RELOADING_TILE))
@@ -61,6 +78,13 @@ void LastManStanding::initialize(HWND hwnd)
 	PLAYER_RELOADING_IMAGE.setScale(PLAYER_RELOADING_SCALE);
 	PLAYER_RELOADING_IMAGE.setFrames(PLAYER_RELOADING_START_FRAME, PLAYER_RELOADING_END_FRAME);
 	PLAYER_RELOADING_IMAGE.setFrameDelay(PLAYER_RELOADING_ANIMATION_DELAY);
+
+	healthBarGreen.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
+	healthBarGreen.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
+	healthBarBackGround.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
+	healthBarBackGround.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
+	healthBarGreen.setScale(0.5f);
+	healthBarBackGround.setScale(0.5f);
 	return;
 }
 
@@ -72,7 +96,38 @@ void LastManStanding::update()
 	//update the animation here
 	PLAYER_RELOADING_IMAGE.update(frameTime);
 	PLAYER_SHOOTING_TILE_IMAGE.update(frameTime);
-
+	healthBarBackGround.update(frameTime);
+	healthBarRed.update(frameTime);
+	PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(PLAYER_SHOOTING_ANIMATION_DELAY);
+	if (input->isKeyDown(VK_LEFT))  //left arrow key is pressed down
+	{
+		PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - frameTime * PLAYER_MOVEMENTSPEED);
+		PLAYER_SHOOTING_TILE_IMAGE.setDegrees(180);
+		
+	}
+	else if (input->isKeyDown(VK_RIGHT)) //right arrow key is pressed down
+	{
+		PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() + frameTime * PLAYER_MOVEMENTSPEED);
+		PLAYER_SHOOTING_TILE_IMAGE.setDegrees(0);
+	}
+	else if (input->isKeyDown(VK_UP)) // up arrow key is pressed down
+	{
+		PLAYER_SHOOTING_TILE_IMAGE.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - frameTime * PLAYER_MOVEMENTSPEED);
+		PLAYER_SHOOTING_TILE_IMAGE.setDegrees(270);
+	}
+	else if (input->isKeyDown(VK_DOWN))// down arrow key is pressed down
+	{
+		PLAYER_SHOOTING_TILE_IMAGE.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() + frameTime * PLAYER_MOVEMENTSPEED);
+		PLAYER_SHOOTING_TILE_IMAGE.setDegrees(90);
+	}
+	else
+	{
+		PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(999);
+	}
+	healthBarGreen.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
+	healthBarGreen.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
+	healthBarBackGround.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
+	healthBarBackGround.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
 }
 
 //=============================================================================
@@ -100,6 +155,8 @@ void LastManStanding::render()
 	LEVEL1_TILE_IMAGE.draw();
 	PLAYER_SHOOTING_TILE_IMAGE.draw();
 	PLAYER_RELOADING_IMAGE.draw();
+	healthBarBackGround.draw();
+	healthBarGreen.draw();
 
 	graphics->spriteEnd();                  // end drawing sprites
 

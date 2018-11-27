@@ -57,6 +57,14 @@ const float LEVEL1_TILE_SCALE = 5.0f;
 const int LEVEL1_TILE_HEIGHT = 600;
 const int LEVEL1_TILE_WIDTH = 480;
 
+//Player Movement speed
+const float PLAYER_MOVEMENTSPEED = 100.0f;
+
+//Health Bar
+const char HEALTHBARGREEN_IMAGE[] = "pictures\\healthbarGreen.png";
+const char HEALTHBARRED_IMAGE[] = "pictures\\healthbarRed.png";
+const char HEALTHBARBACKGROUND_IMAGE[] = "pictures\\healthbarBackGround.png";
+
 // Player shooting spritesheet
 const char PLAYER_SHOOTING_TILE[] = "pictures\\PlayerShooting.png";
 const int PLAYER_SHOOTING_START_FRAME = 0;
