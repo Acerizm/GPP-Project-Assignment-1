@@ -1,4 +1,7 @@
 *.VC.opendb 
+
 *.VC.db
+
 *.suo
+
 *.obj
