@@ -96,6 +96,7 @@ const float BULLET_ANIMATION_DELAY = 0 ;
 const int BULLET_HEIGHT = 47;
 const int BULLET_WIDTH = 47;
 const float BULLET_SCALE = 0.5;
+const float BULLET_SPEED = 100.0f;
 
 
 #endif

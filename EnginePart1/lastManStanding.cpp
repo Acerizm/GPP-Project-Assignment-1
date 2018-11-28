@@ -24,9 +24,9 @@ void LastManStanding::initialize(HWND hwnd)
 	//create player here
 	Player *newPlayer = new Player();
 	
-	newBullet = new Bullet();
+	/*newBullet = new Bullet();
 
-	newBullet->initialize(graphics, BULLET_TILE,BULLET_TEXTURE,BULLET_IMAGE);
+	newBullet->initialize(graphics, BULLET_TILE,BULLET_TEXTURE,BULLET_IMAGE);*/
 
 
 	//implement the LEVEl1_TILE_TEXTURE texture here
@@ -95,8 +95,8 @@ void LastManStanding::initialize(HWND hwnd)
 	healthBarGreen.setScale(0.5f);
 	healthBarBackGround.setScale(0.5f);
 
-	//test the bullet class here
-	newBullet->setPositionVector(BULLET_IMAGE);
+	////test the bullet class here
+	//newBullet->setPositionVector(BULLET_IMAGE);
 
 	return;
 }
@@ -112,6 +112,17 @@ void LastManStanding::update()
 	healthBarBackGround.update(frameTime);
 	healthBarRed.update(frameTime);
 	PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(PLAYER_SHOOTING_ANIMATION_DELAY);
+
+	////////////////////////////////////////////////////////////////////////////
+	//Test Logic
+	//1 . Create the bullet here
+	//2. If player does not key in anything or other than right key, the bullet continues moving with frametime
+	//3. destroy the bullet if the bullet's x popsition is == 0 or == GAME_WIDTH
+	//4. refactor all these codes into the player class after testing
+	newBullet = new Bullet();
+	newBullet->initialize(graphics, BULLET_TILE, BULLET_TEXTURE, BULLET_IMAGE);
+
+	////////////////////////////////////////////////////////////////////////////
 	if (input->isKeyDown(VK_LEFT))  //left arrow key is pressed down
 	{
 		PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - frameTime * PLAYER_MOVEMENTSPEED);
@@ -128,6 +139,12 @@ void LastManStanding::update()
 		PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() + frameTime * PLAYER_MOVEMENTSPEED);
 		PLAYER_SHOOTING_TILE_IMAGE.setDegrees(0);
 
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//implement the shooting here
+		//test the bullet class here
+		newBullet->setPositionVector(BULLET_IMAGE,PLAYER_SHOOTING_TILE_IMAGE.getCenterX(),PLAYER_SHOOTING_TILE_IMAGE.getCenterY());
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		if (input->isKeyDown(VK_SPACE))
 		{
 			PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
@@ -183,6 +200,24 @@ void LastManStanding::update()
 	healthBarGreen.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
 	healthBarBackGround.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
 	healthBarBackGround.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
+
+	///////////////////////////////////////////////////////////////////////////////
+	//Test Logic
+	//1. Move the bullet according to frametime
+	if (BULLET_IMAGE.getX() > GAME_WIDTH) {
+		newBullet->setPositionVector(BULLET_IMAGE, PLAYER_SHOOTING_TILE_IMAGE.getCenterX(), PLAYER_SHOOTING_TILE_IMAGE.getCenterY());
+	}
+	else {
+		if (BULLET_IMAGE.getX() < PLAYER_SHOOTING_TILE_IMAGE.getCenterX()) {
+			newBullet->setPositionVector(BULLET_IMAGE, PLAYER_SHOOTING_TILE_IMAGE.getCenterX(), PLAYER_SHOOTING_TILE_IMAGE.getCenterY());
+		}
+		else {
+			BULLET_IMAGE.setX(BULLET_IMAGE.getX() + frameTime * BULLET_SPEED);
+		}
+	}
+
+
+	///////////////////////////////////////////////////////////////////////////////
 }
 
 //=============================================================================

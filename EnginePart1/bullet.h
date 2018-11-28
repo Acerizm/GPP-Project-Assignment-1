@@ -29,12 +29,13 @@ class Bullet {
 			return BULLET_IMAGE;
 		}*/
 
-		void setPositionVector(Image &image) {
-			image.setX(GAME_WIDTH / 10);
-			image.setY(GAME_WIDTH / 10);
+		void setPositionVector(Image &image,float playerXCenter, float playerYCenter) {
+			image.setX(playerXCenter + 10);
+			image.setY(playerYCenter);
 			image.setScale(BULLET_SCALE);
 			image.setFrames(BULLET_START_FRAME, BULLET_END_FRAME);
 		}
+
 
 
 
