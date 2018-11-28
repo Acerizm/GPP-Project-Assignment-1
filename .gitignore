@@ -8,7 +8,6 @@
 *.pdb
 *.tlog
 *.obj
-*.vcxproj
 *.ipch
 *.lastbuildstate
 *.idb
