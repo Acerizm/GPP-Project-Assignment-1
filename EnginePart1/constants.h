@@ -28,8 +28,8 @@
 const char CLASS_NAME[] = "LastManStanding";
 const char GAME_TITLE[] = "LastManStanding";
 const bool FULLSCREEN = false;              // windowed or fullscreen
-const UINT GAME_WIDTH =  600;               // width of game in pixels
-const UINT GAME_HEIGHT = 480;               // height of game in pixels
+const UINT GAME_WIDTH =  500;               // width of game in pixels
+const UINT GAME_HEIGHT = 500;               // height of game in pixels
  
 // game
 const double PI = 3.14159265;
@@ -50,11 +50,11 @@ const UCHAR SHIP_UP_KEY = VK_UP;
 const UCHAR SHIP_DOWN_KEY = VK_DOWN;
 
 // graphic images
-// add the tile here
+// add the tile heres
 const char LEVEL1_TILE[] = "pictures\\stonetile.png";
 const int LEVEL1_TILE_HEIGHT = 96;
 const int LEVEL1_TILE_WIDTH = 96;
-const float LEVEL1_TILE_SCALE = 6.25f;
+const float LEVEL1_TILE_SCALE = 15.0f;
 
 //Player Movement speed
 const float PLAYER_MOVEMENTSPEED = 100.0f;
@@ -83,6 +83,17 @@ const int PLAYER_RELOADING_COLS = 3;
 const int PLAYER_RELOADING_HEIGHT = 217;
 const int PLAYER_RELOADING_WIDTH = 322;
 const float PLAYER_RELOADING_SCALE = 0.3f;
+
+//zombie moving
+const char ZOMBIE_MOVING_TILE[] = "pictures\\ZombieMoveSet1.png";
+const int ZOMBIE_MOVING_START_FRAME = 0;
+const int ZOMBIE_MOVING_END_FRAME = 9;
+const float ZOMBIE_MOVING_ANIMATION_DELAY = 0.2f;
+const int ZOMBIE_MOVING_COLS = 3;
+const int ZOMBIE_MOVING_HEIGHT = 311;
+const int ZOMBIE_MOVING_WIDTH = 288;
+const float ZOMBIE_MOVING_SCALE = 0.3f;
+
 
 //HP Bar
 const float PLAYER_MAXHP = 100.0f;
