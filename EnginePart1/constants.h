@@ -52,10 +52,9 @@ const UCHAR SHIP_DOWN_KEY = VK_DOWN;
 // graphic images
 // add the tile here
 const char LEVEL1_TILE[] = "pictures\\stonetile.png";
-const float LEVEL1_TILE_SCALE = 5.0f;
-
-const int LEVEL1_TILE_HEIGHT = 600;
-const int LEVEL1_TILE_WIDTH = 480;
+const int LEVEL1_TILE_HEIGHT = 96;
+const int LEVEL1_TILE_WIDTH = 96;
+const float LEVEL1_TILE_SCALE = 6.25f;
 
 //Player Movement speed
 const float PLAYER_MOVEMENTSPEED = 100.0f;
@@ -73,7 +72,7 @@ const float PLAYER_SHOOTING_ANIMATION_DELAY = 0.2f;
 const int PLAYER_SHOOTING_COLS = 3;
 const int PLAYER_SHOOTING_HEIGHT = 206;
 const int PLAYER_SHOOTING_WIDTH = 312;
-const float PLAYER_SHOOTING_SCALE = 0.5f;
+const float PLAYER_SHOOTING_SCALE = 0.3f;
 
 //player reloading
 const char PLAYER_RELOADING_TILE[] = "pictures\\PlayerReloading.png";
@@ -83,7 +82,7 @@ const float PLAYER_RELOADING_ANIMATION_DELAY = 0.2f;
 const int PLAYER_RELOADING_COLS = 3;
 const int PLAYER_RELOADING_HEIGHT = 217;
 const int PLAYER_RELOADING_WIDTH = 322;
-const float PLAYER_RELOADING_SCALE = 0.5f;
+const float PLAYER_RELOADING_SCALE = 0.3f;
 
 //HP Bar
 const float PLAYER_MAXHP = 100.0f;

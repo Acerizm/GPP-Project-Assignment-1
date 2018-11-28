@@ -96,83 +96,95 @@ void LastManStanding::initialize(HWND hwnd)
 //=============================================================================
 void LastManStanding::update()
 {
+	// check if the player's 
 	//update the animation here
-	PLAYER_RELOADING_IMAGE.update(frameTime);
-	PLAYER_SHOOTING_TILE_IMAGE.update(frameTime);
-	healthBarBackGround.update(frameTime);
-	healthBarRed.update(frameTime);
-	PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(PLAYER_SHOOTING_ANIMATION_DELAY);
-	if (input->isKeyDown(VK_LEFT))  //left arrow key is pressed down
-	{
-		PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - frameTime * PLAYER_MOVEMENTSPEED);
-		PLAYER_SHOOTING_TILE_IMAGE.setDegrees(180);
+	float CurrentPlayerXPosition = PLAYER_SHOOTING_TILE_IMAGE.getX();
+	float CurrentPlayerYPosition = PLAYER_SHOOTING_TILE_IMAGE.getY();
 
-		if (input->isKeyDown(VK_SPACE))
+	if (CurrentPlayerXPosition > (GAME_WIDTH )  || CurrentPlayerYPosition > (GAME_HEIGHT ) ) 
+	{
+		PLAYER_SHOOTING_TILE_IMAGE.setX(CurrentPlayerXPosition - GAME_WIDTH);
+		PLAYER_SHOOTING_TILE_IMAGE.setY(CurrentPlayerXPosition - GAME_HEIGHT);
+	}
+	else {
+		PLAYER_RELOADING_IMAGE.update(frameTime);
+		PLAYER_SHOOTING_TILE_IMAGE.update(frameTime);
+		healthBarBackGround.update(frameTime);
+		healthBarRed.update(frameTime);
+		PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(PLAYER_SHOOTING_ANIMATION_DELAY);
+		if (input->isKeyDown(VK_LEFT))  //left arrow key is pressed down
 		{
-			PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
-		}
-		
-	}
-	else if (input->isKeyDown(VK_RIGHT)) //right arrow key is pressed down
-	{
-		PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() + frameTime * PLAYER_MOVEMENTSPEED);
-		PLAYER_SHOOTING_TILE_IMAGE.setDegrees(0);
+			PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - frameTime * PLAYER_MOVEMENTSPEED);
+			PLAYER_SHOOTING_TILE_IMAGE.setDegrees(180);
 
-		if (input->isKeyDown(VK_SPACE))
+			if (input->isKeyDown(VK_SPACE))
+			{
+				PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+			}
+
+		}
+		else if (input->isKeyDown(VK_RIGHT)) //right arrow key is pressed down
 		{
-			PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
-		}
-	}
-	else if (input->isKeyDown(VK_UP)) // up arrow key is pressed down
-	{
-		PLAYER_SHOOTING_TILE_IMAGE.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - frameTime * PLAYER_MOVEMENTSPEED);
-		PLAYER_SHOOTING_TILE_IMAGE.setDegrees(270);
+			PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() + frameTime * PLAYER_MOVEMENTSPEED);
+			PLAYER_SHOOTING_TILE_IMAGE.setDegrees(0);
 
-		if (input->isKeyDown(VK_SPACE))
+			if (input->isKeyDown(VK_SPACE))
+			{
+				PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+			}
+		}
+		else if (input->isKeyDown(VK_UP)) // up arrow key is pressed down
 		{
-			PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
-		}
-	}
-	else if (input->isKeyDown(VK_DOWN))// down arrow key is pressed down
-	{
-		PLAYER_SHOOTING_TILE_IMAGE.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() + frameTime * PLAYER_MOVEMENTSPEED);
-		PLAYER_SHOOTING_TILE_IMAGE.setDegrees(90);
+			PLAYER_SHOOTING_TILE_IMAGE.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - frameTime * PLAYER_MOVEMENTSPEED);
+			PLAYER_SHOOTING_TILE_IMAGE.setDegrees(270);
 
-		if (input->isKeyDown(VK_SPACE))
+			if (input->isKeyDown(VK_SPACE))
+			{
+				PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+			}
+		}
+		else if (input->isKeyDown(VK_DOWN))// down arrow key is pressed down
 		{
-			PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+			PLAYER_SHOOTING_TILE_IMAGE.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() + frameTime * PLAYER_MOVEMENTSPEED);
+			PLAYER_SHOOTING_TILE_IMAGE.setDegrees(90);
+
+			if (input->isKeyDown(VK_SPACE))
+			{
+				PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+			}
 		}
-	}
-	else if (input->wasKeyPressed(VK_SPACE))
-	{
-		input->clearAll();
-		//Shooting animation
-		PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
-		//To minus HP of Player by 5.
-		currentHP = currentHP - 5;
-		float currentHpBarPercentage = currentHP / PLAYER_MAXHP;
-		healthBarGreen.setPercentage(currentHpBarPercentage);
-		input->clearAll();
-	}
-	else if (input->wasKeyPressed(VK_F2))
-	{
-		//To Recover 5 health.
-		currentHP = currentHP + 5;
-		float currentHpBarPercentage = currentHP / PLAYER_MAXHP;
-		healthBarGreen.setPercentage(currentHpBarPercentage);
-	}
-	else
-	{ 
-		PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(999);
+		else if (input->wasKeyPressed(VK_SPACE))
+		{
+			input->clearAll();
+			//Shooting animation
+			PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+			//To minus HP of Player by 5.
+			currentHP = currentHP - 5;
+			float currentHpBarPercentage = currentHP / PLAYER_MAXHP;
+			healthBarGreen.setPercentage(currentHpBarPercentage);
+			input->clearAll();
+		}
+		else if (input->wasKeyPressed(VK_F2))
+		{
+			//To Recover 5 health.
+			currentHP = currentHP + 5;
+			float currentHpBarPercentage = currentHP / PLAYER_MAXHP;
+			healthBarGreen.setPercentage(currentHpBarPercentage);
+		}
+		else
+		{
+			PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(999);
+		}
+
+
+
+		healthBarGreen.setRect();
+		healthBarGreen.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
+		healthBarGreen.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
+		healthBarBackGround.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
+		healthBarBackGround.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
 	}
 
-	
-	
-	healthBarGreen.setRect();
-	healthBarGreen.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
-	healthBarGreen.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
-	healthBarBackGround.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
-	healthBarBackGround.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
 }
 
 //=============================================================================
