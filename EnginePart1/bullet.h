@@ -36,6 +36,21 @@ class Bullet {
 			image.setFrames(BULLET_START_FRAME, BULLET_END_FRAME);
 		}
 
+		void move(Image &bulletImage, Image &playerImage, float gameWidth,float frameTime) {
+			if (bulletImage.getX() > gameWidth) {
+				setPositionVector(bulletImage, playerImage.getCenterX(), playerImage.getCenterY());
+			}
+			else {
+				if (bulletImage.getX() < playerImage.getCenterX()) {
+					setPositionVector(bulletImage, playerImage.getCenterX(), playerImage.getCenterY());
+				}
+				else {
+					bulletImage.setX(bulletImage.getX() + frameTime * BULLET_SPEED);
+				}
+			}
+		}
+
+
 
 
 

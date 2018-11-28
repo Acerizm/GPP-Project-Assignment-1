@@ -4,7 +4,10 @@
 // Constructor
 //=============================================================================
 LastManStanding::LastManStanding()
-{}
+{
+	mainPlayer = NULL;
+
+}
 
 //=============================================================================
 // Destructor
@@ -22,12 +25,9 @@ void LastManStanding::initialize(HWND hwnd)
 	Game::initialize(hwnd); // throws GameError
 
 	//create player here
-	Player *newPlayer = new Player();
+	mainPlayer = new Player();
 	
-	/*newBullet = new Bullet();
-
-	newBullet->initialize(graphics, BULLET_TILE,BULLET_TEXTURE,BULLET_IMAGE);*/
-
+	mainPlayer->initialize(graphics, PLAYER_SHOOTING_TILE, PLAYER_SHOOTING_TILE_TEXTURE, PLAYER_SHOOTING_TILE_IMAGE);
 
 	//implement the LEVEl1_TILE_TEXTURE texture here
 	if (!LEVEL1_TILE_TEXTURE.initialize(graphics, LEVEL1_TILE))
@@ -35,14 +35,6 @@ void LastManStanding::initialize(HWND hwnd)
 
 	//implement the LEVEL1_TILE_IMAGE image here
 	if (!LEVEL1_TILE_IMAGE.initialize(graphics, LEVEL1_TILE_WIDTH, LEVEL1_TILE_HEIGHT, 0, &LEVEL1_TILE_TEXTURE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing "));
-
-	//implement the player's texture here
-	if(!PLAYER_SHOOTING_TILE_TEXTURE.initialize(graphics,PLAYER_SHOOTING_TILE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing texture"));
-
-	//implement the player's image here
-	if (!PLAYER_SHOOTING_TILE_IMAGE.initialize(graphics, PLAYER_SHOOTING_WIDTH, PLAYER_SHOOTING_HEIGHT, PLAYER_SHOOTING_COLS, &PLAYER_SHOOTING_TILE_TEXTURE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing "));
 	
 	if(!healthBarRedTexture.initialize(graphics,HEALTHBARRED_IMAGE))
@@ -63,28 +55,11 @@ void LastManStanding::initialize(HWND hwnd)
 	if (!healthBarBackGround.initialize(graphics, 256, 32, 1, &healthBarBackGroundTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarBackGround"));
 
-	//implement the player's reloading texture here
-	if (!PLAYER_RELOADING_TEXTURE.initialize(graphics, PLAYER_RELOADING_TILE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing texture"));
-
-	
-	//implement the player's reloading image here
-	if (!PLAYER_RELOADING_IMAGE.initialize(graphics, PLAYER_RELOADING_WIDTH, PLAYER_RELOADING_HEIGHT, PLAYER_RELOADING_COLS, &PLAYER_RELOADING_TEXTURE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing "));
-
 	//set x or set y for the initial position vector of the object
 	LEVEL1_TILE_IMAGE.setScale(LEVEL1_TILE_SCALE);
-	PLAYER_SHOOTING_TILE_IMAGE.setScale(PLAYER_SHOOTING_SCALE);
-	PLAYER_SHOOTING_TILE_IMAGE.setX(GAME_WIDTH / 4);
-	PLAYER_SHOOTING_TILE_IMAGE.setY(GAME_WIDTH / 4);
-	PLAYER_SHOOTING_TILE_IMAGE.setFrames(PLAYER_SHOOTING_START_FRAME, PLAYER_SHOOTING_END_FRAME);
-	PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(PLAYER_SHOOTING_ANIMATION_DELAY);
 
-	PLAYER_RELOADING_IMAGE.setX(GAME_WIDTH / 6);
-	PLAYER_RELOADING_IMAGE.setY(GAME_WIDTH / 6);
-	PLAYER_RELOADING_IMAGE.setScale(PLAYER_RELOADING_SCALE);
-	PLAYER_RELOADING_IMAGE.setFrames(PLAYER_RELOADING_START_FRAME, PLAYER_RELOADING_END_FRAME);
-	PLAYER_RELOADING_IMAGE.setFrameDelay(PLAYER_RELOADING_ANIMATION_DELAY);
+	mainPlayer->setPositionVector(PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, GAME_HEIGHT, PLAYER_SHOOTING_SCALE, PLAYER_SHOOTING_START_FRAME, PLAYER_SHOOTING_END_FRAME,PLAYER_SHOOTING_ANIMATION_DELAY);
+
 
 	currentHP = PLAYER_MAXHP;
 
@@ -95,8 +70,6 @@ void LastManStanding::initialize(HWND hwnd)
 	healthBarGreen.setScale(0.5f);
 	healthBarBackGround.setScale(0.5f);
 
-	////test the bullet class here
-	//newBullet->setPositionVector(BULLET_IMAGE);
 
 	return;
 }
@@ -203,18 +176,8 @@ void LastManStanding::update()
 
 	///////////////////////////////////////////////////////////////////////////////
 	//Test Logic
-	//1. Move the bullet according to frametime
-	if (BULLET_IMAGE.getX() > GAME_WIDTH) {
-		newBullet->setPositionVector(BULLET_IMAGE, PLAYER_SHOOTING_TILE_IMAGE.getCenterX(), PLAYER_SHOOTING_TILE_IMAGE.getCenterY());
-	}
-	else {
-		if (BULLET_IMAGE.getX() < PLAYER_SHOOTING_TILE_IMAGE.getCenterX()) {
-			newBullet->setPositionVector(BULLET_IMAGE, PLAYER_SHOOTING_TILE_IMAGE.getCenterX(), PLAYER_SHOOTING_TILE_IMAGE.getCenterY());
-		}
-		else {
-			BULLET_IMAGE.setX(BULLET_IMAGE.getX() + frameTime * BULLET_SPEED);
-		}
-	}
+	//refactored code to bullet.h function
+	newBullet->move(BULLET_IMAGE, PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, frameTime);
 
 
 	///////////////////////////////////////////////////////////////////////////////

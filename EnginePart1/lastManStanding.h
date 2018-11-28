@@ -7,6 +7,7 @@
 #include "textureManager.h"
 #include "image.h"
 #include "bullet.h"
+#include "player.h"
 
 //=============================================================================
 // Create game class
@@ -38,6 +39,8 @@ protected:
 
 	TextureManager BULLET_TEXTURE;
 	Image BULLET_IMAGE;
+
+	Player *mainPlayer;
 
 	float currentHP;
 public:
