@@ -1,4 +1,5 @@
 #include "lastManStanding.h"
+#include "player.h"
 //=============================================================================
 // Constructor
 //=============================================================================
@@ -18,10 +19,15 @@ LastManStanding::~LastManStanding()
 //=============================================================================
 void LastManStanding::initialize(HWND hwnd)
 {
-	// this is where i implement the painter's algorithm here
 	Game::initialize(hwnd); // throws GameError
 
+	//create player here
+	Player *newPlayer = new Player();
 	
+	newBullet = new Bullet();
+
+	newBullet->initialize(graphics, BULLET_TILE,BULLET_TEXTURE,BULLET_IMAGE);
+
 
 	//implement the LEVEl1_TILE_TEXTURE texture here
 	if (!LEVEL1_TILE_TEXTURE.initialize(graphics, LEVEL1_TILE))
@@ -88,6 +94,10 @@ void LastManStanding::initialize(HWND hwnd)
 	healthBarBackGround.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
 	healthBarGreen.setScale(0.5f);
 	healthBarBackGround.setScale(0.5f);
+
+	//test the bullet class here
+	newBullet->setPositionVector(BULLET_IMAGE);
+
 	return;
 }
 
@@ -202,7 +212,8 @@ void LastManStanding::render()
 	PLAYER_RELOADING_IMAGE.draw();
 	healthBarBackGround.draw();
 	healthBarGreen.draw();
-
+	/*newBullet->getBulletImage().draw();*/
+	BULLET_IMAGE.draw();
 	graphics->spriteEnd();                  // end drawing sprites
 
 

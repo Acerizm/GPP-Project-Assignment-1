@@ -6,15 +6,17 @@
 #include "game.h"
 #include "textureManager.h"
 #include "image.h"
+#include "bullet.h"
 
 //=============================================================================
 // Create game class
 //=============================================================================
 class LastManStanding : public Game
 {
-private:
+protected:
 	// variables
-	
+	Bullet *newBullet;
+
 	//the textures & images here
 	TextureManager LEVEL1_TILE_TEXTURE;
 	Image LEVEL1_TILE_IMAGE;
@@ -33,6 +35,9 @@ private:
 
 	TextureManager healthBarBackGroundTexture;
 	Image healthBarBackGround;
+
+	TextureManager BULLET_TEXTURE;
+	Image BULLET_IMAGE;
 
 	float currentHP;
 public:

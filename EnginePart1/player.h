@@ -28,6 +28,8 @@ private:
 	vector<class Bullet*> bulletList;
 
 public:
+	Player();
+	~Player();
 	void shootBullet(VECTOR2 player);
 };
 

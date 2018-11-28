@@ -89,11 +89,13 @@ const float PLAYER_RELOADING_SCALE = 0.5f;
 const float PLAYER_MAXHP = 100.0f;
 
 //Bullet 
-const char BULLET_TILE[] = "";
+const char BULLET_TILE[] = "pictures\\bullet.png";
 const int BULLET_START_FRAME = 0;
 const int BULLET_END_FRAME = 0 ;
 const float BULLET_ANIMATION_DELAY = 0 ;
-const int BULLET_HEIGHT = 0;
-const int BULLET_WIDTH = 0;
-const float BULLET_SCALE = 0 ;
+const int BULLET_HEIGHT = 47;
+const int BULLET_WIDTH = 47;
+const float BULLET_SCALE = 0.5;
+
+
 #endif

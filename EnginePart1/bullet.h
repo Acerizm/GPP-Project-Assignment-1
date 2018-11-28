@@ -1,15 +1,13 @@
 #pragma once
-#include "player.h"
 #ifndef _BULLET_H             // prevent multiple definitions if this 
 #define _BULLET_H             // ..file is included in more than one place
-#include "textureManager.h"
-#include "graphics.h"
-
+#define WIN32_LEAN_AND_MEAN
+#include "image.h"
 
 class Bullet {
 	private:
-		TextureManager BULLET_TEXTURE;
-		Image BULLET_IMAGE;
+		/*TextureManager BULLET_TEXTURE;
+		Image BULLET_IMAGE;*/
 
 	public:
 		//constructor
@@ -25,7 +23,18 @@ class Bullet {
 
 		//initialize the damn bullet
 		//pass by reference here btw
-		void initialize(Graphics *graphics, const char* filepath );
+		void initialize(Graphics *graphics, const char* filepath, TextureManager &texture, Image &image);
+
+		/*Image getBulletImage() {
+			return BULLET_IMAGE;
+		}*/
+
+		void setPositionVector(Image &image) {
+			image.setX(GAME_WIDTH / 10);
+			image.setY(GAME_WIDTH / 10);
+			image.setScale(BULLET_SCALE);
+			image.setFrames(BULLET_START_FRAME, BULLET_END_FRAME);
+		}
 
 
 
