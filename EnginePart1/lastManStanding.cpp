@@ -101,10 +101,19 @@ void LastManStanding::update()
 	float CurrentPlayerXPosition = PLAYER_SHOOTING_TILE_IMAGE.getX();
 	float CurrentPlayerYPosition = PLAYER_SHOOTING_TILE_IMAGE.getY();
 
-	if (CurrentPlayerXPosition > (GAME_WIDTH )  || CurrentPlayerYPosition > (GAME_HEIGHT ) ) 
+	if (CurrentPlayerXPosition > (GAME_WIDTH - PLAYER_SHOOTING_TILE_IMAGE.getWidth()*PLAYER_SHOOTING_TILE_IMAGE.getScale()))
 	{
-		PLAYER_SHOOTING_TILE_IMAGE.setX(CurrentPlayerXPosition - GAME_WIDTH);
-		PLAYER_SHOOTING_TILE_IMAGE.setY(CurrentPlayerXPosition - GAME_HEIGHT);
+		PLAYER_SHOOTING_TILE_IMAGE.setX(GAME_WIDTH - PLAYER_SHOOTING_TILE_IMAGE.getWidth()*PLAYER_SHOOTING_TILE_IMAGE.getScale());
+	}
+	else if (CurrentPlayerXPosition < 0) {
+		PLAYER_SHOOTING_TILE_IMAGE.setX(0);
+	}
+	else if (CurrentPlayerYPosition >(GAME_HEIGHT - PLAYER_SHOOTING_TILE_IMAGE.getHeight()*PLAYER_SHOOTING_TILE_IMAGE.getScale()))
+	{
+		PLAYER_SHOOTING_TILE_IMAGE.setY(GAME_HEIGHT - PLAYER_SHOOTING_TILE_IMAGE.getHeight()*PLAYER_SHOOTING_TILE_IMAGE.getScale());
+	}
+	else if (CurrentPlayerYPosition < 0) {
+		PLAYER_SHOOTING_TILE_IMAGE.setY(0);
 	}
 	else {
 		PLAYER_RELOADING_IMAGE.update(frameTime);
