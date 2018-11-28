@@ -87,4 +87,13 @@ const float PLAYER_RELOADING_SCALE = 0.5f;
 
 //HP Bar
 const float PLAYER_MAXHP = 100.0f;
+
+//Bullet 
+const char BULLET_TILE[] = "";
+const int BULLET_START_FRAME = 0;
+const int BULLET_END_FRAME = 0 ;
+const float BULLET_ANIMATION_DELAY = 0 ;
+const int BULLET_HEIGHT = 0;
+const int BULLET_WIDTH = 0;
+const float BULLET_SCALE = 0 ;
 #endif
