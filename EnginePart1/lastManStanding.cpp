@@ -31,29 +31,37 @@ void LastManStanding::initialize(HWND hwnd)
 
 	//implement the LEVEl1_TILE_TEXTURE texture here
 	if (!LEVEL1_TILE_TEXTURE.initialize(graphics, LEVEL1_TILE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing texture"));
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing LEVEL1_TILE_IMAGE texture"));
 
 	//implement the LEVEL1_TILE_IMAGE image here
 	if (!LEVEL1_TILE_IMAGE.initialize(graphics, LEVEL1_TILE_WIDTH, LEVEL1_TILE_HEIGHT, 0, &LEVEL1_TILE_TEXTURE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing "));
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing LEVEL1_TILE_IMAGE image"));
 	
 	if(!healthBarRedTexture.initialize(graphics,HEALTHBARRED_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed texture"));
 
 	if(!healthBarRed.initialize(graphics,256,32,1,&healthBarRedTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed"));
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed image"));
 
 	if (!healthBarGreenTexture.initialize(graphics, HEALTHBARGREEN_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarGreen texture"));
 
 	if (!healthBarGreen.initialize(graphics, 256, 32, 1, &healthBarGreenTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarGreen"));
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarGreen image"));
 
 	if (!healthBarBackGroundTexture.initialize(graphics, HEALTHBARBACKGROUND_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarBackGround texture"));
 
 	if (!healthBarBackGround.initialize(graphics, 256, 32, 1, &healthBarBackGroundTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarBackGround"));
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarBackGround image"));
+
+	//implement the barrel texture here
+	if (!barrelTexture.initialize(graphics, BARREL))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing barrel texture"));
+
+	//implement the barrel image here
+	if (!barrelImage.initialize(graphics, BARREL_HEIGHT, BARREL_WIDTH, 0, &barrelTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing barrel image"));
 
 	//set x or set y for the initial position vector of the object
 	LEVEL1_TILE_IMAGE.setScale(LEVEL1_TILE_SCALE);
@@ -69,7 +77,8 @@ void LastManStanding::initialize(HWND hwnd)
 	healthBarBackGround.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
 	healthBarGreen.setScale(0.5f);
 	healthBarBackGround.setScale(0.5f);
-
+	barrelImage.setX(barrelImage.getX() - 5);
+	barrelImage.setY(barrelImage.getY() - 5);
 
 	return;
 }
@@ -84,6 +93,7 @@ void LastManStanding::update()
 	PLAYER_SHOOTING_TILE_IMAGE.update(frameTime);
 	healthBarBackGround.update(frameTime);
 	healthBarRed.update(frameTime);
+	barrelImage.update(frameTime);
 	PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(PLAYER_SHOOTING_ANIMATION_DELAY);
 	if (input->isKeyDown(VK_LEFT))  //left arrow key is pressed down
 	{
@@ -211,6 +221,7 @@ void LastManStanding::render()
 	PLAYER_RELOADING_IMAGE.draw();
 	healthBarBackGround.draw();
 	healthBarGreen.draw();
+	barrelImage.draw();
 	/*newBullet->getBulletImage().draw();*/
 	BULLET_IMAGE.draw();
 	graphics->spriteEnd();                  // end drawing sprites

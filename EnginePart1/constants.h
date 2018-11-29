@@ -84,6 +84,11 @@ const int PLAYER_RELOADING_HEIGHT = 217;
 const int PLAYER_RELOADING_WIDTH = 322;
 const float PLAYER_RELOADING_SCALE = 0.3f;
 
+// barrel
+const char BARREL[] = "pictures\\barrel.png";
+const int BARREL_HEIGHT = 125;
+const int BARREL_WIDTH = 148;
+
 //zombie moving
 const char ZOMBIE_MOVING_TILE[] = "pictures\\ZombieMoveSet1.png";
 const int ZOMBIE_MOVING_START_FRAME = 0;

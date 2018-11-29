@@ -40,6 +40,9 @@ protected:
 	TextureManager BULLET_TEXTURE;
 	Image BULLET_IMAGE;
 
+	TextureManager barrelTexture;
+	Image barrelImage;
+
 	Player *mainPlayer;
 
 	float currentHP;
