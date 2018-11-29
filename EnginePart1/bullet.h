@@ -16,7 +16,7 @@ class Bullet {
 		//de-stuctor
 		virtual ~Bullet();
 
-
+		Image bulletImage;
 		float x;
 		float y;
 		//what the heck does the bullet need to store?
@@ -55,6 +55,10 @@ class Bullet {
 		float getX()
 		{
 			return x;
+		}
+		Image getImage()
+		{
+			return bulletImage;
 		}
 
 

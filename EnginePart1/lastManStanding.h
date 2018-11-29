@@ -8,7 +8,7 @@
 #include "image.h"
 #include "bullet.h"
 #include "player.h"
-
+#include <list>
 //=============================================================================
 // Create game class
 //=============================================================================
@@ -17,7 +17,7 @@ class LastManStanding : public Game
 protected:
 	// variables
 	Bullet *newBullet;
-
+	std::list<Bullet*> bulletList;
 	//the textures & images here
 	TextureManager LEVEL1_TILE_TEXTURE;
 	Image LEVEL1_TILE_IMAGE;
@@ -40,6 +40,8 @@ protected:
 	TextureManager BULLET_TEXTURE;
 	Image BULLET_IMAGE;
 
+	
+
 	Player *mainPlayer;
 
 	
@@ -48,7 +50,7 @@ protected:
 public:
 	// Constructor
 	LastManStanding();
-
+	
 	// Destructor
 	virtual ~LastManStanding();
 

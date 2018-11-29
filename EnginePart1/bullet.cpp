@@ -34,6 +34,7 @@ void Bullet::initialize(Graphics *graphics, const char* filepath,TextureManager 
 
 	x = image.getX();
 	y = image.getY();
+	bulletImage = image;
 }
 
 //test rendering of bullets

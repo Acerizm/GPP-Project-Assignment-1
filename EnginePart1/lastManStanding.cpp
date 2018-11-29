@@ -80,7 +80,7 @@ void LastManStanding::initialize(HWND hwnd)
 void LastManStanding::update()
 {
 	//update the animation here
-	std::list<Bullet*> bulletList;
+	
 
 	PLAYER_RELOADING_IMAGE.update(frameTime);
 	PLAYER_SHOOTING_TILE_IMAGE.update(frameTime);
@@ -154,20 +154,7 @@ void LastManStanding::update()
 		
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		bulletList.push_back(newBullet);
-		newBullet->move(BULLET_IMAGE,PLAYER_SHOOTING_TILE_IMAGE,GAME_WIDTH,frameTime);
-		for (list<Bullet*>::iterator it = bulletList.begin(); it != bulletList.end(); )
-		{
-			
-			if ((*it)->getX() > GAME_WIDTH)
-			{
-				SAFE_DELETE(*it);
-				it = bulletList.erase(it);
-			}
-			else
-			{
-				++it;
-			}
-		}
+		
 
 		input->clearAll();
 	}
@@ -230,7 +217,29 @@ void LastManStanding::render()
 	healthBarBackGround.draw();
 	healthBarGreen.draw();
 	/*newBullet->getBulletImage().draw();*/
-	BULLET_IMAGE.draw();
+	//BULLET_IMAGE.draw();
+	for (list<Bullet*>::iterator it = bulletList.begin(); it != bulletList.end(); )
+	{
+
+		if ((*it)->getX() > GAME_WIDTH)
+		{
+			SAFE_DELETE(*it);
+			it = bulletList.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+		for each(Bullet* p in bulletList)
+		{
+
+			p->getImage().draw();
+
+		}
+
+	}
+
+
 	graphics->spriteEnd();                  // end drawing sprites
 
 
