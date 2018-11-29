@@ -28,41 +28,41 @@ void LastManStanding::initialize(HWND hwnd)
 
 	//implement the LEVEL1_TILE_IMAGE image here
 	if (!LEVEL1_TILE_IMAGE.initialize(graphics, LEVEL1_TILE_WIDTH, LEVEL1_TILE_HEIGHT, 0, &LEVEL1_TILE_TEXTURE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing "));
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing LEVEL1_TILE image"));
 
 	//implement the player's texture here
 	if(!PLAYER_SHOOTING_TILE_TEXTURE.initialize(graphics,PLAYER_SHOOTING_TILE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing texture"));
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player's texture"));
 
 	//implement the player's image here
 	if (!PLAYER_SHOOTING_TILE_IMAGE.initialize(graphics, PLAYER_SHOOTING_WIDTH, PLAYER_SHOOTING_HEIGHT, PLAYER_SHOOTING_COLS, &PLAYER_SHOOTING_TILE_TEXTURE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing "));
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player's image"));
 	
 	if(!healthBarRedTexture.initialize(graphics,HEALTHBARRED_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed texture"));
 
 	if(!healthBarRed.initialize(graphics,256,32,1,&healthBarRedTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed"));
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed image"));
 
 	if (!healthBarGreenTexture.initialize(graphics, HEALTHBARGREEN_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarGreen texture"));
 
 	if (!healthBarGreen.initialize(graphics, 256, 32, 1, &healthBarGreenTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarGreen"));
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarGreen image"));
 
 	if (!healthBarBackGroundTexture.initialize(graphics, HEALTHBARBACKGROUND_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarBackGround texture"));
 
 	if (!healthBarBackGround.initialize(graphics, 256, 32, 1, &healthBarBackGroundTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarBackGround"));
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarBackGround image"));
 
 	//implement the player's reloading texture here
 	if (!PLAYER_RELOADING_TEXTURE.initialize(graphics, PLAYER_RELOADING_TILE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing texture"));
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player's reloading texture"));
 
 	//implement the player's reloading image here
 	if (!PLAYER_RELOADING_IMAGE.initialize(graphics, PLAYER_RELOADING_WIDTH, PLAYER_RELOADING_HEIGHT, PLAYER_RELOADING_COLS, &PLAYER_RELOADING_TEXTURE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing "));
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player's reloading image"));
 
 	// implement barrel texture here
 	if (!barrelTexture.initialize(graphics, ENVIRONMENT_BARREL_TILE))
