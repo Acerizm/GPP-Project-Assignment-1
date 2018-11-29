@@ -86,14 +86,7 @@ void LastManStanding::update()
 	healthBarRed.update(frameTime);
 	PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(PLAYER_SHOOTING_ANIMATION_DELAY);
 
-	////////////////////////////////////////////////////////////////////////////
-	//Test Logic
-	//1 . Create the bullet here
-	//2. If player does not key in anything or other than right key, the bullet continues moving with frametime
-	//3. destroy the bullet if the bullet's x popsition is == 0 or == GAME_WIDTH
-	//4. refactor all these codes into the player class after testing
-	newBullet = new Bullet();
-	newBullet->initialize(graphics, BULLET_TILE, BULLET_TEXTURE, BULLET_IMAGE);
+	
 
 	////////////////////////////////////////////////////////////////////////////
 	if (input->isKeyDown(VK_LEFT))  //left arrow key is pressed down
@@ -112,12 +105,7 @@ void LastManStanding::update()
 		PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() + frameTime * PLAYER_MOVEMENTSPEED);
 		PLAYER_SHOOTING_TILE_IMAGE.setDegrees(0);
 
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		//implement the shooting here
-		//test the bullet class here
-		newBullet->setPositionVector(BULLET_IMAGE,PLAYER_SHOOTING_TILE_IMAGE.getCenterX(),PLAYER_SHOOTING_TILE_IMAGE.getCenterY());
-
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
 		if (input->isKeyDown(VK_SPACE))
 		{
 			PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
@@ -152,6 +140,22 @@ void LastManStanding::update()
 		currentHP = currentHP - 5;
 		float currentHpBarPercentage = currentHP / PLAYER_MAXHP;
 		healthBarGreen.setPercentage(currentHpBarPercentage);
+
+		////////////////////////////////////////////////////////////////////////////
+	//Test Logic
+	//1 . Create the bullet here
+	//2. If player does not key in anything or other than right key, the bullet continues moving with frametime
+	//3. destroy the bullet if the bullet's x popsition is == 0 or == GAME_WIDTH
+	//4. refactor all these codes into the player class after testing
+		newBullet = new Bullet();
+		newBullet->initialize(graphics, BULLET_TILE, BULLET_TEXTURE, BULLET_IMAGE);
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//implement the shooting here
+		//test the bullet class here
+		newBullet->setPositionVector(BULLET_IMAGE, PLAYER_SHOOTING_TILE_IMAGE.getCenterX(), PLAYER_SHOOTING_TILE_IMAGE.getCenterY());
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		input->clearAll();
 	}
 	else if (input->wasKeyPressed(VK_F2))
