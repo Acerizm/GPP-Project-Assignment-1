@@ -37,6 +37,9 @@ protected:
 	TextureManager healthBarBackGroundTexture;
 	Image healthBarBackGround;
 
+	TextureManager barrelTexture;
+	Image barrelImage;
+
 	TextureManager BULLET_TEXTURE;
 	Image BULLET_IMAGE;
 

@@ -110,4 +110,10 @@ const float BULLET_SPEED = 300.0f;
 
 
 
+// Environment
+const char ENVIRONMENT_BARREL_TILE[] = "pictures\\barrel.png";
+const int ENVIRONMENT_BARREL_HEIGHT = 125;
+const int ENVIRONMENT_BARREL_WIDTH = 148;
+const float ENVIRONMENT_BARREL_SCALE = 0.5f;
+
 #endif
