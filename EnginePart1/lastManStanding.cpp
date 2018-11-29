@@ -38,23 +38,27 @@ void LastManStanding::initialize(HWND hwnd)
 	if (!PLAYER_SHOOTING_TILE_IMAGE.initialize(graphics, PLAYER_SHOOTING_WIDTH, PLAYER_SHOOTING_HEIGHT, PLAYER_SHOOTING_COLS, &PLAYER_SHOOTING_TILE_TEXTURE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player's image"));
 	
-	// implement healthbar texture here
+	// implement healthBarRed texture here
 	if(!healthBarRedTexture.initialize(graphics,HEALTHBARRED_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed texture"));
 
-	// implement healthbar image here
+	// implement healthBarRed image here
 	if(!healthBarRed.initialize(graphics,256,32,1,&healthBarRedTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed image"));
 
+	// implement healthBarGreen texture here
 	if (!healthBarGreenTexture.initialize(graphics, HEALTHBARGREEN_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarGreen texture"));
 
+	// implement healthBarGreen image here
 	if (!healthBarGreen.initialize(graphics, 256, 32, 1, &healthBarGreenTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarGreen image"));
 
+	// implement healthBarBackGround texture here
 	if (!healthBarBackGroundTexture.initialize(graphics, HEALTHBARBACKGROUND_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarBackGround texture"));
 
+	// implement healthBarBackGround image here
 	if (!healthBarBackGround.initialize(graphics, 256, 32, 1, &healthBarBackGroundTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarBackGround image"));
 
