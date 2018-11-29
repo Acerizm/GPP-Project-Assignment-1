@@ -163,6 +163,10 @@ void LastManStanding::update()
 				SAFE_DELETE(*it);
 				it = bulletList.erase(it);
 			}
+			else
+			{
+				++it;
+			}
 		}
 
 		input->clearAll();
