@@ -31,6 +31,9 @@ void Bullet::initialize(Graphics *graphics, const char* filepath,TextureManager 
 			throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing texture"));
 	if (!image.initialize(graphics, BULLET_WIDTH, BULLET_HEIGHT, 0, &texture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing "));
+
+	x = image.getX();
+	y = image.getY();
 }
 
 //test rendering of bullets

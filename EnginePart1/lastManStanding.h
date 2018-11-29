@@ -42,6 +42,8 @@ protected:
 
 	Player *mainPlayer;
 
+	
+
 	float currentHP;
 public:
 	// Constructor

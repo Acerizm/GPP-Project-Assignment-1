@@ -16,6 +16,9 @@ class Bullet {
 		//de-stuctor
 		virtual ~Bullet();
 
+
+		float x;
+		float y;
 		//what the heck does the bullet need to store?
 		//1. need to store the texture here
 		//2. need to store the image here
@@ -38,7 +41,7 @@ class Bullet {
 
 		void move(Image &bulletImage, Image &playerImage, float gameWidth,float frameTime) {
 			if (bulletImage.getX() > gameWidth) {
-				setPositionVector(bulletImage, playerImage.getCenterX(), playerImage.getCenterY());
+				//setPositionVector(bulletImage, playerImage.getCenterX(), playerImage.getCenterY());
 			}
 			else {
 				if (bulletImage.getX() < playerImage.getCenterX()) {
@@ -48,6 +51,10 @@ class Bullet {
 					bulletImage.setX(bulletImage.getX() + frameTime * BULLET_SPEED);
 				}
 			}
+		}
+		float getX()
+		{
+			return x;
 		}
 
 

@@ -1,5 +1,7 @@
 #include "lastManStanding.h"
 #include "player.h"
+#include <list>
+#include <iostream>
 //=============================================================================
 // Constructor
 //=============================================================================
@@ -23,10 +25,8 @@ LastManStanding::~LastManStanding()
 void LastManStanding::initialize(HWND hwnd)
 {
 	Game::initialize(hwnd); // throws GameError
-
 	//create player here
 	mainPlayer = new Player();
-	
 	mainPlayer->initialize(graphics, PLAYER_SHOOTING_TILE, PLAYER_SHOOTING_TILE_TEXTURE, PLAYER_SHOOTING_TILE_IMAGE);
 
 	//implement the LEVEl1_TILE_TEXTURE texture here
@@ -80,6 +80,8 @@ void LastManStanding::initialize(HWND hwnd)
 void LastManStanding::update()
 {
 	//update the animation here
+	std::list<Bullet*> bulletList;
+
 	PLAYER_RELOADING_IMAGE.update(frameTime);
 	PLAYER_SHOOTING_TILE_IMAGE.update(frameTime);
 	healthBarBackGround.update(frameTime);
@@ -143,14 +145,25 @@ void LastManStanding::update()
 	//2. If player does not key in anything or other than right key, the bullet continues moving with frametime
 	//3. destroy the bullet if the bullet's x popsition is == 0 or == GAME_WIDTH
 	//4. refactor all these codes into the player class after testing
-		newBullet = new Bullet();
+		Bullet *newBullet = new Bullet();
 		newBullet->initialize(graphics, BULLET_TILE, BULLET_TEXTURE, BULLET_IMAGE);
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//implement the shooting here
 		//test the bullet class here
 		newBullet->setPositionVector(BULLET_IMAGE, PLAYER_SHOOTING_TILE_IMAGE.getCenterX(), PLAYER_SHOOTING_TILE_IMAGE.getCenterY());
-
+		
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		bulletList.push_back(newBullet);
+		newBullet->move(BULLET_IMAGE,PLAYER_SHOOTING_TILE_IMAGE,GAME_WIDTH,frameTime);
+		for (list<Bullet*>::iterator it = bulletList.begin(); it != bulletList.end(); )
+		{
+			
+			if ((*it)->getX() > GAME_WIDTH)
+			{
+				SAFE_DELETE(*it);
+				it = bulletList.erase(it);
+			}
+		}
 
 		input->clearAll();
 	}
