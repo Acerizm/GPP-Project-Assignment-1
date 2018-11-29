@@ -34,6 +34,9 @@ private:
 	TextureManager healthBarBackGroundTexture;
 	Image healthBarBackGround;
 
+	TextureManager barrelTexture;
+	Image barrelImage;
+
 public:
 	// Constructor
 	LastManStanding();

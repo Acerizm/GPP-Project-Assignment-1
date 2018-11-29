@@ -85,4 +85,10 @@ const int PLAYER_RELOADING_HEIGHT = 217;
 const int PLAYER_RELOADING_WIDTH = 322;
 const float PLAYER_RELOADING_SCALE = 0.5f;
 
+// Environment
+const char ENVIRONMENT_BARREL_TILE[] = "pictures\\barrel.png";
+const int ENVIRONMENT_BARREL_HEIGHT = 125;
+const int ENVIRONMENT_BARREL_WIDTH = 148;
+const float ENVIRONMENT_BARREL_SCALE = 0.5f;
+
 #endif

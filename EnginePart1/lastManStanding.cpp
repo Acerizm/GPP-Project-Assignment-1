@@ -60,10 +60,17 @@ void LastManStanding::initialize(HWND hwnd)
 	if (!PLAYER_RELOADING_TEXTURE.initialize(graphics, PLAYER_RELOADING_TILE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing texture"));
 
-	
 	//implement the player's reloading image here
 	if (!PLAYER_RELOADING_IMAGE.initialize(graphics, PLAYER_RELOADING_WIDTH, PLAYER_RELOADING_HEIGHT, PLAYER_RELOADING_COLS, &PLAYER_RELOADING_TEXTURE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing "));
+
+	// implement barrel texture here
+	if (!barrelTexture.initialize(graphics, ENVIRONMENT_BARREL_TILE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing barrel texture"));
+
+	// implement barrel image here
+	if (!barrelImage.initialize(graphics, ENVIRONMENT_BARREL_HEIGHT, ENVIRONMENT_BARREL_WIDTH, 0, &barrelTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing barrel image"));
 
 	//set x or set y for the initial position vector of the object
 	LEVEL1_TILE_IMAGE.setScale(LEVEL1_TILE_SCALE);
@@ -85,6 +92,9 @@ void LastManStanding::initialize(HWND hwnd)
 	healthBarBackGround.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
 	healthBarGreen.setScale(0.5f);
 	healthBarBackGround.setScale(0.5f);
+
+	barrelImage.setX(GAME_WIDTH / 5);
+	barrelImage.setY(GAME_WIDTH / 5);
 	return;
 }
 
@@ -98,6 +108,7 @@ void LastManStanding::update()
 	PLAYER_SHOOTING_TILE_IMAGE.update(frameTime);
 	healthBarBackGround.update(frameTime);
 	healthBarRed.update(frameTime);
+	barrelImage.update(frameTime);
 	PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(PLAYER_SHOOTING_ANIMATION_DELAY);
 	if (input->isKeyDown(VK_LEFT))  //left arrow key is pressed down
 	{
@@ -157,6 +168,7 @@ void LastManStanding::render()
 	PLAYER_RELOADING_IMAGE.draw();
 	healthBarBackGround.draw();
 	healthBarGreen.draw();
+	barrelImage.draw();
 
 	graphics->spriteEnd();                  // end drawing sprites
 
