@@ -70,7 +70,7 @@ void LastManStanding::initialize(HWND hwnd)
 	healthBarGreen.setScale(0.5f);
 	healthBarBackGround.setScale(0.5f);
 
-
+	newBullet = new Bullet();
 	return;
 }
 
@@ -142,17 +142,19 @@ void LastManStanding::update()
 		healthBarGreen.setPercentage(currentHpBarPercentage);
 
 		////////////////////////////////////////////////////////////////////////////
-	//Test Logic
-	//1 . Create the bullet here
-	//2. If player does not key in anything or other than right key, the bullet continues moving with frametime
-	//3. destroy the bullet if the bullet's x popsition is == 0 or == GAME_WIDTH
-	//4. refactor all these codes into the player class after testing
-		newBullet = new Bullet();
-		newBullet->initialize(graphics, BULLET_TILE, BULLET_TEXTURE, BULLET_IMAGE);
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		//implement the shooting here
-		//test the bullet class here
-		newBullet->setPositionVector(BULLET_IMAGE, PLAYER_SHOOTING_TILE_IMAGE.getCenterX(), PLAYER_SHOOTING_TILE_IMAGE.getCenterY());
+		
+		//newBullet = new Bullet();
+		//add the newBullet image into the list
+		////create a new image here
+		//Image *tempImage;
+		//tempImage = &(createNewTempImage());
+		//imageList.push_back(tempImage);
+
+		newBullet->initialize(graphics, BULLET_TILE, BULLET_TEXTURE, newBullet->BULLET_IMAGE);
+		/*newBullet->initialize(graphics, BULLET_TILE, BULLET_TEXTURE, *tempImage);*/
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		newBullet->setPositionVector(newBullet->BULLET_IMAGE, PLAYER_SHOOTING_TILE_IMAGE.getCenterX(), PLAYER_SHOOTING_TILE_IMAGE.getCenterY());
+		/*newBullet->setPositionVector(*tempImage, PLAYER_SHOOTING_TILE_IMAGE.getCenterX(), PLAYER_SHOOTING_TILE_IMAGE.getCenterY());*/
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -181,7 +183,7 @@ void LastManStanding::update()
 	///////////////////////////////////////////////////////////////////////////////
 	//Test Logic
 	//refactored code to bullet.h function
-	newBullet->move(BULLET_IMAGE, PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, frameTime);
+	newBullet->move(newBullet->BULLET_IMAGE, PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, frameTime);
 
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -214,8 +216,8 @@ void LastManStanding::render()
 	PLAYER_RELOADING_IMAGE.draw();
 	healthBarBackGround.draw();
 	healthBarGreen.draw();
-	/*newBullet->getBulletImage().draw();*/
-	BULLET_IMAGE.draw();
+	(newBullet->BULLET_IMAGE).draw();
+	//BULLET_IMAGE.draw();
 	graphics->spriteEnd();                  // end drawing sprites
 
 
@@ -246,3 +248,8 @@ void LastManStanding::resetAll()
 	return;
 
 }
+
+//Image LastManStanding:: createNewTempImage() {
+//	Image image;
+//	return image;
+//}

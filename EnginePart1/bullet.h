@@ -6,10 +6,12 @@
 
 class Bullet {
 	private:
-		/*TextureManager BULLET_TEXTURE;
-		Image BULLET_IMAGE;*/
+		//textureManager BULLET_TEXTURE;
+		//Image BULLET_IMAGE;
 
 	public:
+		Image BULLET_IMAGE;
+
 		//constructor
 		Bullet();
 
@@ -49,6 +51,10 @@ class Bullet {
 				}
 			}
 		}
+
+		/*Image getBulletImage() {
+			return BULLET_IMAGE;
+		}*/
 
 
 

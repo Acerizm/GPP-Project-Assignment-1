@@ -8,6 +8,8 @@
 #include "image.h"
 #include "bullet.h"
 #include "player.h"
+#include <list>
+using namespace std;
 
 //=============================================================================
 // Create game class
@@ -38,11 +40,14 @@ protected:
 	Image healthBarBackGround;
 
 	TextureManager BULLET_TEXTURE;
-	Image BULLET_IMAGE;
+	//Image BULLET_IMAGE;
 
 	Player *mainPlayer;
 
 	float currentHP;
+
+	//there is a need for me to store multiple images inside the array
+	//list <Image*> imageList;
 public:
 	// Constructor
 	LastManStanding();
@@ -58,6 +63,8 @@ public:
 	void render();      // "
 	void releaseAll();
 	void resetAll();
+	//Image createNewTempImage();
+
 };
 
 #endif
