@@ -39,9 +39,6 @@ class Bullet {
 
 		void move(Image &bulletImage, Image &playerImage, float gameWidth,float frameTime) {
 			if (bulletImage.getX() > gameWidth) {
-				//setPositionVector(bulletImage, playerImage.getCenterX(), playerImage.getCenterY());
-				//SAFE_DELETE(*bulletImage);
-				//need to do something here
 			}
 			else {
 				if (bulletImage.getX() < playerImage.getCenterX()) {
@@ -53,9 +50,6 @@ class Bullet {
 			}
 		}
 
-		/*Image getBulletImage() {
-			return BULLET_IMAGE;
-		}*/
 
 
 

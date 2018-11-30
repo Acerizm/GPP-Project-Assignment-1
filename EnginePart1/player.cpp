@@ -54,7 +54,7 @@ void Player::moveBullet(Image &playerImage, float gameWidth, float frameTime)
 void Player::drawBullets() {
 	if (BULLET_LIST.size() != 0) {
 		for (list<Bullet*>::iterator it = BULLET_LIST.begin(); it != BULLET_LIST.end(); ) {
-			if ((*it)->BULLET_IMAGE.getX() > GAME_WIDTH)
+			if ((*it)->BULLET_IMAGE.getX() > GAME_WIDTH || (*it)->BULLET_IMAGE.getX() < 0 || (*it)->BULLET_IMAGE.getY() > GAME_HEIGHT || (*it)->BULLET_IMAGE.getY() < 0)
 			{
 				SAFE_DELETE(*it);
 				it = BULLET_LIST.erase(it);
