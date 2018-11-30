@@ -27,7 +27,7 @@ void LastManStanding::initialize(HWND hwnd)
 	//create player here
 	mainPlayer = new Player();
 	
-	mainPlayer->initialize(graphics, PLAYER_SHOOTING_TILE, PLAYER_SHOOTING_TILE_TEXTURE, PLAYER_SHOOTING_TILE_IMAGE);
+	mainPlayer->initialize(graphics, PLAYER_SHOOTING_TILE_TEXTURE, PLAYER_SHOOTING_TILE_IMAGE);
 
 	//implement the LEVEl1_TILE_TEXTURE texture here
 	if (!LEVEL1_TILE_TEXTURE.initialize(graphics, LEVEL1_TILE))
@@ -70,7 +70,6 @@ void LastManStanding::initialize(HWND hwnd)
 	healthBarGreen.setScale(0.5f);
 	healthBarBackGround.setScale(0.5f);
 
-	newBullet = new Bullet();
 	return;
 }
 
@@ -138,20 +137,9 @@ void LastManStanding::update()
 		//To minus HP of Player by 5.
 		currentHP = currentHP - 5;
 		float currentHpBarPercentage = currentHP / PLAYER_MAXHP;
-		healthBarGreen.setPercentage(currentHpBarPercentage);
-
-		////////////////////////////////////////////////////////////////////////////
-		
-		//  the list will always keep track of new bullet's addresses
-		newBullet = new Bullet();
-		//add newBullet  into the list
-		bulletList.push_back(newBullet);
-		newBullet->initialize(graphics, BULLET_TILE, BULLET_TEXTURE, newBullet->BULLET_IMAGE);
-		// Position Vector is just the original position of the bullet co-ordinates when initiated
-		newBullet->setPositionVector(newBullet->BULLET_IMAGE, PLAYER_SHOOTING_TILE_IMAGE.getCenterX(), PLAYER_SHOOTING_TILE_IMAGE.getCenterY());
+		healthBarGreen.setPercentage(currentHpBarPercentage);	
 	
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+		mainPlayer->shootBullet(graphics, BULLET_TEXTURE, PLAYER_SHOOTING_TILE_IMAGE);
 
 	}
 	else if (input->wasKeyPressed(VK_F2))
@@ -174,35 +162,7 @@ void LastManStanding::update()
 	healthBarBackGround.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
 	healthBarBackGround.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
 
-	///////////////////////////////////////////////////////////////////////////////
-	//Test Logic
-	//refactored code to bullet.h function
-	//test if the bullet's current position has reached the limit
-	//factor in colllision on saturday
-	//newBullet->move(newBullet->BULLET_IMAGE, PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, frameTime);
-	
-	if (bulletList.size() != 0) {
-		for (list<Bullet*>::iterator it = bulletList.begin(); it != bulletList.end(); ) {
-			if ((*it)->BULLET_IMAGE.getX() > GAME_WIDTH)
-			{
-				SAFE_DELETE(*it);
-				it = bulletList.erase(it);
-				int check = bulletList.size();
-				//bool test = false;
-			}
-			else {
-					it++;
-			}
-		}
-
-		for each(Bullet* bullet in bulletList)
-		{
-			bullet->move(bullet->BULLET_IMAGE, PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, frameTime);
-
-		}
-		
-	}
-
+	mainPlayer->moveBullet(PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, frameTime);
 
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -235,16 +195,7 @@ void LastManStanding::render()
 	PLAYER_RELOADING_IMAGE.draw();
 	healthBarBackGround.draw();
 	healthBarGreen.draw();
-	/*(newBullet->BULLET_IMAGE).draw();*/
-	if (bulletList.size() != 0) 
-	{
-		for each(Bullet* bullet in bulletList) 
-		{
-			(bullet->BULLET_IMAGE).draw();
-		}
-
-	}
-		
+	mainPlayer->drawBullets();
 	graphics->spriteEnd();                  // end drawing sprites
 
 
@@ -276,7 +227,3 @@ void LastManStanding::resetAll()
 
 }
 
-//Image LastManStanding:: createNewTempImage() {
-//	Image image;
-//	return image;
-//}

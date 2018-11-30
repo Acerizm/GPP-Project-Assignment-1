@@ -19,7 +19,7 @@ Bullet::~Bullet() {
 
 }
 
-void Bullet::initialize(Graphics *graphics, const char* filepath,TextureManager &texture,Image &image) {
+void Bullet::initialize(Graphics *graphics,TextureManager &texture,Image &image) {
 //	//implement the LEVEl1_TILE_TEXTURE texture here
 //	if (!BULLET_TEXTURE.initialize(graphics, BULLET_TILE))
 //		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing texture"));

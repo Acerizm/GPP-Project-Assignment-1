@@ -9,6 +9,7 @@ class Bullet {
 		//textureManager BULLET_TEXTURE;
 		Image BULLET_IMAGE;
 		friend class LastManStanding;
+		friend class Player;
 	public:
 		//Image BULLET_IMAGE;
 
@@ -25,11 +26,9 @@ class Bullet {
 
 		//initialize the damn bullet
 		//pass by reference here btw
-		void initialize(Graphics *graphics, const char* filepath, TextureManager &texture, Image &image);
+		void initialize(Graphics *graphics, TextureManager &texture, Image &image);
 
-		/*Image getBulletImage() {
-			return BULLET_IMAGE;
-		}*/
+
 
 		void setPositionVector(Image &image,float playerXCenter, float playerYCenter) {
 			image.setX(playerXCenter + 10);
