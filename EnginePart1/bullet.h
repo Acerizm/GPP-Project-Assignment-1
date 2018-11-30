@@ -7,10 +7,11 @@
 class Bullet {
 	private:
 		//textureManager BULLET_TEXTURE;
-		//Image BULLET_IMAGE;
+		Image BULLET_IMAGE;
+		friend class LastManStanding;
 
 	public:
-		Image BULLET_IMAGE;
+		//Image BULLET_IMAGE;
 
 		//constructor
 		Bullet();
