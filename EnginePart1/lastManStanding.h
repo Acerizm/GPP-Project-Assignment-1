@@ -47,7 +47,7 @@ protected:
 	float currentHP;
 
 	//there is a need for me to store multiple images inside the array
-	//list <Image*> imageList;
+	list <Bullet*> bulletList;
 public:
 	// Constructor
 	LastManStanding();

@@ -133,7 +133,6 @@ void LastManStanding::update()
 	}
 	else if (input->wasKeyPressed(VK_SPACE))
 	{
-		input->clearAll();
 		//Shooting animation
 		PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
 		//To minus HP of Player by 5.
@@ -143,22 +142,17 @@ void LastManStanding::update()
 
 		////////////////////////////////////////////////////////////////////////////
 		
-		//newBullet = new Bullet();
-		//add the newBullet image into the list
-		////create a new image here
-		//Image *tempImage;
-		//tempImage = &(createNewTempImage());
-		//imageList.push_back(tempImage);
-
+		//  the list will always keep track of new bullet's addresses
+		newBullet = new Bullet();
+		//add newBullet  into the list
+		bulletList.push_back(newBullet);
 		newBullet->initialize(graphics, BULLET_TILE, BULLET_TEXTURE, newBullet->BULLET_IMAGE);
-		/*newBullet->initialize(graphics, BULLET_TILE, BULLET_TEXTURE, *tempImage);*/
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		// Position Vector is just the original position of the bullet co-ordinates when initiated
 		newBullet->setPositionVector(newBullet->BULLET_IMAGE, PLAYER_SHOOTING_TILE_IMAGE.getCenterX(), PLAYER_SHOOTING_TILE_IMAGE.getCenterY());
-		/*newBullet->setPositionVector(*tempImage, PLAYER_SHOOTING_TILE_IMAGE.getCenterX(), PLAYER_SHOOTING_TILE_IMAGE.getCenterY());*/
-
+	
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		input->clearAll();
+
 	}
 	else if (input->wasKeyPressed(VK_F2))
 	{
@@ -183,7 +177,32 @@ void LastManStanding::update()
 	///////////////////////////////////////////////////////////////////////////////
 	//Test Logic
 	//refactored code to bullet.h function
-	newBullet->move(newBullet->BULLET_IMAGE, PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, frameTime);
+	//test if the bullet's current position has reached the limit
+	//factor in colllision on saturday
+	//newBullet->move(newBullet->BULLET_IMAGE, PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, frameTime);
+	
+	if (bulletList.size() != 0) {
+		for (list<Bullet*>::iterator it = bulletList.begin(); it != bulletList.end(); ) {
+			if ((*it)->BULLET_IMAGE.getX() > GAME_WIDTH)
+			{
+				SAFE_DELETE(*it);
+				it = bulletList.erase(it);
+				int check = bulletList.size();
+				//bool test = false;
+			}
+			else {
+					it++;
+			}
+		}
+
+		for each(Bullet* bullet in bulletList)
+		{
+			bullet->move(bullet->BULLET_IMAGE, PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, frameTime);
+
+		}
+		
+	}
+
 
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -216,8 +235,16 @@ void LastManStanding::render()
 	PLAYER_RELOADING_IMAGE.draw();
 	healthBarBackGround.draw();
 	healthBarGreen.draw();
-	(newBullet->BULLET_IMAGE).draw();
-	//BULLET_IMAGE.draw();
+	/*(newBullet->BULLET_IMAGE).draw();*/
+	if (bulletList.size() != 0) 
+	{
+		for each(Bullet* bullet in bulletList) 
+		{
+			(bullet->BULLET_IMAGE).draw();
+		}
+
+	}
+		
 	graphics->spriteEnd();                  // end drawing sprites
 
 

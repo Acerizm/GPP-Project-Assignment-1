@@ -9,7 +9,6 @@ class Bullet {
 		//textureManager BULLET_TEXTURE;
 		Image BULLET_IMAGE;
 		friend class LastManStanding;
-
 	public:
 		//Image BULLET_IMAGE;
 
@@ -41,7 +40,9 @@ class Bullet {
 
 		void move(Image &bulletImage, Image &playerImage, float gameWidth,float frameTime) {
 			if (bulletImage.getX() > gameWidth) {
-				setPositionVector(bulletImage, playerImage.getCenterX(), playerImage.getCenterY());
+				//setPositionVector(bulletImage, playerImage.getCenterX(), playerImage.getCenterY());
+				//SAFE_DELETE(*bulletImage);
+				//need to do something here
 			}
 			else {
 				if (bulletImage.getX() < playerImage.getCenterX()) {
