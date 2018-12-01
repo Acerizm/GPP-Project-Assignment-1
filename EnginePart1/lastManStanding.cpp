@@ -176,7 +176,11 @@ void LastManStanding::update()
 // Artificial Intelligence
 //=============================================================================
 void LastManStanding::ai()
-{}
+{
+	//add more zombies here
+
+
+}
 
 //=============================================================================
 // Handle collisions
