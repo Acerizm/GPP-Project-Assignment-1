@@ -28,8 +28,8 @@ void Zombie::attackPlayer(Graphics *graphics, Image &zombieImage, Image &playerI
 	}
 	else
 	{
-		zombieImage.setX(zombieImage.getX() + unitVectorXCor*frameTime*100.0f);
-		zombieImage.setY(zombieImage.getY() + unitVectorXCor*frameTime*100.0f);
+		zombieImage.setX(zombieImage.getX() + unitVectorXCor*frameTime*50.0f);
+		zombieImage.setY(zombieImage.getY() + unitVectorYCor*frameTime*50.0f);
 
 	}
 }

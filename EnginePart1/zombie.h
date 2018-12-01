@@ -2,6 +2,7 @@
 #ifndef _ZOMBIE_H
 #define _ZOMBIE_H
 #include "image.h"
+#include <cmath>
 using namespace std;
 
 
@@ -18,9 +19,11 @@ public:
 	void initialize(Graphics *graphics, TextureManager &texture, Image &image);
 	void setPositionVector(Image &image, float GAME_WIDTH, float GAME_HEIGHT, float zombieScale, int zombieStartFrame, int zombieEndFrame, float zombieFrameDelay) {
 
+		//check which quadrant the zombie is in
+		//
 		//change the setX and setY according to my game design algorithm later
-		image.setX(50);
-		image.setY(50);
+		image.setX(GAME_WIDTH - 50);
+		image.setY(GAME_HEIGHT - 50);
 		image.setScale(zombieScale);
 		image.setFrames(zombieStartFrame, zombieEndFrame);
 		image.setFrameDelay(zombieFrameDelay);
@@ -33,7 +36,10 @@ public:
 	void attackPlayer(Graphics *graphics, Image &zombieImage, Image &playerImage,float frameTime);
 
 	void getUnitVectorCordinates(Image &zombieImage, Image &playerImage) {
-		//ZP (Zombie to Player) == OP - ZP
+
+		//check which part of the quadrant the zombie is in
+
+		//ZP (Zombie to Player) == OP - OZ
 		
 		float currentZombieXCor = zombieImage.getX();
 		float currentZombieYCor = zombieImage.getY();
@@ -48,6 +54,25 @@ public:
 
 		unitVectorXCor = ZPXCor / magnitudeOfZP;
 		unitVectorYCor = ZPYCor / magnitudeOfZP;
+
+		//find the coordinates of ZP'
+		// where p' is 90 degrees above P
+		float PprimeXCor = currentPlayerXCor;
+		float PprimeYCor = currentZombieYCor;
+
+		//ZP' = OP' - OZ
+		float ZPprimeXCor = PprimeXCor - currentZombieXCor;
+		float ZPprimeYCor = PprimeYCor - currentZombieYCor;
+
+		//get the scalar product to find the angle
+		// dot product of ZP' * ZP = 
+		float dotProdutValue = (ZPprimeXCor*ZPXCor) + (ZPprimeYCor*ZPYCor);
+		//get the magnitude of ZP'
+		float magnitudeOfZPrime = sqrt((ZPprimeXCor*ZPprimeXCor) + (ZPprimeYCor*ZPprimeYCor));
+		float angle = acos(dotProdutValue / (magnitudeOfZPrime*magnitudeOfZP)) * (180/PI);
+
+		zombieImage.setDegrees(angle);
+
 	};
 
 
