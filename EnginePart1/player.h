@@ -7,7 +7,7 @@
 //#include "image.h"
 //#include "lastManStanding.h"
 #include "bullet.h"
-#include <vector>
+#include <list>
 #define VECTOR2 D3DXVECTOR2
 using namespace std;
 
@@ -25,13 +25,20 @@ class Player
 private:
 	TextureManager PLAYER_SHOOTING_TEXTURE;
 	Image PLAYER_SHOOTING_IMAGE;
-	vector<class Bullet*> bulletList;
+	//vector<Bullet*> bulletList;
+	Bullet* newBullet;
+	list<Bullet*> BULLET_LIST;
+
+	//take in lastManStanding to use graphics xd
+	//LastManStanding last_Man_Standing;
 
 public:
 	Player();
 	~Player();
-	void shootBullet(VECTOR2 player);
-	void initialize(Graphics *graphics, const char* filepath, TextureManager &texture, Image &image);
+	void shootBullet(Graphics*graphics,TextureManager &texture,Image &image);
+	void moveBullet(Image &playerImage, float gameWidth, float frameTime);
+	void drawBullets();
+	void initialize(Graphics *graphics, TextureManager &texture, Image &image);
 	void setPositionVector(Image &image, float GAME_WIDTH,float GAME_HEIGHT,float playerScale, int playerStartFrame,int playerEndFrame,float playerFrameDelay) {
 		image.setX(GAME_WIDTH / 10);
 		image.setY(GAME_HEIGHT / 10);

@@ -27,7 +27,7 @@ void LastManStanding::initialize(HWND hwnd)
 	//create player here
 	mainPlayer = new Player();
 	
-	mainPlayer->initialize(graphics, PLAYER_SHOOTING_TILE, PLAYER_SHOOTING_TILE_TEXTURE, PLAYER_SHOOTING_TILE_IMAGE);
+	mainPlayer->initialize(graphics, PLAYER_SHOOTING_TILE_TEXTURE, PLAYER_SHOOTING_TILE_IMAGE);
 
 	//implement the LEVEl1_TILE_TEXTURE texture here
 	if (!LEVEL1_TILE_TEXTURE.initialize(graphics, LEVEL1_TILE))
@@ -69,7 +69,6 @@ void LastManStanding::initialize(HWND hwnd)
 	healthBarBackGround.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
 	healthBarGreen.setScale(0.5f);
 	healthBarBackGround.setScale(0.5f);
-
 
 	return;
 }
@@ -129,30 +128,15 @@ void LastManStanding::update()
 	}
 	else if (input->wasKeyPressed(VK_SPACE))
 	{
-		input->clearAll();
 		//Shooting animation
 		PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
 		//To minus HP of Player by 5.
 		currentHP = currentHP - 5;
 		float currentHpBarPercentage = currentHP / PLAYER_MAXHP;
-		healthBarGreen.setPercentage(currentHpBarPercentage);
+		healthBarGreen.setPercentage(currentHpBarPercentage);	
+	
+		mainPlayer->shootBullet(graphics, BULLET_TEXTURE, PLAYER_SHOOTING_TILE_IMAGE);
 
-		////////////////////////////////////////////////////////////////////////////
-	//Test Logic
-	//1 . Create the bullet here
-	//2. If player does not key in anything or other than right key, the bullet continues moving with frametime
-	//3. destroy the bullet if the bullet's x popsition is == 0 or == GAME_WIDTH
-	//4. refactor all these codes into the player class after testing
-		newBullet = new Bullet();
-		newBullet->initialize(graphics, BULLET_TILE, BULLET_TEXTURE, BULLET_IMAGE);
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		//implement the shooting here
-		//test the bullet class here
-		newBullet->setPositionVector(BULLET_IMAGE, PLAYER_SHOOTING_TILE_IMAGE.getCenterX(), PLAYER_SHOOTING_TILE_IMAGE.getCenterY());
-
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		input->clearAll();
 	}
 	else if (input->wasKeyPressed(VK_F2))
 	{
@@ -174,10 +158,8 @@ void LastManStanding::update()
 	healthBarBackGround.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
 	healthBarBackGround.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
 
-	///////////////////////////////////////////////////////////////////////////////
-	//Test Logic
-	//refactored code to bullet.h function
-	newBullet->move(BULLET_IMAGE, PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, frameTime);
+	//edit here to chnage the direction of the bullet
+	mainPlayer->moveBullet(PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, frameTime);
 
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -211,8 +193,7 @@ void LastManStanding::render()
 	PLAYER_RELOADING_IMAGE.draw();
 	healthBarBackGround.draw();
 	healthBarGreen.draw();
-	/*newBullet->getBulletImage().draw();*/
-	BULLET_IMAGE.draw();
+	mainPlayer->drawBullets();
 	graphics->spriteEnd();                  // end drawing sprites
 
 
@@ -243,3 +224,4 @@ void LastManStanding::resetAll()
 	return;
 
 }
+

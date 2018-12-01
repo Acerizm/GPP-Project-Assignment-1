@@ -3,13 +3,17 @@
 #define _BULLET_H             // ..file is included in more than one place
 #define WIN32_LEAN_AND_MEAN
 #include "image.h"
-
+#include <math.h>
 class Bullet {
 	private:
-		/*TextureManager BULLET_TEXTURE;
-		Image BULLET_IMAGE;*/
-
+		//textureManager BULLET_TEXTURE;
+		Image BULLET_IMAGE;
+		friend class LastManStanding;
+		friend class Player;
+		float currentAngle;
 	public:
+		//Image BULLET_IMAGE;
+
 		//constructor
 		Bullet();
 
@@ -23,11 +27,9 @@ class Bullet {
 
 		//initialize the damn bullet
 		//pass by reference here btw
-		void initialize(Graphics *graphics, const char* filepath, TextureManager &texture, Image &image);
+		void initialize(Graphics *graphics, TextureManager &texture, Image &image, float currentAngle);
 
-		/*Image getBulletImage() {
-			return BULLET_IMAGE;
-		}*/
+
 
 		void setPositionVector(Image &image,float playerXCenter, float playerYCenter) {
 			image.setX(playerXCenter + 10);
@@ -37,8 +39,7 @@ class Bullet {
 		}
 
 		void move(Image &bulletImage, Image &playerImage, float gameWidth,float frameTime) {
-			if (bulletImage.getX() > gameWidth) {
-				setPositionVector(bulletImage, playerImage.getCenterX(), playerImage.getCenterY());
+			/*if (bulletImage.getX() > gameWidth) {
 			}
 			else {
 				if (bulletImage.getX() < playerImage.getCenterX()) {
@@ -47,8 +48,12 @@ class Bullet {
 				else {
 					bulletImage.setX(bulletImage.getX() + frameTime * BULLET_SPEED);
 				}
-			}
+			}*/
+			bulletImage.setX(bulletImage.getX() + ((frameTime * BULLET_SPEED) * (cos(currentAngle*PI/180))));
+			bulletImage.setY(bulletImage.getY() + ((frameTime * BULLET_SPEED) * (sin(currentAngle*PI/180))));
+
 		}
+
 
 
 
