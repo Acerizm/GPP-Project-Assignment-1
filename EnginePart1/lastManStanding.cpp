@@ -166,7 +166,7 @@ void LastManStanding::update()
 
 	//edit here to chnage the direction of the bullet
 	mainPlayer->moveBullet(PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, frameTime);
-
+	testZombie->attackPlayer(graphics, testZombie->ZOMBIE_MOVING_IMAGE, PLAYER_SHOOTING_TILE_IMAGE, frameTime);
 
 	///////////////////////////////////////////////////////////////////////////////
 }
