@@ -12,8 +12,9 @@ Player::~Player() {
 void Player::shootBullet(Graphics *graphics, TextureManager &texture, Image &playerImage) {
 	//create the bullet here
 	newBullet = new Bullet();
+	
+	newBullet->initialize(graphics, texture, newBullet->BULLET_IMAGE,playerImage.getDegrees());
 	BULLET_LIST.push_back(newBullet);
-	newBullet->initialize(graphics, texture, newBullet->BULLET_IMAGE);
 	//this is to set the original location of the bullet when the user presses a button
 	// which should be near the player's gun tip
 	newBullet->setPositionVector(newBullet->BULLET_IMAGE, playerImage.getCenterX(), playerImage.getCenterY());

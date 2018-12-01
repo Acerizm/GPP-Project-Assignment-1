@@ -19,7 +19,7 @@ Bullet::~Bullet() {
 
 }
 
-void Bullet::initialize(Graphics *graphics,TextureManager &texture,Image &image) {
+void Bullet::initialize(Graphics *graphics,TextureManager &texture,Image &image,float currentAngle) {
 //	//implement the LEVEl1_TILE_TEXTURE texture here
 //	if (!BULLET_TEXTURE.initialize(graphics, BULLET_TILE))
 //		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing texture"));
@@ -31,6 +31,7 @@ void Bullet::initialize(Graphics *graphics,TextureManager &texture,Image &image)
 			throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing texture"));
 	if (!image.initialize(graphics, BULLET_WIDTH, BULLET_HEIGHT, 0, &texture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing "));
+	this->currentAngle = currentAngle;
 }
 
 //test rendering of bullets

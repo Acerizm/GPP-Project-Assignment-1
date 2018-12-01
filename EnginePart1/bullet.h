@@ -3,13 +3,14 @@
 #define _BULLET_H             // ..file is included in more than one place
 #define WIN32_LEAN_AND_MEAN
 #include "image.h"
-
+#include <math.h>
 class Bullet {
 	private:
 		//textureManager BULLET_TEXTURE;
 		Image BULLET_IMAGE;
 		friend class LastManStanding;
 		friend class Player;
+		float currentAngle;
 	public:
 		//Image BULLET_IMAGE;
 
@@ -26,7 +27,7 @@ class Bullet {
 
 		//initialize the damn bullet
 		//pass by reference here btw
-		void initialize(Graphics *graphics, TextureManager &texture, Image &image);
+		void initialize(Graphics *graphics, TextureManager &texture, Image &image, float currentAngle);
 
 
 
@@ -38,7 +39,7 @@ class Bullet {
 		}
 
 		void move(Image &bulletImage, Image &playerImage, float gameWidth,float frameTime) {
-			if (bulletImage.getX() > gameWidth) {
+			/*if (bulletImage.getX() > gameWidth) {
 			}
 			else {
 				if (bulletImage.getX() < playerImage.getCenterX()) {
@@ -47,7 +48,10 @@ class Bullet {
 				else {
 					bulletImage.setX(bulletImage.getX() + frameTime * BULLET_SPEED);
 				}
-			}
+			}*/
+			bulletImage.setX(bulletImage.getX() + ((frameTime * BULLET_SPEED) * cos(currentAngle)));
+			bulletImage.setY(bulletImage.getY() + ((frameTime * BULLET_SPEED) * sin(currentAngle)));
+
 		}
 
 
