@@ -74,6 +74,8 @@ void LastManStanding::initialize(HWND hwnd)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing pausedText font"));
 
 	mciSendString("open \"audio\\deathSong.wav\" type waveaudio alias sound", NULL, 0, NULL);
+	mciSendString("open \"audio\\backGroundMusic.wav\" type waveaudio alias backGroundMusic", NULL, 0, NULL);
+
 	//set x or set y for the initial position vector of the object
 	LEVEL1_TILE_IMAGE.setScale(LEVEL1_TILE_SCALE);
 
@@ -97,6 +99,7 @@ void LastManStanding::initialize(HWND hwnd)
 //=============================================================================
 void LastManStanding::update()
 {
+	mciSendString("play backGroundMusic", NULL, 0, NULL);
 	if (isPaused)
 	{
 		if (input->wasKeyPressed(VK_F2))
@@ -106,7 +109,9 @@ void LastManStanding::update()
 	}
 	else if (isDead)
 	{
+		mciSendString("stop backGroundMusic", NULL, 0, NULL);
 		mciSendString("play sound", NULL, 0, NULL);
+		
 		//PlaySound("audio\\deathSong.wav", NULL, SND_FILENAME);
 		if (input->wasKeyPressed(VK_ESCAPE))
 		{
