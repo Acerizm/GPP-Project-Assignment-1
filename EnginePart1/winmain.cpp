@@ -81,6 +81,19 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 //=============================================================================
 LRESULT WINAPI WinProc( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam )
 {
+	switch (msg)
+	{
+		case WM_DESTROY:
+			PostQuitMessage(0);
+			return 0;
+		//tell Windows to kill this program
+		
+	default:
+		break;
+	}
+	
+		
+
     return (game->messageHandler(hwnd, msg, wParam, lParam));
 }
 

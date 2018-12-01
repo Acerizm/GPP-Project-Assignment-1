@@ -2,6 +2,9 @@
 #include "player.h"
 #include "textDX.h"
 #include <string>
+#include <Mmsystem.h>
+#include <mciapi.h>
+#pragma comment(lib, "Winmm.lib")
 using namespace std;
 //=============================================================================
 // Constructor
@@ -70,6 +73,7 @@ void LastManStanding::initialize(HWND hwnd)
 	if (deadText->initialize(graphics, 30, true, false, "Arial") == false)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing pausedText font"));
 
+	mciSendString("open \"audio\\deathSong.wav\" type waveaudio alias sound", NULL, 0, NULL);
 	//set x or set y for the initial position vector of the object
 	LEVEL1_TILE_IMAGE.setScale(LEVEL1_TILE_SCALE);
 
@@ -102,7 +106,13 @@ void LastManStanding::update()
 	}
 	else if (isDead)
 	{
-
+		mciSendString("play sound", NULL, 0, NULL);
+		//PlaySound("audio\\deathSong.wav", NULL, SND_FILENAME);
+		if (input->wasKeyPressed(VK_ESCAPE))
+		{
+			PostQuitMessage(0);
+		}
+		
 	}
 	else
 	{
@@ -243,7 +253,7 @@ void LastManStanding::render()
 	if (isDead)
 	{
 		deadText->setFontColor(graphicsNS::RED);
-		deadText->print("YOU DIED!", GAME_WIDTH/2, GAME_HEIGHT/2);
+		deadText->print("YOU DIED! Press Esc to close game", 0, 0);
 	}
 	graphics->spriteEnd();                  // end drawing sprites
 
