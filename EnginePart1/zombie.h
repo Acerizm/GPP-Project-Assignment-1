@@ -18,11 +18,7 @@ public:
 	~Zombie();
 	void initialize(Graphics *graphics, TextureManager &texture, Image &image);
 	void setPositionVector(Image &image, float GAME_WIDTH, float GAME_HEIGHT, float zombieScale, int zombieStartFrame, int zombieEndFrame, float zombieFrameDelay) {
-
-		//check which quadrant the zombie is in
-		//
-		//change the setX and setY according to my game design algorithm later
-		image.setX(GAME_WIDTH - 50);
+		image.setX(50);
 		image.setY(GAME_HEIGHT - 50);
 		image.setScale(zombieScale);
 		image.setFrames(zombieStartFrame, zombieEndFrame);
@@ -71,7 +67,30 @@ public:
 		float magnitudeOfZPrime = sqrt((ZPprimeXCor*ZPprimeXCor) + (ZPprimeYCor*ZPprimeYCor));
 		float angle = acos(dotProdutValue / (magnitudeOfZPrime*magnitudeOfZP)) * (180/PI);
 
-		zombieImage.setDegrees(angle);
+		//change the direction of the image here
+		//1st quadrant
+		if (zombieImage.getX() < playerImage.getX() && zombieImage.getY() < playerImage.getY()) 
+		{
+			zombieImage.setDegrees(angle);
+		}
+		//2nd quadrant
+		else if (zombieImage.getX() > playerImage.getX() && zombieImage.getY() < playerImage.getY()) 
+		{
+			zombieImage.flipHorizontal(true);
+			zombieImage.setDegrees(-angle);
+		}
+		//3rd quadrant
+		else if (zombieImage.getX() > playerImage.getX() && zombieImage.getY() > playerImage.getY()) 
+		{
+			zombieImage.flipHorizontal(true);
+			zombieImage.setDegrees(angle);
+		}
+		//4th quadrant
+		else if (zombieImage.getX() < playerImage.getX() && zombieImage.getY() > playerImage.getY()) 
+		{
+			zombieImage.flipHorizontal(false);
+			zombieImage.setDegrees(-angle);
+		}
 
 	};
 
