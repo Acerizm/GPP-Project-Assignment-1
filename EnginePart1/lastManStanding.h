@@ -9,6 +9,7 @@
 #include "bullet.h"
 #include "player.h"
 #include <list>
+#include "zombie.h"
 using namespace std;
 
 //=============================================================================
@@ -42,8 +43,10 @@ protected:
 	TextureManager BULLET_TEXTURE;
 	//Image BULLET_IMAGE;
 
-	Player *mainPlayer;
+	TextureManager ZOMBIE_MOVING_TEXTURE;
 
+	Player *mainPlayer;
+	Zombie *testZombie;
 	float currentHP;
 
 	//there is a need for me to store multiple images inside the array

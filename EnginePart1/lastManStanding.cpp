@@ -1,12 +1,13 @@
 #include "lastManStanding.h"
 #include "player.h"
+#include "zombie.h"
 //=============================================================================
 // Constructor
 //=============================================================================
 LastManStanding::LastManStanding()
 {
 	mainPlayer = NULL;
-
+	testZombie = NULL;
 }
 
 //=============================================================================
@@ -25,9 +26,15 @@ void LastManStanding::initialize(HWND hwnd)
 	Game::initialize(hwnd); // throws GameError
 
 	//create player here
-	mainPlayer = new Player();
-	
+	mainPlayer = new Player();	
 	mainPlayer->initialize(graphics, PLAYER_SHOOTING_TILE_TEXTURE, PLAYER_SHOOTING_TILE_IMAGE);
+	mainPlayer->setPositionVector(PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, GAME_HEIGHT, PLAYER_SHOOTING_SCALE, PLAYER_SHOOTING_START_FRAME, PLAYER_SHOOTING_END_FRAME, PLAYER_SHOOTING_ANIMATION_DELAY);
+
+	//create zombie here
+	testZombie = new Zombie();
+	testZombie->initialize(graphics, ZOMBIE_MOVING_TEXTURE, testZombie->ZOMBIE_MOVING_IMAGE);
+	testZombie->setPositionVector(testZombie->ZOMBIE_MOVING_IMAGE, GAME_WIDTH, GAME_HEIGHT, ZOMBIE_MOVING_SCALE, ZOMBIE_MOVING_START_FRAME, ZOMBIE_MOVING_END_FRAME, ZOMBIE_MOVING_ANIMATION_DELAY);
+
 
 	//implement the LEVEl1_TILE_TEXTURE texture here
 	if (!LEVEL1_TILE_TEXTURE.initialize(graphics, LEVEL1_TILE))
@@ -58,8 +65,6 @@ void LastManStanding::initialize(HWND hwnd)
 	//set x or set y for the initial position vector of the object
 	LEVEL1_TILE_IMAGE.setScale(LEVEL1_TILE_SCALE);
 
-	mainPlayer->setPositionVector(PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, GAME_HEIGHT, PLAYER_SHOOTING_SCALE, PLAYER_SHOOTING_START_FRAME, PLAYER_SHOOTING_END_FRAME,PLAYER_SHOOTING_ANIMATION_DELAY);
-
 
 	currentHP = PLAYER_MAXHP;
 
@@ -84,6 +89,7 @@ void LastManStanding::update()
 	healthBarBackGround.update(frameTime);
 	healthBarRed.update(frameTime);
 	PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(PLAYER_SHOOTING_ANIMATION_DELAY);
+	(testZombie->ZOMBIE_MOVING_IMAGE).update(frameTime);
 	if (input->isKeyDown(VK_LEFT))  //left arrow key is pressed down
 	{
 		PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - frameTime * PLAYER_MOVEMENTSPEED);
@@ -194,8 +200,8 @@ void LastManStanding::render()
 	healthBarBackGround.draw();
 	healthBarGreen.draw();
 	mainPlayer->drawBullets();
+	testZombie->ZOMBIE_MOVING_IMAGE.draw();
 	graphics->spriteEnd();                  // end drawing sprites
-
 
 }
 
