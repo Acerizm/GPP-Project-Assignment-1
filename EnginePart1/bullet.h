@@ -49,8 +49,8 @@ class Bullet {
 					bulletImage.setX(bulletImage.getX() + frameTime * BULLET_SPEED);
 				}
 			}*/
-			bulletImage.setX(bulletImage.getX() + ((frameTime * BULLET_SPEED) * cos(currentAngle)));
-			bulletImage.setY(bulletImage.getY() + ((frameTime * BULLET_SPEED) * sin(currentAngle)));
+			bulletImage.setX(bulletImage.getX() + ((frameTime * BULLET_SPEED) * (cos(currentAngle*PI/180))));
+			bulletImage.setY(bulletImage.getY() + ((frameTime * BULLET_SPEED) * (sin(currentAngle*PI/180))));
 
 		}
 
