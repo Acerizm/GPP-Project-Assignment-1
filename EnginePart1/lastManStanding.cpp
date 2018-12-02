@@ -30,10 +30,10 @@ void LastManStanding::initialize(HWND hwnd)
 	mainPlayer->initialize(graphics, PLAYER_SHOOTING_TILE_TEXTURE, PLAYER_SHOOTING_TILE_IMAGE);
 	mainPlayer->setPositionVector(PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, GAME_HEIGHT, PLAYER_SHOOTING_SCALE, PLAYER_SHOOTING_START_FRAME, PLAYER_SHOOTING_END_FRAME, PLAYER_SHOOTING_ANIMATION_DELAY);
 
-	//create zombie here
-	testZombie = new Zombie();
-	testZombie->initialize(graphics, ZOMBIE_MOVING_TEXTURE, testZombie->ZOMBIE_MOVING_IMAGE);
-	testZombie->setPositionVector(testZombie->ZOMBIE_MOVING_IMAGE, GAME_WIDTH, GAME_HEIGHT, ZOMBIE_MOVING_SCALE, ZOMBIE_MOVING_START_FRAME, ZOMBIE_MOVING_END_FRAME, ZOMBIE_MOVING_ANIMATION_DELAY);
+	////create zombie here
+	//testZombie = new Zombie();
+	//testZombie->initialize(graphics, ZOMBIE_MOVING_TEXTURE, testZombie->ZOMBIE_MOVING_IMAGE);
+	//testZombie->setPositionVector(testZombie->ZOMBIE_MOVING_IMAGE, GAME_WIDTH, GAME_HEIGHT, ZOMBIE_MOVING_SCALE, ZOMBIE_MOVING_START_FRAME, ZOMBIE_MOVING_END_FRAME, ZOMBIE_MOVING_ANIMATION_DELAY);
 
 
 	//implement the LEVEl1_TILE_TEXTURE texture here
@@ -89,7 +89,12 @@ void LastManStanding::update()
 	healthBarBackGround.update(frameTime);
 	healthBarRed.update(frameTime);
 	PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(PLAYER_SHOOTING_ANIMATION_DELAY);
-	(testZombie->ZOMBIE_MOVING_IMAGE).update(frameTime);
+	//(testZombie->ZOMBIE_MOVING_IMAGE).update(frameTime);
+	if (zombieList.size() != 0) {
+		for each (Zombie *zombie in zombieList) {
+			zombie->ZOMBIE_MOVING_IMAGE.update(frameTime);
+		}
+	}
 	if (input->isKeyDown(VK_LEFT))  //left arrow key is pressed down
 	{
 		PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - frameTime * PLAYER_MOVEMENTSPEED);
@@ -166,7 +171,9 @@ void LastManStanding::update()
 
 	//edit here to chnage the direction of the bullet
 	mainPlayer->moveBullet(PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, frameTime);
-	testZombie->attackPlayer(graphics, testZombie->ZOMBIE_MOVING_IMAGE, PLAYER_SHOOTING_TILE_IMAGE, frameTime);
+	//testZombie->attackPlayer(graphics, testZombie->ZOMBIE_MOVING_IMAGE, PLAYER_SHOOTING_TILE_IMAGE, frameTime);
+
+
 
 	///////////////////////////////////////////////////////////////////////////////
 }
@@ -175,10 +182,54 @@ void LastManStanding::update()
 //=============================================================================
 // Artificial Intelligence
 //=============================================================================
-void LastManStanding::ai()
+void LastManStanding::ai(Timer *gameTimer)
 {
 	//add more zombies here
+	//int test = (int)(gameTimer->getCurrentElapsedTime());
+	
+	//1. every 2 seconds , spawn a zombie
 
+	int numOfSecondsPassed = int(gameTimer->getCurrentElapsedTime());
+	// check if the time passed is a multiple of 5
+	if (numOfSecondsPassed % 5 == 0 && numOfSecondsPassed != 0 && numOfSecondsPassed != nextIntervalValue) {
+
+		nextIntervalValue = numOfSecondsPassed;
+		testZombie = new Zombie();
+		testZombie->initialize(graphics, ZOMBIE_MOVING_TEXTURE, testZombie->ZOMBIE_MOVING_IMAGE);
+
+		//have to do rng here
+		int condition = 0;
+		float x;
+		float y;
+
+		//redo this algo again when have time
+		while (!condition) {
+			float x2 = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / GAME_WIDTH));
+			float y2 = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / GAME_HEIGHT));
+
+			if ((x2 <= (PLAYER_SHOOTING_TILE_IMAGE.getCenterX() - (PLAYER_SHOOTING_TILE_IMAGE.getWidth() / 2) * 10)) || (x2 >= (PLAYER_SHOOTING_TILE_IMAGE.getCenterX() + (PLAYER_SHOOTING_TILE_IMAGE.getWidth() / 2) * 10)))
+			//if (x2 > (GAME_WIDTH / 4)*3 || x2 < GAME_WIDTH / 4)
+			{
+				//continue the loop xd
+				int x = 2;
+			}
+			else 
+			{
+				x = x2;
+				y = y2;
+				condition = 1;
+			}
+		};
+		testZombie->setPositionVector(testZombie->ZOMBIE_MOVING_IMAGE, x, y, ZOMBIE_MOVING_SCALE, ZOMBIE_MOVING_START_FRAME, ZOMBIE_MOVING_END_FRAME, ZOMBIE_MOVING_ANIMATION_DELAY);
+
+		//add the zombie to the array
+		zombieList.push_back(testZombie);
+	}
+
+	//then attack the player
+	for each (Zombie * zombie in zombieList) {
+		zombie->attackPlayer(graphics, zombie->ZOMBIE_MOVING_IMAGE, PLAYER_SHOOTING_TILE_IMAGE, frameTime);
+	}
 
 }
 
@@ -204,7 +255,8 @@ void LastManStanding::render()
 	healthBarBackGround.draw();
 	healthBarGreen.draw();
 	mainPlayer->drawBullets();
-	testZombie->ZOMBIE_MOVING_IMAGE.draw();
+	//testZombie->ZOMBIE_MOVING_IMAGE.draw();
+	drawZombieAIs();
 	graphics->spriteEnd();                  // end drawing sprites
 
 }
@@ -233,5 +285,31 @@ void LastManStanding::resetAll()
 	Game::resetAll();
 	return;
 
+}
+
+void LastManStanding::drawZombieAIs() {
+	if (zombieList.size() != 0) {
+		//for (list<Zombie*>::iterator it = zombieList.begin(); it != zombieList.end(); ) {
+		//	// for testing purposes
+		//	// destroy the zombie when the zombie is around the player
+		//	if ()
+		//	{
+		//		SAFE_DELETE(*it);
+		//		it = BULLET_LIST.erase(it);
+		//		//just to check here
+		//		int check = BULLET_LIST.size();
+		//		//bool test = false;
+		//	}
+		//	else {
+		//		it++;
+		//	}
+		//}
+
+		//when all okay go and draw the bullet
+		for each(Zombie* zombie in zombieList)
+		{
+			(zombie->ZOMBIE_MOVING_IMAGE).draw();
+		}
+	}
 }
 

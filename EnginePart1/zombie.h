@@ -17,9 +17,9 @@ public:
 	Zombie();
 	~Zombie();
 	void initialize(Graphics *graphics, TextureManager &texture, Image &image);
-	void setPositionVector(Image &image, float GAME_WIDTH, float GAME_HEIGHT, float zombieScale, int zombieStartFrame, int zombieEndFrame, float zombieFrameDelay) {
-		image.setX(50);
-		image.setY(GAME_HEIGHT - 50);
+	void setPositionVector(Image &image, float x, float y, float zombieScale, int zombieStartFrame, int zombieEndFrame, float zombieFrameDelay) {
+		image.setX(x);
+		image.setY(y);
 		image.setScale(zombieScale);
 		image.setFrames(zombieStartFrame, zombieEndFrame);
 		image.setFrameDelay(zombieFrameDelay);

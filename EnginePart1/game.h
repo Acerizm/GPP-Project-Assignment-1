@@ -9,7 +9,7 @@
 #include "input.h"
 #include "constants.h"
 #include "gameError.h"
-
+#include "timer.h"
 class Game
 {
 protected:
@@ -43,7 +43,7 @@ public:
     virtual void initialize(HWND hwnd);
 
     // Call run repeatedly by the main message loop in WinMain
-    virtual void run(HWND);
+    virtual void run(HWND,Timer *gameTimer);
 
     // Call when the graphics device was lost.
     // Release all reserved video memory so graphics device may be reset.
@@ -77,7 +77,7 @@ public:
     virtual void update() = 0;
 
     // Perform AI calculations.
-    virtual void ai() = 0;
+    virtual void ai(Timer *gameTimer) = 0;
 
     // Check for collisions.
     virtual void collisions() = 0;

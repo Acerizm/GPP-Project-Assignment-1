@@ -52,6 +52,9 @@ protected:
 	//there is a need for me to store multiple images inside the array
 	list <Bullet*> bulletList;
 	list<Zombie*> zombieList;
+
+	int nextIntervalValue = 0;
+
 public:
 	// Constructor
 	LastManStanding();
@@ -62,11 +65,12 @@ public:
 	// Initialize the game
 	void initialize(HWND hwnd);
 	void update();      // must override pure virtual from Game
-	void ai();          // "
+	void ai(Timer *gameTimer);          // "
 	void collisions();  // "
 	void render();      // "
 	void releaseAll();
 	void resetAll();
+	void drawZombieAIs();
 	//Image createNewTempImage();
 
 };
