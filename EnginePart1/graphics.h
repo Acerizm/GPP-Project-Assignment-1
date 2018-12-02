@@ -16,7 +16,7 @@
 #define LP_SPRITE   LPD3DXSPRITE
 #define LP_3DDEVICE LPDIRECT3DDEVICE9
 #define LP_3D       LPDIRECT3D9
-
+#define LP_DXFONT   LPD3DXFONT
 // Color defines
 #define COLOR_ARGB DWORD
 #define SETCOLOR_ARGB(a,r,g,b) \
@@ -180,6 +180,8 @@ public:
 	//=============================================================================
 	// Sprite Begin
 	//=============================================================================
+
+	LP_SPRITE   getSprite() { return sprite; }
 	void spriteBegin()
 	{
 		sprite->Begin(D3DXSPRITE_ALPHABLEND);

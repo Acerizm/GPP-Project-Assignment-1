@@ -39,28 +39,11 @@ class Bullet {
 		}
 
 		void move(Image &bulletImage, Image &playerImage, float gameWidth,float frameTime) {
-			/*if (bulletImage.getX() > gameWidth) {
-			}
-			else {
-				if (bulletImage.getX() < playerImage.getCenterX()) {
-					setPositionVector(bulletImage, playerImage.getCenterX(), playerImage.getCenterY());
-				}
-				else {
-					bulletImage.setX(bulletImage.getX() + frameTime * BULLET_SPEED);
-				}
-			}*/
+			//Move the bullet based on the direction of the player image.
 			bulletImage.setX(bulletImage.getX() + ((frameTime * BULLET_SPEED) * (cos(currentAngle*PI/180))));
 			bulletImage.setY(bulletImage.getY() + ((frameTime * BULLET_SPEED) * (sin(currentAngle*PI/180))));
 
 		}
-
-
-
-
-
-
-
-
 };
 
 

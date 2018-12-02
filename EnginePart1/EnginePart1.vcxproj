@@ -95,6 +95,7 @@
     <ClCompile Include="input.cpp" />
     <ClCompile Include="lastManStanding.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="textDX.cpp" />
     <ClCompile Include="textureManager.cpp" />
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
@@ -107,6 +108,7 @@
     <ClInclude Include="image.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="lastManStanding.h" />
+    <ClInclude Include="textDX.h" />
     <ClInclude Include="textureManager.h" />
   </ItemGroup>
   <ItemGroup>

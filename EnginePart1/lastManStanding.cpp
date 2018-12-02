@@ -1,12 +1,22 @@
 #include "lastManStanding.h"
 #include "player.h"
+#include "textDX.h"
+#include <string>
+#include <Mmsystem.h>
+#include <mciapi.h>
+#pragma comment(lib, "Winmm.lib")
+using namespace std;
 //=============================================================================
 // Constructor
 //=============================================================================
 LastManStanding::LastManStanding()
 {
 	mainPlayer = NULL;
-
+	hpText = new TextDX();
+	isPaused = false;
+	pausedText = new TextDX();
+	isDead = false;
+	deadText = new TextDX();
 }
 
 //=============================================================================
@@ -55,6 +65,17 @@ void LastManStanding::initialize(HWND hwnd)
 	if (!healthBarBackGround.initialize(graphics, 256, 32, 1, &healthBarBackGroundTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarBackGround"));
 
+	if (hpText->initialize(graphics, 15, true, false, "Arial") == false)
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing hpText font"));
+
+	if (pausedText->initialize(graphics, 30, true, false, "Arial") == false)
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing pausedText font"));
+	if (deadText->initialize(graphics, 30, true, false, "Arial") == false)
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing pausedText font"));
+
+	mciSendString("open \"audio\\deathSong.wav\" type waveaudio alias sound", NULL, 0, NULL);
+	mciSendString("open \"audio\\backGroundMusic.wav\" type waveaudio alias backGroundMusic", NULL, 0, NULL);
+
 	//set x or set y for the initial position vector of the object
 	LEVEL1_TILE_IMAGE.setScale(LEVEL1_TILE_SCALE);
 
@@ -78,16 +99,42 @@ void LastManStanding::initialize(HWND hwnd)
 //=============================================================================
 void LastManStanding::update()
 {
-	//update the animation here
-	PLAYER_RELOADING_IMAGE.update(frameTime);
-	PLAYER_SHOOTING_TILE_IMAGE.update(frameTime);
-	healthBarBackGround.update(frameTime);
-	healthBarRed.update(frameTime);
-	PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(PLAYER_SHOOTING_ANIMATION_DELAY);
-	if (input->isKeyDown(VK_LEFT))  //left arrow key is pressed down
+	mciSendString("play backGroundMusic", NULL, 0, NULL);
+	if (isPaused)
 	{
-		PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - frameTime * PLAYER_MOVEMENTSPEED);
-		PLAYER_SHOOTING_TILE_IMAGE.setDegrees(180);
+		if (input->wasKeyPressed(VK_F2))
+		{
+			isPaused = !isPaused;
+		}
+	}
+	else if (isDead)
+	{
+		mciSendString("stop backGroundMusic", NULL, 0, NULL);
+		mciSendString("play sound", NULL, 0, NULL);
+		
+		//PlaySound("audio\\deathSong.wav", NULL, SND_FILENAME);
+		if (input->wasKeyPressed(VK_ESCAPE))
+		{
+			PostQuitMessage(0);
+		}
+		
+	}
+	else
+	{
+		//update the animation here
+		PLAYER_RELOADING_IMAGE.update(frameTime);
+		PLAYER_SHOOTING_TILE_IMAGE.update(frameTime);
+		healthBarBackGround.update(frameTime);
+		healthBarRed.update(frameTime);
+		PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(PLAYER_SHOOTING_ANIMATION_DELAY);
+
+
+
+		////////////////////////////////////////////////////////////////////////////
+		if (input->isKeyDown(VK_LEFT))  //left arrow key is pressed down
+		{
+			PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - frameTime * PLAYER_MOVEMENTSPEED);
+			PLAYER_SHOOTING_TILE_IMAGE.setDegrees(180);
 
 			if (input->isKeyDown(VK_SPACE))
 			{
@@ -100,16 +147,16 @@ void LastManStanding::update()
 			PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() + frameTime * PLAYER_MOVEMENTSPEED);
 			PLAYER_SHOOTING_TILE_IMAGE.setDegrees(0);
 
-		
-		if (input->isKeyDown(VK_SPACE))
-		{
-			PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+
+			if (input->isKeyDown(VK_SPACE))
+			{
+				PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+			}
 		}
-	}
-	else if (input->isKeyDown(VK_UP)) // up arrow key is pressed down
-	{
-		PLAYER_SHOOTING_TILE_IMAGE.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - frameTime * PLAYER_MOVEMENTSPEED);
-		PLAYER_SHOOTING_TILE_IMAGE.setDegrees(270);
+		else if (input->isKeyDown(VK_UP)) // up arrow key is pressed down
+		{
+			PLAYER_SHOOTING_TILE_IMAGE.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - frameTime * PLAYER_MOVEMENTSPEED);
+			PLAYER_SHOOTING_TILE_IMAGE.setDegrees(270);
 
 			if (input->isKeyDown(VK_SPACE))
 			{
@@ -121,50 +168,57 @@ void LastManStanding::update()
 			PLAYER_SHOOTING_TILE_IMAGE.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() + frameTime * PLAYER_MOVEMENTSPEED);
 			PLAYER_SHOOTING_TILE_IMAGE.setDegrees(90);
 
-		if (input->isKeyDown(VK_SPACE))
-		{
-			PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+			if (input->isKeyDown(VK_SPACE))
+			{
+				PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+			}
 		}
-	}
-	else if (input->wasKeyPressed(VK_SPACE))
-	{
-		//Shooting animation
-		PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
-		//To minus HP of Player by 5.
-		currentHP = currentHP - 5;
-		float currentHpBarPercentage = currentHP / PLAYER_MAXHP;
-		healthBarGreen.setPercentage(currentHpBarPercentage);	
-	
-		mainPlayer->shootBullet(graphics, BULLET_TEXTURE, PLAYER_SHOOTING_TILE_IMAGE);
+		else if (input->wasKeyPressed(VK_SPACE))
+		{
+			//Shooting animation
+			PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+			//To minus HP of Player by 5.
+			currentHP = currentHP - 5;
+			float currentHpBarPercentage = currentHP / PLAYER_MAXHP;
+			healthBarGreen.setPercentage(currentHpBarPercentage);
 
-	}
-	else if (input->wasKeyPressed(VK_F2))
-	{
-		//To Recover 5 health.
-		currentHP = currentHP + 5;
-		float currentHpBarPercentage = currentHP / PLAYER_MAXHP;
-		healthBarGreen.setPercentage(currentHpBarPercentage);
-	}
-	else
-	{ 
-		PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(999);
-	}
+			mainPlayer->shootBullet(graphics, BULLET_TEXTURE, PLAYER_SHOOTING_TILE_IMAGE);
 
-	
-	
-	healthBarGreen.setRect();
-	healthBarGreen.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
-	healthBarGreen.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
-	healthBarBackGround.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
-	healthBarBackGround.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
+		}
+		else if (input->wasKeyPressed(VK_F2))
+		{
+			//To Recover 5 health.
+			currentHP = currentHP + 5;
+			float currentHpBarPercentage = currentHP / PLAYER_MAXHP;
+			healthBarGreen.setPercentage(currentHpBarPercentage);
+			isPaused = !isPaused;
+		}
+		else
+		{
+			PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(999);
+		}
 
-	//edit here to chnage the direction of the bullet
-	mainPlayer->moveBullet(PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, frameTime);
 
+		if (currentHP <= 0)
+		{
+			isDead = true;
+		}
+		else
+		{
+			isDead = false;
+		}
+		healthBarGreen.setRect();
+		healthBarGreen.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
+		healthBarGreen.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
+		healthBarBackGround.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
+		healthBarBackGround.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
+
+		//edit here to chnage the direction of the bullet
+		mainPlayer->moveBullet(PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, frameTime);
+	}
 
 	///////////////////////////////////////////////////////////////////////////////
 }
-
 
 //=============================================================================
 // Artificial Intelligence
@@ -194,6 +248,18 @@ void LastManStanding::render()
 	healthBarBackGround.draw();
 	healthBarGreen.draw();
 	mainPlayer->drawBullets();
+	hpText->setFontColor(graphicsNS::WHITE);
+	hpText->print(to_string((int)(currentHP)) + "/" + to_string((int)(PLAYER_MAXHP)), PLAYER_SHOOTING_TILE_IMAGE.getX(), PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
+	if (isPaused)
+	{
+		pausedText->setFontColor(graphicsNS::RED);
+		pausedText->print("Game is Paused Press F2 to Resume", 0,0);
+	}
+	if (isDead)
+	{
+		deadText->setFontColor(graphicsNS::RED);
+		deadText->print("YOU DIED! Press Esc to close game", 0, 0);
+	}
 	graphics->spriteEnd();                  // end drawing sprites
 
 
@@ -223,5 +289,9 @@ void LastManStanding::resetAll()
 	Game::resetAll();
 	return;
 
+}
+bool LastManStanding::checkIsDead()
+{
+	return isDead;
 }
 

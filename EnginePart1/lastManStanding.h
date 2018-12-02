@@ -8,6 +8,7 @@
 #include "image.h"
 #include "bullet.h"
 #include "player.h"
+#include "textDX.h"
 #include <list>
 using namespace std;
 
@@ -48,6 +49,12 @@ protected:
 
 	//there is a need for me to store multiple images inside the array
 	list <Bullet*> bulletList;
+
+	TextDX  *hpText;
+	bool isPaused;
+	bool isDead;
+	TextDX *pausedText;
+	TextDX *deadText;
 public:
 	// Constructor
 	LastManStanding();
@@ -63,6 +70,7 @@ public:
 	void render();      // "
 	void releaseAll();
 	void resetAll();
+	bool LastManStanding::checkIsDead();
 	//Image createNewTempImage();
 
 };
