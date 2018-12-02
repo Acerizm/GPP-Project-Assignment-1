@@ -3,6 +3,7 @@
 #define _ZOMBIE_H
 #include "image.h"
 #include <cmath>
+#include "textDX.h"
 using namespace std;
 
 
@@ -13,6 +14,14 @@ private:
 	friend class LastManStanding;
 	float unitVectorXCor;
 	float unitVectorYCor;
+	TextureManager healthBarRedTexture;
+	Image healthBarRed;
+	const float zombieMaxHp = 100;
+	float zombieCurrentHP;
+	TextureManager enemyHealthBarBackGroundTexture;
+	Image enemyHealthBarBackGround;
+	TextDX *zombieHpText;
+
 public:
 	Zombie();
 	~Zombie();

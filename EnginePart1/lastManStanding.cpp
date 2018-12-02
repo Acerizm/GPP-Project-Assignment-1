@@ -55,11 +55,11 @@ void LastManStanding::initialize(HWND hwnd)
 	if (!LEVEL1_TILE_IMAGE.initialize(graphics, LEVEL1_TILE_WIDTH, LEVEL1_TILE_HEIGHT, 0, &LEVEL1_TILE_TEXTURE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing "));
 	
-	if(!healthBarRedTexture.initialize(graphics,HEALTHBARRED_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed texture"));
+	//if(!healthBarRedTexture.initialize(graphics,HEALTHBARRED_IMAGE))
+		//throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed texture"));
 
-	if(!healthBarRed.initialize(graphics,256,32,1,&healthBarRedTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed"));
+	//if(!healthBarRed.initialize(graphics,256,32,1,&healthBarRedTexture))
+		//throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed"));
 
 	if (!healthBarGreenTexture.initialize(graphics, HEALTHBARGREEN_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarGreen texture"));
@@ -105,7 +105,7 @@ void LastManStanding::initialize(HWND hwnd)
 //=============================================================================
 void LastManStanding::update()
 {
-	mciSendString("play backGroundMusic", NULL, 0, NULL);
+	//mciSendString("play backGroundMusic", NULL, 0, NULL);
 	if (isPaused)
 	{
 		if (input->wasKeyPressed(VK_F2))
@@ -131,11 +131,13 @@ void LastManStanding::update()
 		PLAYER_RELOADING_IMAGE.update(frameTime);
 		PLAYER_SHOOTING_TILE_IMAGE.update(frameTime);
 		healthBarBackGround.update(frameTime);
-		healthBarRed.update(frameTime);
+		//healthBarRed.update(frameTime);
 		PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(PLAYER_SHOOTING_ANIMATION_DELAY);
 		if (zombieList.size() != 0) {
 			for each (Zombie *zombie in zombieList) {
 				zombie->ZOMBIE_MOVING_IMAGE.update(frameTime);
+				zombie->healthBarRed.update(frameTime);
+				zombie->enemyHealthBarBackGround.update(frameTime);
 			}
 		}
 
@@ -190,7 +192,7 @@ void LastManStanding::update()
 			//To minus HP of Player by 5.
 			currentHP = currentHP - 5;
 			float currentHpBarPercentage = currentHP / PLAYER_MAXHP;
-			healthBarGreen.setPercentage(currentHpBarPercentage);
+			healthBarGreen.setPercentage(currentHpBarPercentage); 
 
 			mainPlayer->shootBullet(graphics, BULLET_TEXTURE, PLAYER_SHOOTING_TILE_IMAGE);
 
@@ -248,7 +250,6 @@ void LastManStanding::ai(Timer *gameTimer)
 		nextIntervalValue = numOfSecondsPassed;
 		testZombie = new Zombie();
 		testZombie->initialize(graphics, ZOMBIE_MOVING_TEXTURE, testZombie->ZOMBIE_MOVING_IMAGE);
-
 		//have to do rng here
 		int condition = 0;
 		float x;
@@ -372,6 +373,10 @@ void LastManStanding::drawZombieAIs() {
 		for each(Zombie* zombie in zombieList)
 		{
 			(zombie->ZOMBIE_MOVING_IMAGE).draw();
+			
+			(zombie->enemyHealthBarBackGround).draw();
+			(zombie->healthBarRed).draw();
+			zombie->zombieHpText->print(to_string((int)zombie->zombieCurrentHP) + "/" + to_string((int)zombie->zombieMaxHp), zombie->ZOMBIE_MOVING_IMAGE.getX(), zombie->ZOMBIE_MOVING_IMAGE.getY() - 5);
 		}
 	}
 }
