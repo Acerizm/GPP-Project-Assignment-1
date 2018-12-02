@@ -10,6 +10,7 @@
 #include "player.h"
 #include "textDX.h"
 #include <list>
+#include "zombie.h"
 using namespace std;
 
 //=============================================================================
@@ -43,13 +44,16 @@ protected:
 	TextureManager BULLET_TEXTURE;
 	//Image BULLET_IMAGE;
 
-	Player *mainPlayer;
+	TextureManager ZOMBIE_MOVING_TEXTURE;
 
+	Player *mainPlayer;
+	Zombie *testZombie;
 	float currentHP;
 
 	//there is a need for me to store multiple images inside the array
 	list <Bullet*> bulletList;
-
+	list<Zombie*> zombieList;
+	int nextIntervalValue = 0;
 	TextDX  *hpText;
 	bool isPaused;
 	bool isDead;
@@ -65,13 +69,13 @@ public:
 	// Initialize the game
 	void initialize(HWND hwnd);
 	void update();      // must override pure virtual from Game
-	void ai();          // "
+	void ai(Timer *gameTimer);          // "
 	void collisions();  // "
 	void render();      // "
 	void releaseAll();
 	void resetAll();
+	void drawZombieAIs();
 	bool LastManStanding::checkIsDead();
-	//Image createNewTempImage();
 
 };
 

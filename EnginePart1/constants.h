@@ -92,7 +92,7 @@ const int ZOMBIE_MOVING_COLS = 3;
 const int ZOMBIE_MOVING_HEIGHT = 311;
 const int ZOMBIE_MOVING_WIDTH = 288;
 const float ZOMBIE_MOVING_SCALE = 0.3f;
-
+const float ZOMBIE_SPEED = 100.0f;
 
 //HP Bar
 const float PLAYER_MAXHP = 100.0f;

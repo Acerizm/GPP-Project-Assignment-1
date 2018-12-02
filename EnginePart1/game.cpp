@@ -165,7 +165,7 @@ void Game::handleLostGraphicsDevice()
 //=============================================================================
 // Call repeatedly by the main message loop in WinMain
 //=============================================================================
-void Game::run(HWND hwnd)
+void Game::run(HWND hwnd,Timer *gameTimer)
 {
     if(graphics == NULL)            // if graphics not initialized
         return;
@@ -199,7 +199,7 @@ void Game::run(HWND hwnd)
     if (!paused)                    // if not paused
     {
         update();                   // update all game items
-        ai();                       // artificial intelligence
+        ai(gameTimer);                       // artificial intelligence
         collisions();               // handle collisions
         input->vibrateControllers(frameTime); // handle controller vibration
     }

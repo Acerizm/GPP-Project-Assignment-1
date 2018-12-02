@@ -24,27 +24,6 @@ void Player::shootBullet(Graphics *graphics, TextureManager &texture, Image &pla
 
 void Player::moveBullet(Image &playerImage, float gameWidth, float frameTime) 
 {
-	//if (BULLET_LIST.size() != 0) {
-	//	for (list<Bullet*>::iterator it = BULLET_LIST.begin(); it != BULLET_LIST.end(); ) {
-	//		if ((*it)->BULLET_IMAGE.getX() > GAME_WIDTH)
-	//		{
-	//			SAFE_DELETE(*it);
-	//			it = BULLET_LIST.erase(it);
-	//			int check = BULLET_LIST.size();
-	//			//bool test = false;
-	//		}
-	//		else {
-	//			it++;
-	//		}
-	//	}
-
-	//	for each(Bullet* bullet in BULLET_LIST)
-	//	{
-	//		bullet->move(bullet->BULLET_IMAGE, playerImage, GAME_WIDTH, frameTime);
-
-	//	}
-
-	//}
 	for each(Bullet* bullet in BULLET_LIST)
 	{
 		bullet->move(bullet->BULLET_IMAGE, playerImage, GAME_WIDTH, frameTime);

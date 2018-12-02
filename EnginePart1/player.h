@@ -40,8 +40,8 @@ public:
 	void drawBullets();
 	void initialize(Graphics *graphics, TextureManager &texture, Image &image);
 	void setPositionVector(Image &image, float GAME_WIDTH,float GAME_HEIGHT,float playerScale, int playerStartFrame,int playerEndFrame,float playerFrameDelay) {
-		image.setX(GAME_WIDTH / 10);
-		image.setY(GAME_HEIGHT / 10);
+		image.setX(GAME_WIDTH / 2);
+		image.setY(GAME_HEIGHT / 2);
 		image.setScale(playerScale);
 		image.setFrames(playerStartFrame, playerEndFrame);
 		image.setFrameDelay(playerFrameDelay);

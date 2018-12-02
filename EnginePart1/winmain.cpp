@@ -6,7 +6,8 @@
 #include <stdlib.h>             // for detecting memory leaks
 #include <crtdbg.h>             // for detecting memory leaks
 #include "lastManStanding.h"
-
+#include <chrono>
+#include "timer.h"
 // Function prototypes
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int); 
 bool CreateMainWindow(HWND &, HINSTANCE, int);
@@ -15,6 +16,7 @@ LRESULT WINAPI WinProc(HWND, UINT, WPARAM, LPARAM);
 // Game pointer
 //Spacewar *game = NULL;
 LastManStanding *game = NULL;
+Timer *gameTimer = NULL;
 HWND hwnd = NULL;
 
 //=============================================================================
@@ -32,6 +34,9 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     // Create the game, sets up message handler
     game = new LastManStanding;
+
+	//create the timer here
+	gameTimer = new Timer();
 
     // Create the window
     if (!CreateMainWindow(hwnd, hInstance, nCmdShow))
@@ -52,8 +57,9 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
                 // decode and pass messages on to WinProc
                 TranslateMessage(&msg);
                 DispatchMessage(&msg);
-            } else
-                game->run(hwnd);    // run the game loop
+            } 
+			else
+                game->run(hwnd,gameTimer);    // run the game loop
         }
         SAFE_DELETE (game);     // free memory before exit
         return msg.wParam;
