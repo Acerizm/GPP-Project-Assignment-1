@@ -2,8 +2,7 @@
 #include "graphics.h"
 
 Zombie::Zombie() {
-
-
+	collisionType = entityNS::CIRCLE;
 }
 
 Zombie::~Zombie() {

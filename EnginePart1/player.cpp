@@ -1,8 +1,10 @@
 #include "player.h"
 #include "graphics.h"
+#include "entity.h"
 
-Player::Player() {
-
+Player::Player() :Entity()
+{
+	collisionType = entityNS::CIRCLE;
 };
 
 Player::~Player() {
@@ -59,6 +61,7 @@ void Player::drawBullets() {
 void Player::initialize(Graphics *graphics, TextureManager &texture, Image &image) {
 	if (!texture.initialize(graphics, PLAYER_SHOOTING_TILE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing texture"));
-	if (!image.initialize(graphics, PLAYER_SHOOTING_WIDTH, PLAYER_SHOOTING_HEIGHT, PLAYER_SHOOTING_COLS, &texture))
+	if (!image.initialize(graphics, playerNS::PLAYER_SHOOTING_WIDTH, playerNS::PLAYER_SHOOTING_HEIGHT, playerNS::PLAYER_SHOOTING_COLS, &texture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing "));
 }
+

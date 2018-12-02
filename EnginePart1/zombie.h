@@ -7,7 +7,7 @@
 using namespace std;
 
 
-class Zombie : Entity
+class Zombie : public Entity
 {
 private:
 	Image ZOMBIE_MOVING_IMAGE;

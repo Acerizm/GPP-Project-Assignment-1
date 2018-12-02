@@ -65,13 +65,13 @@ const char HEALTHBARRED_IMAGE[] = "pictures\\healthbarRed.png";
 const char HEALTHBARBACKGROUND_IMAGE[] = "pictures\\healthbarBackGround.png";
 // Player shooting spritesheet
 const char PLAYER_SHOOTING_TILE[] = "pictures\\PlayerShooting.png";
-const int PLAYER_SHOOTING_START_FRAME = 0;
-const int PLAYER_SHOOTING_END_FRAME = 2;
-const float PLAYER_SHOOTING_ANIMATION_DELAY = 0.2f;
-const int PLAYER_SHOOTING_COLS = 3;
-const int PLAYER_SHOOTING_HEIGHT = 206;
-const int PLAYER_SHOOTING_WIDTH = 312;
-const float PLAYER_SHOOTING_SCALE = 0.3f;
+//const int PLAYER_SHOOTING_START_FRAME = 0;
+//const int PLAYER_SHOOTING_END_FRAME = 2;
+//const float PLAYER_SHOOTING_ANIMATION_DELAY = 0.2f;
+//const int PLAYER_SHOOTING_COLS = 3;
+//const int PLAYER_SHOOTING_HEIGHT = 206;
+//const int PLAYER_SHOOTING_WIDTH = 312;
+//const float PLAYER_SHOOTING_SCALE = 0.3f;
 
 //player reloading
 const char PLAYER_RELOADING_TILE[] = "pictures\\PlayerReloading.png";

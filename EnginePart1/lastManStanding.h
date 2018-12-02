@@ -46,7 +46,7 @@ protected:
 
 	TextureManager ZOMBIE_MOVING_TEXTURE;
 
-	Player *mainPlayer;
+	Player mainPlayer;
 	Zombie *testZombie;
 	float currentHP;
 

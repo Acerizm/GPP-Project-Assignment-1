@@ -12,7 +12,7 @@ using namespace std;
 //=============================================================================
 LastManStanding::LastManStanding()
 {
-	mainPlayer = NULL;
+	//mainPlayer = NULL;
 	hpText = new TextDX();
 	isPaused = false;
 	pausedText = new TextDX();
@@ -37,14 +37,14 @@ void LastManStanding::initialize(HWND hwnd)
 	Game::initialize(hwnd); // throws GameError
 
 	//create player here
-	mainPlayer = new Player();	
-	mainPlayer->initialize(graphics, PLAYER_SHOOTING_TILE_TEXTURE, PLAYER_SHOOTING_TILE_IMAGE);
-	mainPlayer->setPositionVector(PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, GAME_HEIGHT, PLAYER_SHOOTING_SCALE, PLAYER_SHOOTING_START_FRAME, PLAYER_SHOOTING_END_FRAME, PLAYER_SHOOTING_ANIMATION_DELAY);
+	//mainPlayer = new Player();	
+	mainPlayer.initialize(graphics, PLAYER_SHOOTING_TILE_TEXTURE, PLAYER_SHOOTING_TILE_IMAGE);
+	mainPlayer.setPositionVector(PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, GAME_HEIGHT, playerNS::PLAYER_SHOOTING_SCALE, playerNS::PLAYER_SHOOTING_START_FRAME, playerNS::PLAYER_SHOOTING_END_FRAME, playerNS::PLAYER_SHOOTING_ANIMATION_DELAY);
 
 	////create zombie here
-	//testZombie = new Zombie();
-	//testZombie->initialize(graphics, ZOMBIE_MOVING_TEXTURE, testZombie->ZOMBIE_MOVING_IMAGE);
-	//testZombie->setPositionVector(testZombie->ZOMBIE_MOVING_IMAGE, GAME_WIDTH, GAME_HEIGHT, ZOMBIE_MOVING_SCALE, ZOMBIE_MOVING_START_FRAME, ZOMBIE_MOVING_END_FRAME, ZOMBIE_MOVING_ANIMATION_DELAY);
+	/*testZombie = new Zombie();
+	testZombie->initialize(graphics, ZOMBIE_MOVING_TEXTURE, testZombie->ZOMBIE_MOVING_IMAGE);
+	testZombie->setPositionVector(testZombie->ZOMBIE_MOVING_IMAGE, GAME_WIDTH, GAME_HEIGHT, ZOMBIE_MOVING_SCALE, ZOMBIE_MOVING_START_FRAME, ZOMBIE_MOVING_END_FRAME, ZOMBIE_MOVING_ANIMATION_DELAY);*/
 
 
 	//implement the LEVEl1_TILE_TEXTURE texture here
@@ -132,7 +132,7 @@ void LastManStanding::update()
 		PLAYER_SHOOTING_TILE_IMAGE.update(frameTime);
 		healthBarBackGround.update(frameTime);
 		healthBarRed.update(frameTime);
-		PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(PLAYER_SHOOTING_ANIMATION_DELAY);
+		PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(playerNS::PLAYER_SHOOTING_ANIMATION_DELAY);
 		if (zombieList.size() != 0) {
 			for each (Zombie *zombie in zombieList) {
 				zombie->ZOMBIE_MOVING_IMAGE.update(frameTime);
@@ -192,7 +192,7 @@ void LastManStanding::update()
 			float currentHpBarPercentage = currentHP / PLAYER_MAXHP;
 			healthBarGreen.setPercentage(currentHpBarPercentage);
 
-			mainPlayer->shootBullet(graphics, BULLET_TEXTURE, PLAYER_SHOOTING_TILE_IMAGE);
+			mainPlayer.shootBullet(graphics, BULLET_TEXTURE, PLAYER_SHOOTING_TILE_IMAGE);
 
 		}
 		else if (input->wasKeyPressed(VK_F2))
@@ -224,7 +224,7 @@ void LastManStanding::update()
 		healthBarBackGround.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
 
 		//edit here to chnage the direction of the bullet
-		mainPlayer->moveBullet(PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, frameTime);
+		mainPlayer.moveBullet(PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, frameTime);
 	}
 
 
@@ -288,8 +288,27 @@ void LastManStanding::ai(Timer *gameTimer)
 //=============================================================================
 // Handle collisions
 //=============================================================================
-void LastManStanding::collisions()
-{}
+void LastManStanding::collisions() {
+	VECTOR2 collisionVector;
+
+	//this is where the magic happens
+	if (zombieList.size() != 0) {
+		for (list<Zombie*>::iterator it = zombieList.begin(); it != zombieList.end(); ) {
+			if ((*it)->collidesWith(mainPlayer,collisionVector))
+			{
+				//the magic is here
+				SAFE_DELETE(*it);
+				it = zombieList.erase(it);
+				//just to check here
+				int check = zombieList.size();
+			}
+			else {
+				it++;
+			}
+		}
+	}
+	
+}
 
 //=============================================================================
 // Render game items
@@ -306,7 +325,7 @@ void LastManStanding::render()
 	PLAYER_RELOADING_IMAGE.draw();
 	healthBarBackGround.draw();
 	healthBarGreen.draw();
-	mainPlayer->drawBullets();
+	mainPlayer.drawBullets();
 	hpText->setFontColor(graphicsNS::WHITE);
 	hpText->print(to_string((int)(currentHP)) + "/" + to_string((int)(PLAYER_MAXHP)), PLAYER_SHOOTING_TILE_IMAGE.getX(), PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
 	if (isPaused)

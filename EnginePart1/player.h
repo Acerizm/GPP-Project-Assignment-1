@@ -12,10 +12,19 @@
 #define VECTOR2 D3DXVECTOR2
 using namespace std;
 
+namespace playerNS
+{
+	const int PLAYER_SHOOTING_START_FRAME = 0;
+	const int PLAYER_SHOOTING_END_FRAME = 2;
+	const float PLAYER_SHOOTING_ANIMATION_DELAY = 0.2f;
+	const int PLAYER_SHOOTING_COLS = 3;
+	const int PLAYER_SHOOTING_HEIGHT = 206;
+	const int PLAYER_SHOOTING_WIDTH = 312;
+	const float PLAYER_SHOOTING_SCALE = 0.3f;
+}
 
 
-
-class Player : Entity
+class Player : public Entity
 {
 private:
 	TextureManager PLAYER_SHOOTING_TEXTURE;
@@ -42,6 +51,7 @@ public:
 		image.setFrameDelay(playerFrameDelay);
 	}
 };
+
 
 
 
