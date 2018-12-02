@@ -2,11 +2,12 @@
 #ifndef _ZOMBIE_H
 #define _ZOMBIE_H
 #include "image.h"
+#include "entity.h"
 #include <cmath>
 using namespace std;
 
 
-class Zombie 
+class Zombie : Entity
 {
 private:
 	Image ZOMBIE_MOVING_IMAGE;

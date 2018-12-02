@@ -8,19 +8,14 @@
 //#include "lastManStanding.h"
 #include "bullet.h"
 #include <list>
+#include "entity.h"
 #define VECTOR2 D3DXVECTOR2
 using namespace std;
 
-/*
 
-*/
 
-// what do i need to store in the player class?
-// 1. the texture of the player
-// 2. the image of the player
-// 3. store the list of bullets into a dictionary
 
-class Player 
+class Player : Entity
 {
 private:
 	TextureManager PLAYER_SHOOTING_TEXTURE;

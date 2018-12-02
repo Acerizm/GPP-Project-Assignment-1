@@ -3,8 +3,9 @@
 #define _BULLET_H             // ..file is included in more than one place
 #define WIN32_LEAN_AND_MEAN
 #include "image.h"
+#include "entity.h"
 #include <math.h>
-class Bullet {
+class Bullet : Entity {
 	private:
 		//textureManager BULLET_TEXTURE;
 		Image BULLET_IMAGE;
