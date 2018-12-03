@@ -340,8 +340,8 @@ void LastManStanding::collisions() {
 		float testZombieCenterY = (*it)->getCenterY();*/
 		for (list<Zombie*>::iterator z = zombieList.begin(); z != zombieList.end();) 
 		{
-			Zombie *tempZombie = *z;
-			if ((*it)->collidesWith((Zombie)*tempZombie, collisionVector))
+			Bullet *tempBullet = *it;
+			if ((*z)->collidesWith(*tempBullet, collisionVector))
 			{
 				//the magic is here
 				SAFE_DELETE(*it);
