@@ -75,7 +75,10 @@ class Image
 		virtual int   getHeight() { return spriteData.height; }
 
 		// Return center X.
-		virtual float getCenterX() { return spriteData.x + spriteData.width / 2 * getScale(); }
+		virtual float getCenterX() { 
+			float test = spriteData.x + spriteData.width / 2 * getScale();
+			return spriteData.x + spriteData.width / 2 * getScale(); 
+		}
 
 		// Return center Y.
 		virtual float getCenterY() { return spriteData.y + spriteData.height / 2 * getScale(); }

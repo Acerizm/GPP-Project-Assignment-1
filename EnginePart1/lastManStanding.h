@@ -20,17 +20,17 @@ class LastManStanding : public Game
 {
 protected:
 	// variables
-	Bullet *newBullet;
+	//Bullet *newBullet;
 
 	//the textures & images here
 	TextureManager LEVEL1_TILE_TEXTURE;
 	Image LEVEL1_TILE_IMAGE;
 
 	TextureManager PLAYER_SHOOTING_TILE_TEXTURE;
-	Image PLAYER_SHOOTING_TILE_IMAGE;
+	//Image PLAYER_SHOOTING_TILE_IMAGE;
 	
 	TextureManager PLAYER_RELOADING_TEXTURE;
-	Image PLAYER_RELOADING_IMAGE;
+	//Image PLAYER_RELOADING_IMAGE;
 
 	TextureManager healthBarRedTexture;
 	Image healthBarRed;
@@ -47,6 +47,8 @@ protected:
 	TextureManager ZOMBIE_MOVING_TEXTURE;
 
 	Player mainPlayer;
+	//Bullet testBullet;
+
 	Zombie *testZombie;
 	float currentHP;
 

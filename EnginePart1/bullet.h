@@ -5,13 +5,28 @@
 #include "image.h"
 #include "entity.h"
 #include <math.h>
+
+namespace bulletNS 
+{
+	const int BULLET_START_FRAME = 0;
+	const int BULLET_END_FRAME = 0;
+	const float BULLET_ANIMATION_DELAY = 0;
+	const int BULLET_HEIGHT = 47;
+	const int BULLET_WIDTH = 47;
+	const float BULLET_SCALE = 0.5;
+	const float BULLET_SPEED = 300.0f;
+
+
+}
 class Bullet : Entity {
 	private:
 		//textureManager BULLET_TEXTURE;
+
 		Image BULLET_IMAGE;
 		friend class LastManStanding;
 		friend class Player;
 		float currentAngle;
+
 	public:
 		//Image BULLET_IMAGE;
 
@@ -28,22 +43,33 @@ class Bullet : Entity {
 
 		//initialize the damn bullet
 		//pass by reference here btw
-		void initialize(Graphics *graphics, TextureManager &texture, Image &image, float currentAngle);
+		/*void initialize(Graphics *graphics, TextureManager &texture, Image &image, float currentAngle);*/
 
+		virtual bool initialize(Game *gamePtr, int width, int height, int ncols, TextureManager *textureM, float currentAngle);
 
-
-		void setPositionVector(Image &image,float playerXCenter, float playerYCenter) {
+		/*void setPositionVector(Image &image,float playerXCenter, float playerYCenter) {
 			image.setX(playerXCenter + 10);
 			image.setY(playerYCenter);
 			image.setScale(BULLET_SCALE);
 			image.setFrames(BULLET_START_FRAME, BULLET_END_FRAME);
+		}*/
+
+		void setPositionVector(float x, float y) {
+			//pls change this in the future
+			this->setX(x + 10);
+			this->setY(y);
 		}
 
-		void move(Image &bulletImage, Image &playerImage, float gameWidth,float frameTime) {
-			//Move the bullet based on the direction of the player image.
-			bulletImage.setX(bulletImage.getX() + ((frameTime * BULLET_SPEED) * (cos(currentAngle*PI/180))));
-			bulletImage.setY(bulletImage.getY() + ((frameTime * BULLET_SPEED) * (sin(currentAngle*PI/180))));
+		//void move(Image &bulletImage, Image &playerImage, float gameWidth,float frameTime) {
+		//	//Move the bullet based on the direction of the player image.
+		//	bulletImage.setX(bulletImage.getX() + ((frameTime * BULLET_SPEED) * (cos(currentAngle*PI/180))));
+		//	bulletImage.setY(bulletImage.getY() + ((frameTime * BULLET_SPEED) * (sin(currentAngle*PI/180))));
 
+		//}
+
+		void move(float frameTime) {
+			this->setX(this->getX() + ((frameTime * bulletNS::BULLET_SPEED) * (cos(currentAngle*PI / 180))));
+			this->setY(this->getY() + ((frameTime * bulletNS::BULLET_SPEED) * (sin(currentAngle*PI / 180))));
 		}
 };
 

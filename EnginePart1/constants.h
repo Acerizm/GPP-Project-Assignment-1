@@ -56,22 +56,13 @@ const int LEVEL1_TILE_HEIGHT = 96;
 const int LEVEL1_TILE_WIDTH = 96;
 const float LEVEL1_TILE_SCALE = 15.0f;
 
-//Player Movement speed
-const float PLAYER_MOVEMENTSPEED = 100.0f;
 
 //Health Bar
 const char HEALTHBARGREEN_IMAGE[] = "pictures\\healthbarGreen.png";
 const char HEALTHBARRED_IMAGE[] = "pictures\\healthbarRed.png";
 const char HEALTHBARBACKGROUND_IMAGE[] = "pictures\\healthbarBackGround.png";
-// Player shooting spritesheet
 const char PLAYER_SHOOTING_TILE[] = "pictures\\PlayerShooting.png";
-//const int PLAYER_SHOOTING_START_FRAME = 0;
-//const int PLAYER_SHOOTING_END_FRAME = 2;
-//const float PLAYER_SHOOTING_ANIMATION_DELAY = 0.2f;
-//const int PLAYER_SHOOTING_COLS = 3;
-//const int PLAYER_SHOOTING_HEIGHT = 206;
-//const int PLAYER_SHOOTING_WIDTH = 312;
-//const float PLAYER_SHOOTING_SCALE = 0.3f;
+
 
 //player reloading
 const char PLAYER_RELOADING_TILE[] = "pictures\\PlayerReloading.png";
@@ -85,27 +76,14 @@ const float PLAYER_RELOADING_SCALE = 0.3f;
 
 //zombie moving
 const char ZOMBIE_MOVING_TILE[] = "pictures\\ZombieMoveSet1.png";
-const int ZOMBIE_MOVING_START_FRAME = 0;
-const int ZOMBIE_MOVING_END_FRAME = 9;
-const float ZOMBIE_MOVING_ANIMATION_DELAY = 0.2f;
-const int ZOMBIE_MOVING_COLS = 3;
-const int ZOMBIE_MOVING_HEIGHT = 311;
-const int ZOMBIE_MOVING_WIDTH = 288;
-const float ZOMBIE_MOVING_SCALE = 0.3f;
-const float ZOMBIE_SPEED = 100.0f;
+
 
 //HP Bar
 const float PLAYER_MAXHP = 100.0f;
 
 //Bullet 
 const char BULLET_TILE[] = "pictures\\bullet.png";
-const int BULLET_START_FRAME = 0;
-const int BULLET_END_FRAME = 0 ;
-const float BULLET_ANIMATION_DELAY = 0 ;
-const int BULLET_HEIGHT = 47;
-const int BULLET_WIDTH = 47;
-const float BULLET_SCALE = 0.5;
-const float BULLET_SPEED = 300.0f;
+
 
 
 

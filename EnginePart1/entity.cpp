@@ -118,12 +118,18 @@ bool Entity::collideCircle(Entity &ent, VECTOR2 &collisionVector)
 {
 	// difference between centers
 	distSquared = *getCenter() - *ent.getCenter();
+	VECTOR2 test3 = *getCenter();
+	VECTOR2 test4 = *ent.getCenter();
+	VECTOR2 test5 = test3 - test4;
 	distSquared.x = distSquared.x * distSquared.x;      // difference squared
 	distSquared.y = distSquared.y * distSquared.y;
 
 	// Calculate the sum of the radii (adjusted for scale)
 	sumRadiiSquared = (radius*getScale()) + (ent.radius*ent.getScale());
-	sumRadiiSquared *= sumRadiiSquared;                 // square it
+	float test1 = radius * getScale();
+	float test2 = ent.radius*ent.getScale();
+	float test7 = test1 + test2;
+	sumRadiiSquared = sumRadiiSquared * sumRadiiSquared;                 // square it
 
 														// if entities are colliding
 	if (distSquared.x + distSquared.y <= sumRadiiSquared)

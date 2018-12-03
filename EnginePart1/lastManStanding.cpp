@@ -12,7 +12,6 @@ using namespace std;
 //=============================================================================
 LastManStanding::LastManStanding()
 {
-	//mainPlayer = NULL;
 	hpText = new TextDX();
 	isPaused = false;
 	pausedText = new TextDX();
@@ -36,10 +35,23 @@ void LastManStanding::initialize(HWND hwnd)
 {
 	Game::initialize(hwnd); // throws GameError
 
-	//create player here
-	//mainPlayer = new Player();	
-	mainPlayer.initialize(graphics, PLAYER_SHOOTING_TILE_TEXTURE, PLAYER_SHOOTING_TILE_IMAGE);
-	mainPlayer.setPositionVector(PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, GAME_HEIGHT, playerNS::PLAYER_SHOOTING_SCALE, playerNS::PLAYER_SHOOTING_START_FRAME, playerNS::PLAYER_SHOOTING_END_FRAME, playerNS::PLAYER_SHOOTING_ANIMATION_DELAY);
+
+	// main player textures
+	if (!PLAYER_SHOOTING_TILE_TEXTURE.initialize(graphics, PLAYER_SHOOTING_TILE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing game textures"));
+	if(!mainPlayer.initialize(this, playerNS::PLAYER_SHOOTING_WIDTH, playerNS::PLAYER_SHOOTING_HEIGHT, playerNS::PLAYER_SHOOTING_TEXTURE_COLS, &PLAYER_SHOOTING_TILE_TEXTURE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player"));
+	mainPlayer.setPositionVector(GAME_WIDTH / 4, GAME_WIDTH / 4);
+
+	//initialize bullet texture here
+	if (!BULLET_TEXTURE.initialize(graphics, BULLET_TILE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet texture"));
+
+	if (!ZOMBIE_MOVING_TEXTURE.initialize(graphics, ZOMBIE_MOVING_TILE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing zombie texture"));
+
+	//if (!testBullet.initialize(this, bulletNS::BULLET_WIDTH, bulletNS::BULLET_HEIGHT, 0, &BULLET_TEXTURE,mainPlayer.getDegrees()));
+	//testBullet.setPositionVector(10, 10);
 
 	////create zombie here
 	/*testZombie = new Zombie();
@@ -55,7 +67,7 @@ void LastManStanding::initialize(HWND hwnd)
 	if (!LEVEL1_TILE_IMAGE.initialize(graphics, LEVEL1_TILE_WIDTH, LEVEL1_TILE_HEIGHT, 0, &LEVEL1_TILE_TEXTURE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing "));
 	
-	if(!healthBarRedTexture.initialize(graphics,HEALTHBARRED_IMAGE))
+	/*if(!healthBarRedTexture.initialize(graphics,HEALTHBARRED_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed texture"));
 
 	if(!healthBarRed.initialize(graphics,256,32,1,&healthBarRedTexture))
@@ -79,10 +91,10 @@ void LastManStanding::initialize(HWND hwnd)
 	if (pausedText->initialize(graphics, 30, true, false, "Arial") == false)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing pausedText font"));
 	if (deadText->initialize(graphics, 30, true, false, "Arial") == false)
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing pausedText font"));
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing pausedText font"));*/
 
-	mciSendString("open \"audio\\deathSong.wav\" type waveaudio alias sound", NULL, 0, NULL);
-	mciSendString("open \"audio\\backGroundMusic.wav\" type waveaudio alias backGroundMusic", NULL, 0, NULL);
+	/*mciSendString("open \"audio\\deathSong.wav\" type waveaudio alias sound", NULL, 0, NULL);
+	mciSendString("open \"audio\\backGroundMusic.wav\" type waveaudio alias backGroundMusic", NULL, 0, NULL);*/
 
 	//set x or set y for the initial position vector of the object
 	LEVEL1_TILE_IMAGE.setScale(LEVEL1_TILE_SCALE);
@@ -90,12 +102,12 @@ void LastManStanding::initialize(HWND hwnd)
 
 	currentHP = PLAYER_MAXHP;
 
-	healthBarGreen.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
+	/*healthBarGreen.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
 	healthBarGreen.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
 	healthBarBackGround.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
 	healthBarBackGround.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
 	healthBarGreen.setScale(0.5f);
-	healthBarBackGround.setScale(0.5f);
+	healthBarBackGround.setScale(0.5f);*/
 
 	return;
 }
@@ -128,14 +140,13 @@ void LastManStanding::update()
 	else
 	{
 		//update the animation here
-		PLAYER_RELOADING_IMAGE.update(frameTime);
-		PLAYER_SHOOTING_TILE_IMAGE.update(frameTime);
-		healthBarBackGround.update(frameTime);
-		healthBarRed.update(frameTime);
-		PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(playerNS::PLAYER_SHOOTING_ANIMATION_DELAY);
+		mainPlayer.update(frameTime);
+		//healthBarBackGround.update(frameTime);
+		//healthBarRed.update(frameTime);
+		////PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(playerNS::PLAYER_SHOOTING_ANIMATION_DELAY);
 		if (zombieList.size() != 0) {
 			for each (Zombie *zombie in zombieList) {
-				zombie->ZOMBIE_MOVING_IMAGE.update(frameTime);
+				zombie->update(frameTime);
 			}
 		}
 
@@ -143,56 +154,65 @@ void LastManStanding::update()
 		////////////////////////////////////////////////////////////////////////////
 		if (input->isKeyDown(VK_LEFT))  //left arrow key is pressed down
 		{
-			PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - frameTime * PLAYER_MOVEMENTSPEED);
-			PLAYER_SHOOTING_TILE_IMAGE.setDegrees(180);
+			//PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - frameTime * PLAYER_MOVEMENTSPEED);
+			//PLAYER_SHOOTING_TILE_IMAGE.setDegrees(180);
+			mainPlayer.setX(mainPlayer.getX() - frameTime * playerNS::PLAYER_MOVEMENTSPEED);
+			mainPlayer.setDegrees(180);
 
 			if (input->isKeyDown(VK_SPACE))
 			{
-				PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+				//PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+				mainPlayer.setFrameDelay(0.05f);
 			}
 
 		}
 		else if (input->isKeyDown(VK_RIGHT)) //right arrow key is pressed down
 		{
-			PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() + frameTime * PLAYER_MOVEMENTSPEED);
-			PLAYER_SHOOTING_TILE_IMAGE.setDegrees(0);
-
-
+			//PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() + frameTime * PLAYER_MOVEMENTSPEED);
+			//PLAYER_SHOOTING_TILE_IMAGE.setDegrees(0);
+			mainPlayer.setX(mainPlayer.getX() + frameTime * playerNS::PLAYER_MOVEMENTSPEED);
+			mainPlayer.setDegrees(0);
 			if (input->isKeyDown(VK_SPACE))
 			{
-				PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+				//PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+				mainPlayer.setFrameDelay(0.05f);
 			}
 		}
 		else if (input->isKeyDown(VK_UP)) // up arrow key is pressed down
 		{
-			PLAYER_SHOOTING_TILE_IMAGE.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - frameTime * PLAYER_MOVEMENTSPEED);
-			PLAYER_SHOOTING_TILE_IMAGE.setDegrees(270);
-
+			//PLAYER_SHOOTING_TILE_IMAGE.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - frameTime * PLAYER_MOVEMENTSPEED);
+			//PLAYER_SHOOTING_TILE_IMAGE.setDegrees(270);
+			mainPlayer.setY(mainPlayer.getY() - frameTime * playerNS::PLAYER_MOVEMENTSPEED);
+			mainPlayer.setDegrees(270);
 			if (input->isKeyDown(VK_SPACE))
 			{
-				PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+				//PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+				mainPlayer.setFrameDelay(0.05f);
 			}
 		}
 		else if (input->isKeyDown(VK_DOWN))// down arrow key is pressed down
 		{
-			PLAYER_SHOOTING_TILE_IMAGE.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() + frameTime * PLAYER_MOVEMENTSPEED);
-			PLAYER_SHOOTING_TILE_IMAGE.setDegrees(90);
-
+			//PLAYER_SHOOTING_TILE_IMAGE.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() + frameTime * PLAYER_MOVEMENTSPEED);
+			//PLAYER_SHOOTING_TILE_IMAGE.setDegrees(90);
+			mainPlayer.setY(mainPlayer.getY() + frameTime * playerNS::PLAYER_MOVEMENTSPEED);
+			mainPlayer.setDegrees(90);
 			if (input->isKeyDown(VK_SPACE))
 			{
-				PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+				//PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+				mainPlayer.setFrameDelay(0.05f);
 			}
 		}
 		else if (input->wasKeyPressed(VK_SPACE))
 		{
 			//Shooting animation
-			PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+			//PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
+			mainPlayer.setFrameDelay(0.05f);
 			//To minus HP of Player by 5.
 			currentHP = currentHP - 5;
 			float currentHpBarPercentage = currentHP / PLAYER_MAXHP;
 			healthBarGreen.setPercentage(currentHpBarPercentage);
-
-			mainPlayer.shootBullet(graphics, BULLET_TEXTURE, PLAYER_SHOOTING_TILE_IMAGE);
+			float test = mainPlayer.getDegrees();
+			mainPlayer.shootBullet(BULLET_TEXTURE,&mainPlayer,this,mainPlayer.getDegrees());
 
 		}
 		else if (input->wasKeyPressed(VK_F2))
@@ -205,7 +225,8 @@ void LastManStanding::update()
 		}
 		else
 		{
-			PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(999);
+			//PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(999);
+			mainPlayer.setFrameDelay(999);
 		}
 
 
@@ -218,13 +239,13 @@ void LastManStanding::update()
 			isDead = false;
 		}
 		healthBarGreen.setRect();
-		healthBarGreen.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
-		healthBarGreen.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
-		healthBarBackGround.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
-		healthBarBackGround.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
+		//healthBarGreen.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
+		//healthBarGreen.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
+		//healthBarBackGround.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - 8);
+		//healthBarBackGround.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
 
 		//edit here to chnage the direction of the bullet
-		mainPlayer.moveBullet(PLAYER_SHOOTING_TILE_IMAGE, GAME_WIDTH, frameTime);
+		mainPlayer.moveBullet(frameTime);
 	}
 
 
@@ -243,11 +264,12 @@ void LastManStanding::ai(Timer *gameTimer)
 
 	int numOfSecondsPassed = int(gameTimer->getCurrentElapsedTime());
 	// check if the time passed is a multiple of 5
-	if (numOfSecondsPassed % 5 == 0 && numOfSecondsPassed != 0 && numOfSecondsPassed != nextIntervalValue) {
+	if (numOfSecondsPassed % 5 == 0 /*&& numOfSecondsPassed != 0*/ && numOfSecondsPassed != nextIntervalValue) {
 
 		nextIntervalValue = numOfSecondsPassed;
 		testZombie = new Zombie();
-		testZombie->initialize(graphics, ZOMBIE_MOVING_TEXTURE, testZombie->ZOMBIE_MOVING_IMAGE);
+		//testZombie->initialize(graphics, ZOMBIE_MOVING_TEXTURE, testZombie->ZOMBIE_MOVING_IMAGE);
+		testZombie->initialize(this, zombieNS::ZOMBIE_MOVING_WIDTH, zombieNS::ZOMBIE_MOVING_HEIGHT, zombieNS::ZOMBIE_MOVING_COLS, &ZOMBIE_MOVING_TEXTURE);
 
 		//have to do rng here
 		int condition = 0;
@@ -259,8 +281,8 @@ void LastManStanding::ai(Timer *gameTimer)
 			float x2 = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / GAME_WIDTH));
 			float y2 = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / GAME_HEIGHT));
 
-			if ((x2 <= (PLAYER_SHOOTING_TILE_IMAGE.getCenterX() - (PLAYER_SHOOTING_TILE_IMAGE.getWidth() / 2) * 10)) || (x2 >= (PLAYER_SHOOTING_TILE_IMAGE.getCenterX() + (PLAYER_SHOOTING_TILE_IMAGE.getWidth() / 2) * 10)))
-			//if (x2 > (GAME_WIDTH / 4)*3 || x2 < GAME_WIDTH / 4)
+			//if ((x2 <= (PLAYER_SHOOTING_TILE_IMAGE.getCenterX() - (PLAYER_SHOOTING_TILE_IMAGE.getWidth() / 2) * 10)) || (x2 >= (PLAYER_SHOOTING_TILE_IMAGE.getCenterX() + (PLAYER_SHOOTING_TILE_IMAGE.getWidth() / 2) * 10)))
+			if ((x2 <= (mainPlayer.getCenterX() - (mainPlayer.getWidth() / 2) * 10)) || (x2 >= (mainPlayer.getCenterX() + (mainPlayer.getWidth() / 2) * 10)))
 			{
 				//continue the loop xd
 				int x = 2;
@@ -272,7 +294,10 @@ void LastManStanding::ai(Timer *gameTimer)
 				condition = 1;
 			}
 		};
-		testZombie->setPositionVector(testZombie->ZOMBIE_MOVING_IMAGE, x, y, ZOMBIE_MOVING_SCALE, ZOMBIE_MOVING_START_FRAME, ZOMBIE_MOVING_END_FRAME, ZOMBIE_MOVING_ANIMATION_DELAY);
+		//testZombie->setPositionVector(testZombie->ZOMBIE_MOVING_IMAGE, PLAYER_SHOOTING_TILE_IMAGE.getCenterX(), PLAYER_SHOOTING_TILE_IMAGE.getCenterY(), zombieNS::ZOMBIE_MOVING_SCALE, zombieNS::ZOMBIE_MOVING_START_FRAME, zombieNS::ZOMBIE_MOVING_END_FRAME, zombieNS::ZOMBIE_MOVING_ANIMATION_DELAY);
+		testZombie->setPositionVector(x, y);
+		float testing1 = mainPlayer.getCenterX();
+		float testing2 = mainPlayer.getCenterY();
 
 		//add the zombie to the array
 		zombieList.push_back(testZombie);
@@ -280,7 +305,7 @@ void LastManStanding::ai(Timer *gameTimer)
 
 	//then attack the player
 	for each (Zombie * zombie in zombieList) {
-		zombie->attackPlayer(graphics, zombie->ZOMBIE_MOVING_IMAGE, PLAYER_SHOOTING_TILE_IMAGE, frameTime);
+		zombie->attackPlayer(&mainPlayer,frameTime);
 	}
 
 }
@@ -307,6 +332,8 @@ void LastManStanding::collisions() {
 			}
 		}
 	}
+
+
 	
 }
 
@@ -320,14 +347,17 @@ void LastManStanding::render()
 
 	graphics->spriteBegin();                // begin drawing sprites
 
-	LEVEL1_TILE_IMAGE.draw();
-	PLAYER_SHOOTING_TILE_IMAGE.draw();
-	PLAYER_RELOADING_IMAGE.draw();
-	healthBarBackGround.draw();
-	healthBarGreen.draw();
+	//LEVEL1_TILE_IMAGE.draw();
+	//PLAYER_SHOOTING_TILE_IMAGE.draw();
+	//PLAYER_RELOADING_IMAGE.draw();
+	mainPlayer.draw();
 	mainPlayer.drawBullets();
-	hpText->setFontColor(graphicsNS::WHITE);
-	hpText->print(to_string((int)(currentHP)) + "/" + to_string((int)(PLAYER_MAXHP)), PLAYER_SHOOTING_TILE_IMAGE.getX(), PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
+	//testBullet.draw();
+	//healthBarBackGround.draw();
+	//healthBarGreen.draw();
+	//mainPlayer.drawBullets();
+	//hpText->setFontColor(graphicsNS::WHITE);
+	//hpText->print(to_string((int)(currentHP)) + "/" + to_string((int)(PLAYER_MAXHP)), PLAYER_SHOOTING_TILE_IMAGE.getX(), PLAYER_SHOOTING_TILE_IMAGE.getY() - 5);
 	if (isPaused)
 	{
 		pausedText->setFontColor(graphicsNS::RED);
@@ -390,7 +420,7 @@ void LastManStanding::drawZombieAIs() {
 		//when all okay go and draw the bullet
 		for each(Zombie* zombie in zombieList)
 		{
-			(zombie->ZOMBIE_MOVING_IMAGE).draw();
+			zombie->draw();
 		}
 	}
 }
