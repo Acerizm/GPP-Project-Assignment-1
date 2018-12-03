@@ -62,6 +62,8 @@ public:
 		TextureManager *textureM);
 	virtual void draw();
 	void update(float frameTime);
+	void setSpriteDataXnY(float x,float y);
+	//void setSpriteDataY(float y);
 };
 
 

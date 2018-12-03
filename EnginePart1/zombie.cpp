@@ -6,11 +6,13 @@ Zombie::Zombie() {
 	spriteData.width = zombieNS::ZOMBIE_MOVING_WIDTH;
 	spriteData.height = zombieNS::ZOMBIE_MOVING_HEIGHT;
 	spriteData.scale = zombieNS::ZOMBIE_MOVING_SCALE;
+	spriteData.x = 0;
+	spriteData.y = 0;
+	//radius = 1000;
 	//spriteData.rect.bottom
 }
 
 Zombie::~Zombie() {
-
 }
 
 //void Zombie::initialize(Graphics *graphics, TextureManager &texture, Image &image) {
@@ -25,9 +27,17 @@ bool Zombie::initialize(Game *gamePtr, int width, int height, int ncols, Texture
 	this->setCurrentFrame(zombieNS::ZOMBIE_MOVING_START_FRAME);
 	this->setFrameDelay(zombieNS::ZOMBIE_MOVING_ANIMATION_DELAY);
 	this->setLoop(true);                  // do not loop animation
+	//this->spriteData.x = 
 	return(Entity::initialize(gamePtr, width, height, ncols, textureM));
 }
 
+void Zombie::setPositionVector(float x, float y) 
+{
+	this->setX(x);
+	spriteData.x = x;
+	this->setY(y);
+	spriteData.y = y;
+}
 
 
 //void Zombie::attackPlayer(Graphics *graphics, Image &zombieImage, Image &playerImage,float frameTime) 
@@ -61,7 +71,9 @@ void Zombie::attackPlayer(Player *mainPlayer, float frameTime) {
 	else {
 		// ... add code here later
 		this->setX(this->getX() + unitVectorXCor * frameTime*50.0f);
+		spriteData.x = this->getX() + unitVectorXCor * frameTime*50.0f;
 		this->setY(this->getY() + unitVectorYCor * frameTime*50.0f);
+		spriteData.y = (this->getY() + unitVectorYCor * frameTime*50.0f);
 	}
 }
 
@@ -74,8 +86,8 @@ void Zombie::getUnitVectorCoordinates(Player *mainPlayer)
 		float currentZombieXCor = this->getX();
 		float currentZombieYCor = this->getY();
 
-		float currentPlayerXCor = this->getCenterX();
-		float currentPlayerYCor = this->getCenterY();
+		float currentPlayerXCor = mainPlayer->getCenterX();
+		float currentPlayerYCor = mainPlayer->getCenterY();
 
 		float ZPXCor = currentPlayerXCor - currentZombieXCor;
 		float ZPYCor = currentPlayerYCor - currentZombieYCor;

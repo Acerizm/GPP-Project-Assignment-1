@@ -57,7 +57,9 @@ class Bullet : Entity {
 		void setPositionVector(float x, float y) {
 			//pls change this in the future
 			this->setX(x + 10);
+			spriteData.x = x + 10;
 			this->setY(y);
+			spriteData.y = y;
 		}
 
 		//void move(Image &bulletImage, Image &playerImage, float gameWidth,float frameTime) {
@@ -69,7 +71,9 @@ class Bullet : Entity {
 
 		void move(float frameTime) {
 			this->setX(this->getX() + ((frameTime * bulletNS::BULLET_SPEED) * (cos(currentAngle*PI / 180))));
+			spriteData.x = this->getX() + ((frameTime * bulletNS::BULLET_SPEED) * (cos(currentAngle*PI / 180)));
 			this->setY(this->getY() + ((frameTime * bulletNS::BULLET_SPEED) * (sin(currentAngle*PI / 180))));
+			spriteData.y = this->getY() + ((frameTime * bulletNS::BULLET_SPEED) * (sin(currentAngle*PI / 180)));
 		}
 };
 

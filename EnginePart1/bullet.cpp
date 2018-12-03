@@ -16,6 +16,9 @@ Bullet::Bullet()
 	spriteData.width = bulletNS::BULLET_WIDTH;
 	spriteData.height = bulletNS::BULLET_HEIGHT;
 	spriteData.scale = bulletNS::BULLET_SCALE;
+	spriteData.x = 0;
+	spriteData.y = 0;
+	//radius = 100;
 };
 
 Bullet::~Bullet() {

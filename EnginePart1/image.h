@@ -76,7 +76,7 @@ class Image
 
 		// Return center X.
 		virtual float getCenterX() { 
-			float test = spriteData.x + spriteData.width / 2 * getScale();
+ 			float test = spriteData.x + spriteData.width / 2 * getScale();
 			return spriteData.x + spriteData.width / 2 * getScale(); 
 		}
 

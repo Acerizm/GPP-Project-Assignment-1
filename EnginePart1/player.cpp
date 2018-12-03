@@ -8,6 +8,8 @@ Player::Player() :Entity()
 	spriteData.width = playerNS::PLAYER_SHOOTING_WIDTH;
 	spriteData.height = playerNS::PLAYER_SHOOTING_HEIGHT;
 	spriteData.scale = playerNS::PLAYER_SHOOTING_SCALE;
+	spriteData.x = 0;
+	spriteData.y = 0;
 };
 
 Player::~Player() {
@@ -130,4 +132,10 @@ void Player::draw() {
 void Player::update(float frameTime) 
 {
 	Entity::update(frameTime);
+}
+
+void Player::setSpriteDataXnY(float x, float y) 
+{
+	spriteData.x = x;
+	spriteData.y = y;
 }

@@ -5,12 +5,12 @@
 //=============================================================================
 Entity::Entity() : Image()
 {
-	radius = 1.0;
+	radius = 500.0;
 	edge.left = -1;
 	edge.top = -1;
 	edge.right = 1;
 	edge.bottom = 1;
-	mass = 1.0;
+	//mass = 1.0;
 	velocity.x = 0.0;
 	velocity.y = 0.0;
 	deltaV.x = 0.0;
@@ -19,7 +19,7 @@ Entity::Entity() : Image()
 	rotatedBoxReady = false;
 	collisionType = entityNS::CIRCLE;
 	health = 100;
-	gravity = entityNS::GRAVITY;
+	//gravity = entityNS::GRAVITY;
 }
 
 //=============================================================================
@@ -117,7 +117,12 @@ bool Entity::collidesWith(Entity &ent, VECTOR2 &collisionVector)
 bool Entity::collideCircle(Entity &ent, VECTOR2 &collisionVector)
 {
 	// difference between centers
+	VECTOR2 testPlayerPosition = *ent.getCenter();
+	float testZombieXCenter = getCenterX();
+	float testZombieCenter = getCenterY();
+
 	distSquared = *getCenter() - *ent.getCenter();
+	//there is a problem with the zombie
 	VECTOR2 test3 = *getCenter();
 	VECTOR2 test4 = *ent.getCenter();
 	VECTOR2 test5 = test3 - test4;
