@@ -85,6 +85,16 @@ const float PLAYER_MAXHP = 100.0f;
 const char BULLET_TILE[] = "pictures\\bullet.png";
 
 
+/////////////////////////////////////////////////////////////////
+// Wx Here
+
+const char BARREL_TILE[] = "pictures\BarrelExplode\\tnt_barrel.png"
+
+
+
+////////////////////////////////////////////////////////////////
+
+
 
 
 #endif

@@ -52,7 +52,8 @@ bool Obstacle::initialize(Game *gamePtr, TextureManager *textureM,int ObstacleTy
 		this->setCurrentFrame(obstacleNS::BARREL_START_FRAME);
 		this->setFrameDelay(obstacleNS::BARREL_ANIMATION_DELAY);
 		return(Entity::initialize(gamePtr, width, height, textureColumns, textureM));
-
 	}
+
+
 
 }
