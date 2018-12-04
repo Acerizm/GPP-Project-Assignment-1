@@ -134,7 +134,7 @@ void LastManStanding::update()
 		//update the animation here
 		mainPlayer.update(frameTime);
 		healthBarBackGround.update(frameTime);
-		healthBarRed.update(frameTime);
+		//healthBarRed.update(frameTime);
 		////PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(playerNS::PLAYER_SHOOTING_ANIMATION_DELAY);
 		if (zombieList.size() != 0) {
 			for each (Zombie *zombie in zombieList) {
@@ -255,7 +255,7 @@ void LastManStanding::ai(Timer *gameTimer)
 {
 	//add more zombies here
 	//int test = (int)(gameTimer->getCurrentElapsedTime());
-	
+
 	//1. every 2 seconds , spawn a zombie
 
 	if (isPaused)
@@ -269,52 +269,53 @@ void LastManStanding::ai(Timer *gameTimer)
 	else
 	{
 
-	int numOfSecondsPassed = int(gameTimer->getCurrentElapsedTime());
-	// check if the time passed is a multiple of 5
-	if (numOfSecondsPassed % 5 == 0 && numOfSecondsPassed != 0 && numOfSecondsPassed != nextIntervalValue) {
+		int numOfSecondsPassed = int(gameTimer->getCurrentElapsedTime());
+		// check if the time passed is a multiple of 5
+		if (numOfSecondsPassed % 5 == 0 && numOfSecondsPassed != 0 && numOfSecondsPassed != nextIntervalValue) {
 
-		nextIntervalValue = numOfSecondsPassed;
-		testZombie = new Zombie();
-		//testZombie->initialize(graphics, ZOMBIE_MOVING_TEXTURE, testZombie->ZOMBIE_MOVING_IMAGE);
-		testZombie->initialize(this, zombieNS::ZOMBIE_MOVING_WIDTH, zombieNS::ZOMBIE_MOVING_HEIGHT, zombieNS::ZOMBIE_MOVING_COLS, &ZOMBIE_MOVING_TEXTURE);
+			nextIntervalValue = numOfSecondsPassed;
+			testZombie = new Zombie();
+			//testZombie->initialize(graphics, ZOMBIE_MOVING_TEXTURE, testZombie->ZOMBIE_MOVING_IMAGE);
+			testZombie->initialize(this, zombieNS::ZOMBIE_MOVING_WIDTH, zombieNS::ZOMBIE_MOVING_HEIGHT, zombieNS::ZOMBIE_MOVING_COLS, &ZOMBIE_MOVING_TEXTURE);
 
-		//have to do rng here
-		int condition = 0;
-		float x;
-		float y;
+			//have to do rng here
+			int condition = 0;
+			float x;
+			float y;
 
-		//redo this algo again when have time
-		while (!condition) {
-			float x2 = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / GAME_WIDTH));
-			float y2 = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / GAME_HEIGHT));
+			//redo this algo again when have time
+			while (!condition) {
+				float x2 = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / GAME_WIDTH));
+				float y2 = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / GAME_HEIGHT));
 
-			//if ((x2 <= (PLAYER_SHOOTING_TILE_IMAGE.getCenterX() - (PLAYER_SHOOTING_TILE_IMAGE.getWidth() / 2) * 10)) || (x2 >= (PLAYER_SHOOTING_TILE_IMAGE.getCenterX() + (PLAYER_SHOOTING_TILE_IMAGE.getWidth() / 2) * 10)))
-			if ((x2 <= (mainPlayer.getCenterX() - (mainPlayer.getWidth() / 2) * 10)) || (x2 >= (mainPlayer.getCenterX() + (mainPlayer.getWidth() / 2) * 10)))
-			{
-				//continue the loop xd
-				int x = 2;
-			}
-			else 
-			{
-				x = x2;
-				y = y2;
-				condition = 1;
-			}
-		};
-		//testZombie->setPositionVector(testZombie->ZOMBIE_MOVING_IMAGE, PLAYER_SHOOTING_TILE_IMAGE.getCenterX(), PLAYER_SHOOTING_TILE_IMAGE.getCenterY(), zombieNS::ZOMBIE_MOVING_SCALE, zombieNS::ZOMBIE_MOVING_START_FRAME, zombieNS::ZOMBIE_MOVING_END_FRAME, zombieNS::ZOMBIE_MOVING_ANIMATION_DELAY);
-		testZombie->setPositionVector(x, y);
-		float testing1 = testZombie->getCenterX();
-		float testing2 = testZombie->getCenterY();
+				//if ((x2 <= (PLAYER_SHOOTING_TILE_IMAGE.getCenterX() - (PLAYER_SHOOTING_TILE_IMAGE.getWidth() / 2) * 10)) || (x2 >= (PLAYER_SHOOTING_TILE_IMAGE.getCenterX() + (PLAYER_SHOOTING_TILE_IMAGE.getWidth() / 2) * 10)))
+				if ((x2 <= (mainPlayer.getCenterX() - (mainPlayer.getWidth() / 2) * 10)) || (x2 >= (mainPlayer.getCenterX() + (mainPlayer.getWidth() / 2) * 10)))
+				{
+					//continue the loop xd
+					int x = 2;
+				}
+				else
+				{
+					x = x2;
+					y = y2;
+					condition = 1;
+				}
+			};
+			//testZombie->setPositionVector(testZombie->ZOMBIE_MOVING_IMAGE, PLAYER_SHOOTING_TILE_IMAGE.getCenterX(), PLAYER_SHOOTING_TILE_IMAGE.getCenterY(), zombieNS::ZOMBIE_MOVING_SCALE, zombieNS::ZOMBIE_MOVING_START_FRAME, zombieNS::ZOMBIE_MOVING_END_FRAME, zombieNS::ZOMBIE_MOVING_ANIMATION_DELAY);
+			testZombie->setPositionVector(x, y);
+			float testing1 = testZombie->getCenterX();
+			float testing2 = testZombie->getCenterY();
 
-		//add the zombie to the array
-		zombieList.push_back(testZombie);
+			//add the zombie to the array
+			zombieList.push_back(testZombie);
+		}
+
+		//then attack the player
+		for each (Zombie * zombie in zombieList) {
+			zombie->attackPlayer(&mainPlayer, frameTime);
+		}
+
 	}
-
-	//then attack the player
-	for each (Zombie * zombie in zombieList) {
-		zombie->attackPlayer(&mainPlayer,frameTime);
-	}
-
 }
 
 //=============================================================================
