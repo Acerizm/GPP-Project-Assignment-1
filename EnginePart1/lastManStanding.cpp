@@ -85,6 +85,12 @@ void LastManStanding::initialize(HWND hwnd)
 	if (deadText->initialize(graphics, 30, true, false, "Arial") == false)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing pausedText font"));
 
+	if (!healthBarRedTexture.initialize(graphics, HEALTHBARRED_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed texture"));
+
+	if (!enemyHealthBarBackGroundTexture.initialize(graphics, HEALTHBARBACKGROUND_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarBackGround texture"));
+
 	mciSendString("open \"audio\\deathSong.wav\" type waveaudio alias sound", NULL, 0, NULL);
 	mciSendString("open \"audio\\backGroundMusic.wav\" type waveaudio alias backGroundMusic", NULL, 0, NULL);
 
@@ -276,7 +282,21 @@ void LastManStanding::ai(Timer *gameTimer)
 			nextIntervalValue = numOfSecondsPassed;
 			testZombie = new Zombie();
 			//testZombie->initialize(graphics, ZOMBIE_MOVING_TEXTURE, testZombie->ZOMBIE_MOVING_IMAGE);
-			testZombie->initialize(this, zombieNS::ZOMBIE_MOVING_WIDTH, zombieNS::ZOMBIE_MOVING_HEIGHT, zombieNS::ZOMBIE_MOVING_COLS, &ZOMBIE_MOVING_TEXTURE);
+			testZombie->initialize(this, zombieNS::ZOMBIE_MOVING_WIDTH, zombieNS::ZOMBIE_MOVING_HEIGHT, zombieNS::ZOMBIE_MOVING_COLS, &ZOMBIE_MOVING_TEXTURE,&healthBarRedTexture,&enemyHealthBarBackGroundTexture, graphics);
+
+			////added here
+			//if (!testZombie->getHealthBarRed()->initialize(graphics, 256, 32, 1, &healthBarRedTexture))
+			//	throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed"));
+
+			//if (!testZombie->getEnemyHealthBarBackGround().initialize(graphics, 256, 32, 1, &enemyHealthBarBackGroundTexture))
+			//	throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarBackGround"));
+
+			//if (!testZombie->getZombieHPText().initialize(graphics, 15, true, false, "Arial"))
+			//	throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing hpText font"));
+
+			//testZombie->getHealthBarRed()->setScale(0.5f);
+			//testZombie->getEnemyHealthBarBackGround().setScale(0.5f);
+
 
 			//have to do rng here
 			int condition = 0;
@@ -313,6 +333,7 @@ void LastManStanding::ai(Timer *gameTimer)
 		//then attack the player
 		for each (Zombie * zombie in zombieList) {
 			zombie->attackPlayer(&mainPlayer, frameTime);
+
 		}
 
 	}
@@ -473,6 +494,10 @@ void LastManStanding::drawZombieAIs() {
 		for each(Zombie* zombie in zombieList)
 		{
 			zombie->draw();
+			zombie->enemyHealthBarBackGround->draw();
+			zombie->healthBarRed->draw();
+			//zombie.zombieHpText.print(to_string((int)zombie->zombieCu
+			zombie->getZombieHPText()->print(to_string((int) zombie->getCurrentZombieHP())+ "/" + to_string((int)zombie->getZombieMaxHp()),zombie->ZOMBIE_MOVING_IMAGE.getX(),zombie->ZOMBIE_MOVING_IMAGE.getY()-5);
 		}
 	}
 }
