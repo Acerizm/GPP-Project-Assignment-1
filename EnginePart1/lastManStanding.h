@@ -13,6 +13,7 @@
 #include "zombie.h"
 #include "obstacle.h"
 #include <vector>
+#include "camera.h"
 using namespace std;
 
 //=============================================================================
@@ -54,7 +55,7 @@ protected:
 
 	Player mainPlayer;
 	//Bullet testBullet;
-
+	friend class Camera;
 	Zombie *testZombie;
 
 	////////////////////////////////////////////////////////////////
@@ -89,6 +90,9 @@ protected:
 	TextDX *currentGameTime;
 	float nextShootTime;
 	float nextHitTime;
+
+	Camera *camera;
+
 public:
 	// Constructor
 	LastManStanding();

@@ -8,6 +8,12 @@
 #include "lastManStanding.h"
 #include <chrono>
 #include "timer.h"
+#define SDL_MAIN_HANDLED
+//#pragma comment(lib,"SDL2.lib")
+//#pragma comment(lib,"SDL2main.lib") 
+//#include "SDL.h"
+//#define WinMain _SDL_main
+
 // Function prototypes
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int); 
 bool CreateMainWindow(HWND &, HINSTANCE, int);

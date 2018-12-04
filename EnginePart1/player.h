@@ -41,6 +41,7 @@ private:
 	Bullet *newBullet;
 	list<Bullet*> BULLET_LIST;
 	friend class LastManStanding;
+	friend class Camera;
 	//take in lastManStanding to use graphics xd
 	//LastManStanding last_Man_Standing;
 

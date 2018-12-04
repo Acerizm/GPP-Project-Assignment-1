@@ -8,6 +8,8 @@
 #include <sstream>
 #include <iomanip>
 #pragma comment(lib, "Winmm.lib")
+
+
 using namespace std;
 //=============================================================================
 // Constructor
@@ -36,6 +38,10 @@ LastManStanding::LastManStanding()
 //=============================================================================
 LastManStanding::~LastManStanding()
 {
+	if (camera) {
+		delete camera;
+		camera = nullptr;
+	}
 	releaseAll();           // call onLostDevice() for every graphics item
 }
 //=============================================================================
@@ -46,6 +52,8 @@ void LastManStanding::initialize(HWND hwnd)
 {
 	Game::initialize(hwnd); // throws GameError
 
+	//create the camera
+	camera = new Camera(GAME_WIDTH,GAME_HEIGHT,0, DirectX::XMFLOAT3(1.0f, 10.f, 10.f),&mainPlayer);
 
 	// main player textures
 	if (!PLAYER_SHOOTING_TILE_TEXTURE.initialize(graphics, PLAYER_SHOOTING_TILE))
@@ -200,6 +208,23 @@ void LastManStanding::update(Timer *gameTimer)
 	}
 	else
 	{
+		auto test = &mainPlayer;
+		if (camera) 
+		{
+			if (input->isKeyDown(VK_F1)) {
+				if (!camera->isFollowing()) {
+					camera->Follow(&mainPlayer);
+				}
+			}
+
+			if (input->isKeyDown(VK_F2)) {
+				if (camera->isFollowing()) {
+					camera->UnFollow();
+				}
+			}
+
+			camera->Update();
+		}
 		//update the animation here
 		mainPlayer.update(frameTime);
 		healthBarBackGround.update(frameTime);
@@ -552,6 +577,10 @@ void LastManStanding::render()
 
 	graphics->spriteBegin();                // begin drawing sprites
 
+	if (camera) 
+	{
+		camera->setTransform(graphics);
+	}
 	LEVEL1_TILE_IMAGE.draw();
 	//PLAYER_SHOOTING_TILE_IMAGE.draw();
 	//PLAYER_RELOADING_IMAGE.draw();

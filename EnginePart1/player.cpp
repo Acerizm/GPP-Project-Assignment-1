@@ -126,6 +126,7 @@ bool Player::initialize(Game *gamePtr, int width, int height, int ncols,
 }
 
 void Player::draw() {
+	this->graphics->spriteBegin();
 	Image::draw();
 }
 
