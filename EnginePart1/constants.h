@@ -28,7 +28,7 @@
 const char CLASS_NAME[] = "LastManStanding";
 const char GAME_TITLE[] = "LastManStanding";
 const bool FULLSCREEN = false;              // windowed or fullscreen
-const UINT GAME_WIDTH =  500;               // width of game in pixels
+const UINT GAME_WIDTH =  1000;               // width of game in pixels
 const UINT GAME_HEIGHT = 500;               // height of game in pixels
  
 // game
