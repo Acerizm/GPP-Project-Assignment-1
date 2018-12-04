@@ -28,8 +28,8 @@
 const char CLASS_NAME[] = "LastManStanding";
 const char GAME_TITLE[] = "LastManStanding";
 const bool FULLSCREEN = false;              // windowed or fullscreen
-const UINT GAME_WIDTH =  1000;               // width of game in pixels
-const UINT GAME_HEIGHT = 700;               // height of game in pixels
+const UINT GAME_WIDTH =  1024;               // width of game in pixels
+const UINT GAME_HEIGHT = 1024;               // height of game in pixels
  
 // game
 const double PI = 3.14159265;
@@ -51,10 +51,10 @@ const UCHAR SHIP_DOWN_KEY = VK_DOWN;
 
 // graphic images
 // add the tile heres
-const char LEVEL1_TILE[] = "pictures\\stonetile.png";
-const int LEVEL1_TILE_HEIGHT = 96;
-const int LEVEL1_TILE_WIDTH = 96;
-const float LEVEL1_TILE_SCALE = 15.0f;
+const char LEVEL1_TILE[] = "pictures\\GameTile.png";
+const int LEVEL1_TILE_HEIGHT = 1024;
+const int LEVEL1_TILE_WIDTH = 1024;
+const float LEVEL1_TILE_SCALE = 1.0;
 
 
 //Health Bar
@@ -83,6 +83,16 @@ const float PLAYER_MAXHP = 100.0f;
 
 //Bullet 
 const char BULLET_TILE[] = "pictures\\bullet.png";
+
+
+/////////////////////////////////////////////////////////////////
+// Wx Here
+
+const char BARREL_TILE[] = "pictures\\tnt_barrel.png";
+const char OBS1_TILE[] = "pictures\\OBS1.png";
+
+
+////////////////////////////////////////////////////////////////
 
 
 

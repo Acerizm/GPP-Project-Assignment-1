@@ -11,6 +11,8 @@
 #include "textDX.h"
 #include <list>
 #include "zombie.h"
+#include "obstacle.h"
+#include <vector>
 using namespace std;
 
 //=============================================================================
@@ -54,6 +56,25 @@ protected:
 	//Bullet testBullet;
 
 	Zombie *testZombie;
+
+	////////////////////////////////////////////////////////////////
+	// WX Here
+
+	// this is for the texture/spritesheet of the images(s)
+	TextureManager BARREL_TEXTURE;
+
+	Obstacle *tempObstacle;
+
+	list<Obstacle*> obstacleList;
+
+	vector<int> obsTypeList;
+
+	TextureManager OBS1_TEXTURE;
+
+
+
+
+	////////////////////////////////////////////////////////////////
 	
 
 	//there is a need for me to store multiple images inside the array

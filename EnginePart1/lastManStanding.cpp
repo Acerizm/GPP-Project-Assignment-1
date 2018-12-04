@@ -12,6 +12,7 @@ using namespace std;
 //=============================================================================
 LastManStanding::LastManStanding()
 {
+	srand(time(NULL));
 	hpText = new TextDX();
 	isPaused = false;
 	pausedText = new TextDX();
@@ -20,6 +21,11 @@ LastManStanding::LastManStanding()
 	currentGameTime = new TextDX();
 	testZombie = NULL;
 	nextShootTime = 0;
+	for (int i = 0; i < 10; i++) {
+		float randomType = static_cast<int>(rand()) / (static_cast<int> (RAND_MAX / 2)) + 1;
+		obsTypeList.push_back(randomType);
+	}
+
 }
 
 //=============================================================================
@@ -61,12 +67,6 @@ void LastManStanding::initialize(HWND hwnd)
 	if (!LEVEL1_TILE_IMAGE.initialize(graphics, LEVEL1_TILE_WIDTH, LEVEL1_TILE_HEIGHT, 0, &LEVEL1_TILE_TEXTURE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing "));
 	
-	//if(!healthBarRedTexture.initialize(graphics,HEALTHBARRED_IMAGE))
-		//throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed texture"));
-
-	//if(!healthBarRed.initialize(graphics,256,32,1,&healthBarRedTexture))
-		//throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed"));
-
 	if (!healthBarGreenTexture.initialize(graphics, HEALTHBARGREEN_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarGreen texture"));
 
@@ -96,8 +96,54 @@ void LastManStanding::initialize(HWND hwnd)
 	if (!enemyHealthBarBackGroundTexture.initialize(graphics, HEALTHBARBACKGROUND_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarBackGround texture"));
 
-	mciSendString("open \"audio\\deathSong.wav\" type waveaudio alias sound", NULL, 0, NULL);
-	mciSendString("open \"audio\\backGroundMusic.wav\" type waveaudio alias backGroundMusic", NULL, 0, NULL);
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	// Wx Here
+
+	if(!BARREL_TEXTURE.initialize(graphics,BARREL_TILE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing Barrel texture"));
+	if(!OBS1_TEXTURE.initialize(graphics,OBS1_TILE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing OBS1 texture"));
+
+	for (int i = 0; i < obsTypeList.size(); i++) 
+	{
+		//the address of tempObstacle keeps changing in lastManStanding.h fyi
+		tempObstacle = new Obstacle();
+		//rng here
+		float randomX = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / (GAME_WIDTH - 100)));
+		float randomY = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / (GAME_HEIGHT - 100)));
+		//check if the type = "1" which represent barrel
+		if (obsTypeList[i] == 1) {
+			//need to random the position of the barrels
+			if(!tempObstacle->initialize(this,&BARREL_TEXTURE, randomX, randomY,1))
+				throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing Barrel"));
+
+			//then push it back to the obstacleList
+			obstacleList.push_back(tempObstacle);
+
+			//then gg
+		}
+		else if (obsTypeList[i] == 2) 
+		{
+			//need to random the position of the barrels
+			if (!tempObstacle->initialize(this, &OBS1_TEXTURE, randomX, randomY, 2))
+				throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing Barrel"));
+			//then push it back to the obstacleList
+			obstacleList.push_back(tempObstacle);
+			//then gg
+		}
+	}
+
+
+
+
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+	//damn annoying when debug so many times Xddd
+	/*mciSendString("open \"audio\\deathSong.wav\" type waveaudio alias sound", NULL, 0, NULL);
+	mciSendString("open \"audio\\backGroundMusic.wav\" type waveaudio alias backGroundMusic", NULL, 0, NULL);*/
 
 	//set x or set y for the initial position vector of the object
 	LEVEL1_TILE_IMAGE.setScale(LEVEL1_TILE_SCALE);
@@ -282,6 +328,11 @@ void LastManStanding::update(Timer *gameTimer)
 		mainPlayer.moveBullet(frameTime);
 	}
 
+	for each (Obstacle *obs in obstacleList) 
+	{
+		obs->update(frameTime);
+	}
+
 
 	///////////////////////////////////////////////////////////////////////////////
 }
@@ -315,20 +366,6 @@ void LastManStanding::ai(Timer *gameTimer)
 			testZombie = new Zombie();
 			//testZombie->initialize(graphics, ZOMBIE_MOVING_TEXTURE, testZombie->ZOMBIE_MOVING_IMAGE);
 			testZombie->initialize(this, zombieNS::ZOMBIE_MOVING_WIDTH, zombieNS::ZOMBIE_MOVING_HEIGHT, zombieNS::ZOMBIE_MOVING_COLS, &ZOMBIE_MOVING_TEXTURE,&healthBarRedTexture,&enemyHealthBarBackGroundTexture, graphics);
-
-			////added here
-			//if (!testZombie->getHealthBarRed()->initialize(graphics, 256, 32, 1, &healthBarRedTexture))
-			//	throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed"));
-
-			//if (!testZombie->getEnemyHealthBarBackGround().initialize(graphics, 256, 32, 1, &enemyHealthBarBackGroundTexture))
-			//	throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarBackGround"));
-
-			//if (!testZombie->getZombieHPText().initialize(graphics, 15, true, false, "Arial"))
-			//	throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing hpText font"));
-
-			//testZombie->getHealthBarRed()->setScale(0.5f);
-			//testZombie->getEnemyHealthBarBackGround().setScale(0.5f);
-
 
 			//have to do rng here
 			int condition = 0;
@@ -471,6 +508,18 @@ void LastManStanding::render()
 	currentGameTime->print(to_string(this->currentGameTimeCpp->getCurrentElapsedTime()), 0, 0);
 	hpText->setFontColor(graphicsNS::WHITE);
 	hpText->print(to_string((int)(mainPlayer.playerCurrentHp)) + "/" + to_string((int)(PLAYER_MAXHP)), mainPlayer.getX(), mainPlayer.getY() - 5);
+
+	///////////////////////////////////////////////////////////////////////////////////////////
+	//Wx Here
+
+	//tempObstacle->draw();
+	//draw each object here
+	for (list<Obstacle*>::iterator it = obstacleList.begin(); it != obstacleList.end();) {
+		(*it)->draw();
+		it++;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////
 	if (isPaused)
 	{
 		pausedText->setFontColor(graphicsNS::RED);
