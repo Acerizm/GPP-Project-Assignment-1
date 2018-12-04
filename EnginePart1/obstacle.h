@@ -22,7 +22,7 @@ namespace obstacleNS {
 	//this is for the playerObstacle1 aka another barrel
 	const int OBS1_START_FRAME = 0;
 	const int OBS1_END_FRAME = 9;
-	const float OBS1_ANIMATION_DELAY = 0.3f;
+	const float OBS1_ANIMATION_DELAY = 0.1f;
 	const int OBS1_COLS = 4;
 	const int OBS1_HEIGHT = 450;
 	const int OBS1_WIDTH = 450;

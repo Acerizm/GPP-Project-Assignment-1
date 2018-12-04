@@ -22,8 +22,8 @@ LastManStanding::LastManStanding()
 	testZombie = NULL;
 	nextShootTime = 0;
 	for (int i = 0; i < 10; i++) {
-		float randomType = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / 2));
-		obsTypeList.push_back(2);
+		float randomType = static_cast<int>(rand()) / (static_cast<int> (RAND_MAX / 2)) + 1;
+		obsTypeList.push_back(randomType);
 	}
 
 }
@@ -126,7 +126,7 @@ void LastManStanding::initialize(HWND hwnd)
 		else if (obsTypeList[i] == 2) 
 		{
 			//need to random the position of the barrels
-			if (!tempObstacle->initialize(this, &OBS1_TEXTURE, randomX, randomY, 1))
+			if (!tempObstacle->initialize(this, &OBS1_TEXTURE, randomX, randomY, 2))
 				throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing Barrel"));
 			//then push it back to the obstacleList
 			obstacleList.push_back(tempObstacle);
