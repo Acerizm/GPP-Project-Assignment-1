@@ -20,6 +20,11 @@ LastManStanding::LastManStanding()
 	currentGameTime = new TextDX();
 	testZombie = NULL;
 	nextShootTime = 0;
+	for (int i = 0; i < 5; i++) {
+		obsTypeList.push_back(1);
+	}
+
+	srand(time(NULL));
 }
 
 //=============================================================================
@@ -96,14 +101,33 @@ void LastManStanding::initialize(HWND hwnd)
 
 	if(!BARREL_TEXTURE.initialize(graphics,BARREL_TILE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing Barrel texture"));
+	/*tempObstacle = new Obstacle();
+	if(!tempObstacle->initialize(this,&BARREL_TEXTURE, GAME_WIDTH / 20, GAME_HEIGHT / 20,1))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing Barrel"));*/
 
-	if(!Barrel.initialize(this,&BARREL_TEXTURE,1))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing Barrel"));
+	for (int i = 0; i < obsTypeList.size(); i++) 
+	{
+		//the address of tempObstacle keeps changing in lastManStanding.h fyi
+		tempObstacle = new Obstacle();
+		//rng here
+		float randomX = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / (GAME_WIDTH - 100)));
+		float randomY = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / (GAME_HEIGHT - 100)));
+		//check if the type = "1" which represent barrel
+		if (obsTypeList[i] == 1) {
+			//need to random the position of the barrels
+			if(!tempObstacle->initialize(this,&BARREL_TEXTURE, randomX, randomY,1))
+				throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing Barrel"));
 
-	Barrel.setX(GAME_WIDTH / 20);
-	Barrel.setSpriteDataX(Barrel.getX());
-	Barrel.setY(GAME_HEIGHT / 20);
-	Barrel.setSpriteDataY(Barrel.getY());
+			//then push it back to the obstacleList
+			obstacleList.push_back(tempObstacle);
+
+			//then gg
+		}
+	}
+
+
+
+
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -472,8 +496,14 @@ void LastManStanding::render()
 	hpText->print(to_string((int)(mainPlayer.playerCurrentHp)) + "/" + to_string((int)(PLAYER_MAXHP)), mainPlayer.getX(), mainPlayer.getY() - 5);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	Barrel.draw();
+	//Wx Here
 
+	//tempObstacle->draw();
+	//draw each object here
+	for (list<Obstacle*>::iterator it = obstacleList.begin(); it != obstacleList.end();) {
+		(*it)->draw();
+		it++;
+	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	if (isPaused)

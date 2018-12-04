@@ -10,13 +10,25 @@ using namespace std;
 
 namespace obstacleNS {
 	//add the spriteData stuff here
+	//this is for the barrel
 	const int BARREL_START_FRAME = 0;
 	const int BARREL_END_FRAME = 0;
 	const float BARREL_ANIMATION_DELAY = 0.0;
 	const int BARREL_COLS = 0;
 	const int BARREL_HEIGHT = 173;
 	const int BARREL_WIDTH = 154;
-	const float BARREL_SCALE = 0.5f;
+	const float BARREL_SCALE = 0.3f;
+
+	//this is for the playerObstacle1 aka another barrel
+	const int OBS1_START_FRAME = 0;
+	const int OBS1_END_FRAME = 0;
+	const float OBS1_DELAY = 0.3f;
+	const int OBS1_COLS = 0;
+	const int OBS1_HEIGHT = 173;
+	const int OBS1_WIDTH = 154;
+	const float OBS1 = 0.3f;
+
+	
 }
 
 
@@ -30,7 +42,7 @@ public:
 	Obstacle();
 	~Obstacle();
 	//void initialize(Graphics *graphics, TextureManager &texture, Image &image);
-	virtual bool initialize(Game *gamePtr,TextureManager *textureM, int ObstacleType);
+	virtual bool initialize(Game *gamePtr,TextureManager *textureM, float x, float y, int ObstacleType);
 
 	float getSpriteDataX() {
 		return spriteData.x;

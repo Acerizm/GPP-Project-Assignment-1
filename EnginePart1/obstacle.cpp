@@ -17,7 +17,7 @@ Obstacle::~Obstacle() {
 
 }
 
-bool Obstacle::initialize(Game *gamePtr, TextureManager *textureM,int ObstacleType)
+bool Obstacle::initialize(Game *gamePtr, TextureManager *textureM,float x, float y, int ObstacleType)
 {
 	//later will overide the width,height and the number of columns the texture/spritesheet has
 	int width = 0;
@@ -35,7 +35,11 @@ bool Obstacle::initialize(Game *gamePtr, TextureManager *textureM,int ObstacleTy
 		width = obstacleNS::BARREL_WIDTH;
 		height = obstacleNS::BARREL_HEIGHT;
 		textureColumns = obstacleNS::BARREL_COLS;
-
+		spriteData.width = obstacleNS::BARREL_WIDTH;
+		spriteData.height = obstacleNS::BARREL_HEIGHT;
+		spriteData.scale = obstacleNS::BARREL_SCALE;
+		spriteData.x = x;
+		spriteData.y = y;
 		this->setFrames(obstacleNS::BARREL_START_FRAME, obstacleNS::BARREL_END_FRAME);
 		this->setCurrentFrame(obstacleNS::BARREL_START_FRAME);
 		this->setFrameDelay(obstacleNS::BARREL_ANIMATION_DELAY);
