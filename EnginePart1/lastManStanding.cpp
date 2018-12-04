@@ -18,6 +18,7 @@ LastManStanding::LastManStanding()
 	isDead = false;
 	deadText = new TextDX();
 	testZombie = NULL;
+	nextShootTime = 0;
 }
 
 //=============================================================================
@@ -107,7 +108,7 @@ void LastManStanding::initialize(HWND hwnd)
 //=============================================================================
 // Update all game items
 //=============================================================================
-void LastManStanding::update()
+void LastManStanding::update(Timer *gameTimer)
 {
 	mciSendString("play backGroundMusic", NULL, 0, NULL);
 	if (isPaused)
@@ -204,11 +205,15 @@ void LastManStanding::update()
 			//PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
 			mainPlayer.setFrameDelay(0.05f);
 			//To minus HP of Player by 5.
-			currentHP = currentHP - 5;
+			//currentHP = currentHP - 5;
 			float currentHpBarPercentage = currentHP / PLAYER_MAXHP;
 			healthBarGreen.setPercentage(currentHpBarPercentage);
 			float test = mainPlayer.getDegrees();
-			mainPlayer.shootBullet(BULLET_TEXTURE,&mainPlayer,this,mainPlayer.getDegrees());
+			if (nextShootTime < gameTimer->getCurrentElapsedTime())
+			{
+				mainPlayer.shootBullet(BULLET_TEXTURE, &mainPlayer, this, mainPlayer.getDegrees());
+				nextShootTime = gameTimer->getCurrentElapsedTime() + 0.5 ;
+			}
 
 		}
 		else if (input->wasKeyPressed(VK_F2))
@@ -323,25 +328,25 @@ void LastManStanding::ai(Timer *gameTimer)
 //=============================================================================
 void LastManStanding::collisions() {
 	VECTOR2 collisionVector;
-	//VECTOR2 collisionVector2;
+	VECTOR2 collisionVector2;
 	//this is where the magic happens
-	//if (zombielist.size() != 0 && mainplayer.bullet_list.size() !=0) {
-	//	for (list<zombie*>::iterator it = zombielist.begin(); it != zombielist.end(); ) {
-	//		float testzombiecenterx = (*it)->getcenterx();
-	//		float testzombiecentery = (*it)->getcentery();
-	//		if ((*it)->collideswith(mainplayer,collisionvector))
-	//		{
-	//			//the magic is here
-	//			safe_delete(*it);
-	//			it = zombielist.erase(it);
-	//			//just to check here
-	//			int check = zombielist.size();
-	//		}
-	//		else {
-	//			it++;
-	//		}
-	//	}
-	//}
+	if (zombieList.size() != 0) {
+		for (list<Zombie*>::iterator it = zombieList.begin(); it != zombieList.end(); ) {
+			float testzombiecenterx = (*it)->getCenterX();
+			float testzombiecentery = (*it)->getCenterY();
+			if ((*it)->collidesWith(mainPlayer,collisionVector))
+			{
+			//the magic is here
+				SAFE_DELETE(*it);
+				it = zombieList.erase(it);
+				//just to check here
+				int check = zombieList.size();
+			}
+			else {
+				it++;
+			}
+		}
+	}
 	
 	 
 	for (list<Bullet*>::iterator it = mainPlayer.BULLET_LIST.begin(); it != mainPlayer.BULLET_LIST.end(); ) 
