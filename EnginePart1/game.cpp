@@ -93,6 +93,7 @@ LRESULT Game::messageHandler( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam 
 //=============================================================================
 void Game::initialize(HWND hw)
 {
+	currentGameTimeCpp = new Timer();
     hwnd = hw;                                  // save window handle
 
     // initialize graphics
@@ -167,6 +168,7 @@ void Game::handleLostGraphicsDevice()
 //=============================================================================
 void Game::run(HWND hwnd,Timer *gameTimer)
 {
+	currentGameTimeCpp = gameTimer;
     if(graphics == NULL)            // if graphics not initialized
         return;
 

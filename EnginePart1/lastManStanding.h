@@ -50,7 +50,7 @@ protected:
 	//Bullet testBullet;
 
 	Zombie *testZombie;
-	float currentHP;
+	
 
 	//there is a need for me to store multiple images inside the array
 	// <Bullet*> bulletList;
@@ -61,6 +61,7 @@ protected:
 	bool isDead;
 	TextDX *pausedText;
 	TextDX *deadText;
+	TextDX *currentGameTime;
 	float nextShootTime;
 public:
 	// Constructor

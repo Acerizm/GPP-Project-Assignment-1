@@ -17,6 +17,7 @@ LastManStanding::LastManStanding()
 	pausedText = new TextDX();
 	isDead = false;
 	deadText = new TextDX();
+	currentGameTime = new TextDX();
 	testZombie = NULL;
 	nextShootTime = 0;
 }
@@ -85,6 +86,9 @@ void LastManStanding::initialize(HWND hwnd)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing pausedText font"));
 	if (deadText->initialize(graphics, 30, true, false, "Arial") == false)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing pausedText font"));
+	if(currentGameTime->initialize(graphics,20,true,false,"Arial") == false)
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing currentGameTime font"));
+
 
 	mciSendString("open \"audio\\deathSong.wav\" type waveaudio alias sound", NULL, 0, NULL);
 	mciSendString("open \"audio\\backGroundMusic.wav\" type waveaudio alias backGroundMusic", NULL, 0, NULL);
@@ -93,7 +97,7 @@ void LastManStanding::initialize(HWND hwnd)
 	LEVEL1_TILE_IMAGE.setScale(LEVEL1_TILE_SCALE);
 
 
-	currentHP = PLAYER_MAXHP;
+	mainPlayer.playerCurrentHp = PLAYER_MAXHP;
 
 	healthBarGreen.setX(mainPlayer.getX() - 8);
 	healthBarGreen.setY(mainPlayer.getY() - 5);
@@ -110,6 +114,9 @@ void LastManStanding::initialize(HWND hwnd)
 //=============================================================================
 void LastManStanding::update(Timer *gameTimer)
 {
+	
+	float test = gameTimer->getCurrentElapsedTime();
+	
 	mciSendString("play backGroundMusic", NULL, 0, NULL);
 	if (isPaused)
 	{
@@ -157,6 +164,11 @@ void LastManStanding::update(Timer *gameTimer)
 			{
 				//PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
 				mainPlayer.setFrameDelay(0.05f);
+				if (nextShootTime < gameTimer->getCurrentElapsedTime())
+				{
+					mainPlayer.shootBullet(BULLET_TEXTURE, &mainPlayer, this, mainPlayer.getDegrees());
+					nextShootTime = gameTimer->getCurrentElapsedTime() + 0.5;
+				}
 			}
 
 		}
@@ -171,6 +183,11 @@ void LastManStanding::update(Timer *gameTimer)
 			{
 				//PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
 				mainPlayer.setFrameDelay(0.05f);
+				if (nextShootTime < gameTimer->getCurrentElapsedTime())
+				{
+					mainPlayer.shootBullet(BULLET_TEXTURE, &mainPlayer, this, mainPlayer.getDegrees());
+					nextShootTime = gameTimer->getCurrentElapsedTime() + 0.5;
+				}
 			}
 		}
 		else if (input->isKeyDown(VK_UP)) // up arrow key is pressed down
@@ -184,6 +201,11 @@ void LastManStanding::update(Timer *gameTimer)
 			{
 				//PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
 				mainPlayer.setFrameDelay(0.05f);
+				if (nextShootTime < gameTimer->getCurrentElapsedTime())
+				{
+					mainPlayer.shootBullet(BULLET_TEXTURE, &mainPlayer, this, mainPlayer.getDegrees());
+					nextShootTime = gameTimer->getCurrentElapsedTime() + 0.5;
+				}
 			}
 		}
 		else if (input->isKeyDown(VK_DOWN))// down arrow key is pressed down
@@ -197,18 +219,23 @@ void LastManStanding::update(Timer *gameTimer)
 			{
 				//PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
 				mainPlayer.setFrameDelay(0.05f);
+				if (nextShootTime < gameTimer->getCurrentElapsedTime())
+				{
+					mainPlayer.shootBullet(BULLET_TEXTURE, &mainPlayer, this, mainPlayer.getDegrees());
+					nextShootTime = gameTimer->getCurrentElapsedTime() + 0.5;
+				}
 			}
 		}
 		else if (input->wasKeyPressed(VK_SPACE))
 		{
 			//Shooting animation
 			//PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
-			mainPlayer.setFrameDelay(0.05f);
+			
 			//To minus HP of Player by 5.
-			//currentHP = currentHP - 5;
-			float currentHpBarPercentage = currentHP / PLAYER_MAXHP;
+			mainPlayer.playerCurrentHp= mainPlayer.playerCurrentHp - 5;
+			float currentHpBarPercentage = mainPlayer.playerCurrentHp / PLAYER_MAXHP;
 			healthBarGreen.setPercentage(currentHpBarPercentage);
-			float test = mainPlayer.getDegrees();
+			mainPlayer.setFrameDelay(0.05f);
 			if (nextShootTime < gameTimer->getCurrentElapsedTime())
 			{
 				mainPlayer.shootBullet(BULLET_TEXTURE, &mainPlayer, this, mainPlayer.getDegrees());
@@ -219,8 +246,8 @@ void LastManStanding::update(Timer *gameTimer)
 		else if (input->wasKeyPressed(VK_F2))
 		{
 			//To Recover 5 health.
-			currentHP = currentHP + 5;
-			float currentHpBarPercentage = currentHP / PLAYER_MAXHP;
+			mainPlayer.playerCurrentHp = mainPlayer.playerCurrentHp + 5;
+			float currentHpBarPercentage = mainPlayer.playerCurrentHp / PLAYER_MAXHP;
 			healthBarGreen.setPercentage(currentHpBarPercentage);
 			isPaused = !isPaused;
 		}
@@ -231,7 +258,7 @@ void LastManStanding::update(Timer *gameTimer)
 		}
 
 
-		if (currentHP <= 0)
+		if (mainPlayer.playerCurrentHp<= 0)
 		{
 			isDead = true;
 		}
@@ -337,10 +364,16 @@ void LastManStanding::collisions() {
 			if ((*it)->collidesWith(mainPlayer,collisionVector))
 			{
 			//the magic is here
-				SAFE_DELETE(*it);
-				it = zombieList.erase(it);
+				mainPlayer.playerCurrentHp -= 10;
+				float currentHpBarPercentage = mainPlayer.playerCurrentHp / PLAYER_MAXHP;
+				healthBarGreen.setPercentage(currentHpBarPercentage);
+				//if ((*it)->zombieCurrentHP <= 0)
+				//{
+					SAFE_DELETE(*it);
+					it = zombieList.erase(it);
+				//}
 				//just to check here
-				int check = zombieList.size();
+				//int check = zombieList.size();
 			}
 			else {
 				it++;
@@ -413,8 +446,10 @@ void LastManStanding::render()
 	healthBarBackGround.draw();
 	healthBarGreen.draw();
 	//mainPlayer.drawBullets();
+	currentGameTime->setFontColor(graphicsNS::YELLOW);
+	currentGameTime->print(to_string(this->currentGameTimeCpp->getCurrentElapsedTime()), 0, 0);
 	hpText->setFontColor(graphicsNS::WHITE);
-	hpText->print(to_string((int)(currentHP)) + "/" + to_string((int)(PLAYER_MAXHP)), mainPlayer.getX(), mainPlayer.getY() - 5);
+	hpText->print(to_string((int)(mainPlayer.playerCurrentHp)) + "/" + to_string((int)(PLAYER_MAXHP)), mainPlayer.getX(), mainPlayer.getY() - 5);
 	if (isPaused)
 	{
 		pausedText->setFontColor(graphicsNS::RED);
