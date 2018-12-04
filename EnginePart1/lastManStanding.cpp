@@ -361,9 +361,10 @@ void LastManStanding::collisions() {
 		else;*/
 
 		if ((*it)->getIsCollided()) {
+			bool test = (*it)->getIsCollided();
 			SAFE_DELETE(*it);
 			it = mainPlayer.BULLET_LIST.erase(it);
-			it++;
+			//it++;
 		}
 		else {
 			it++;
