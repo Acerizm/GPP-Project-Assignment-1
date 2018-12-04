@@ -43,13 +43,6 @@ public:
 	//void initialize(Graphics *graphics, TextureManager &texture, Image &image);
 	virtual bool initialize(Game *gamePtr, int width, int height, int ncols,TextureManager *textureM, TextureManager *textureHealthBar, TextureManager *textureEnemyHealthBar,Graphics *graphics);
 
-	/*void setPositionVector(Image &image, float x, float y, float zombieScale, int zombieStartFrame, int zombieEndFrame, float zombieFrameDelay) {
-		image.setX(x);
-		image.setY(y);
-		image.setScale(zombieScale);
-		image.setFrames(zombieStartFrame, zombieEndFrame);
-		image.setFrameDelay(zombieFrameDelay);
-	}*/
 	void setPositionVector(float x, float y);
 
 	//what the fk do i need here
@@ -65,10 +58,6 @@ public:
 		return zombieHpText;
 	}
 
-	/*void setZombieHPText(TextDX text) {
-		zombieHpText = text;
-	}
-*/
 	Image *getHealthBarRed() {
 		return healthBarRed;
 	}
