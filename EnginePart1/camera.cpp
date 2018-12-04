@@ -8,7 +8,6 @@ Camera::Camera(int width, int height, float angle, DirectX::XMFLOAT3 scaleFactor
 	this->angle = angle;
 	this->scaleFactors = scaleFactors;
 	this->mainPlayer = mainPlayer;
-
 	D3DXMatrixOrthoLH(&orthographicMatrix, width, -height, 0.0f, 1.0f);
 	D3DXMatrixIdentity(&identityMatrix);
 
@@ -22,10 +21,11 @@ Camera::~Camera()
 void Camera::Update() 
 {
 	int cameraX = this->width / 2, cameraY = this->height / 2;
+	//int cameraX = 1000, cameraY = 1000;
 	if (this->mainPlayer != nullptr )
 	{
-		cameraX = this->mainPlayer->getX();
-		cameraY = this->mainPlayer->getY();
+		cameraX = this->mainPlayer->getX() + 130;
+		cameraY = this->mainPlayer->getY() + 130;
 	}
 
 	this->viewMatrix = D3DXMATRIX(
