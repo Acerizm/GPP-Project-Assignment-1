@@ -26,6 +26,7 @@ protected:
     DWORD   sleepTime;          // number of milli-seconds to sleep between frames
     bool    paused;             // true if game is paused
     bool    initialized;
+	Timer *currentGameTimeCpp;
 
 public:
     // Constructor
@@ -74,7 +75,7 @@ public:
     // These functions MUST be written in any class that inherits from Game
 
     // Update game items.
-    virtual void update() = 0;
+    virtual void update(Timer *gameTimer) = 0;
 
     // Perform AI calculations.
     virtual void ai(Timer *gameTimer) = 0;

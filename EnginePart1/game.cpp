@@ -93,6 +93,7 @@ LRESULT Game::messageHandler( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam 
 //=============================================================================
 void Game::initialize(HWND hw)
 {
+	currentGameTimeCpp = new Timer();
     hwnd = hw;                                  // save window handle
 
     // initialize graphics
@@ -167,6 +168,7 @@ void Game::handleLostGraphicsDevice()
 //=============================================================================
 void Game::run(HWND hwnd,Timer *gameTimer)
 {
+	currentGameTimeCpp = gameTimer;
     if(graphics == NULL)            // if graphics not initialized
         return;
 
@@ -198,7 +200,7 @@ void Game::run(HWND hwnd,Timer *gameTimer)
     // These functions must be provided in the class that inherits from Game.
     if (!paused)                    // if not paused
     {
-        update();                   // update all game items
+        update(gameTimer);                   // update all game items
         ai(gameTimer);                       // artificial intelligence
         collisions();               // handle collisions
         input->vibrateControllers(frameTime); // handle controller vibration

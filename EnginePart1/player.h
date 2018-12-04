@@ -28,6 +28,7 @@ namespace playerNS
 	const int Y = GAME_HEIGHT / 2 - PLAYER_SHOOTING_HEIGHT / 2;
 	const int   TEXTURE_COLS = 8;           // texture has 8 columns
 	const float PLAYER_MOVEMENTSPEED = 100.0f;
+
 }
 
 
@@ -44,6 +45,7 @@ private:
 	//LastManStanding last_Man_Standing;
 
 	Image PLAYER_SHOOTING_TILE_IMAGE;
+	float playerCurrentHp;
 
 public:
 	Player();

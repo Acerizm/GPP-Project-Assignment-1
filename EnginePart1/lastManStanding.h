@@ -54,7 +54,7 @@ protected:
 	//Bullet testBullet;
 
 	Zombie *testZombie;
-	float currentHP;
+	
 
 	//there is a need for me to store multiple images inside the array
 	// <Bullet*> bulletList;
@@ -65,6 +65,8 @@ protected:
 	bool isDead;
 	TextDX *pausedText;
 	TextDX *deadText;
+	TextDX *currentGameTime;
+	float nextShootTime;
 public:
 	// Constructor
 	LastManStanding();
@@ -74,7 +76,7 @@ public:
 
 	// Initialize the game
 	void initialize(HWND hwnd);
-	void update();      // must override pure virtual from Game
+	void update(Timer *gameTimer);      // must override pure virtual from Game
 	void ai(Timer *gameTimer);          // "
 	void collisions();  // "
 	void render();      // "
