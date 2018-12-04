@@ -39,7 +39,7 @@ private:
 	//vector<Bullet*> bulletList;
 	Bullet *newBullet;
 	list<Bullet*> BULLET_LIST;
-
+	friend class LastManStanding;
 	//take in lastManStanding to use graphics xd
 	//LastManStanding last_Man_Standing;
 

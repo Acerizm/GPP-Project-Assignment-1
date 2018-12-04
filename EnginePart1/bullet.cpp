@@ -18,7 +18,7 @@ Bullet::Bullet()
 	spriteData.scale = bulletNS::BULLET_SCALE;
 	spriteData.x = 0;
 	spriteData.y = 0;
-	//radius = 100;
+	radius = 150;
 };
 
 Bullet::~Bullet() {
@@ -49,6 +49,8 @@ bool Bullet::initialize(Game *gamePtr, int width, int height, int ncols,TextureM
 	this->setLoop(true);                  // do not loop animation
 
 	this->currentAngle = currentAngle;
+
+	float radius = this->getRadius();
 	return(Entity::initialize(gamePtr, width, height, ncols, textureM));
 
 }

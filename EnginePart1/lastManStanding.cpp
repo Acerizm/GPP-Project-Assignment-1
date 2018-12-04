@@ -313,28 +313,26 @@ void LastManStanding::collisions() {
 	VECTOR2 collisionVector;
 	//VECTOR2 collisionVector2;
 	//this is where the magic happens
-	if (zombieList.size() != 0) {
-		for (list<Zombie*>::iterator it = zombieList.begin(); it != zombieList.end(); ) {
-			float testZombieCenterX = (*it)->getCenterX();
-			float testZombieCenterY = (*it)->getCenterY();
-			if ((*it)->collidesWith(mainPlayer,collisionVector))
-			{
-				//the magic is here
-				SAFE_DELETE(*it);
-				it = zombieList.erase(it);
-				//just to check here
-				int check = zombieList.size();
-			}
-			else {
-				it++;
-			}
-		}
-
-		int test = bulletList.size();
-	}
+	//if (zombielist.size() != 0 && mainplayer.bullet_list.size() !=0) {
+	//	for (list<zombie*>::iterator it = zombielist.begin(); it != zombielist.end(); ) {
+	//		float testzombiecenterx = (*it)->getcenterx();
+	//		float testzombiecentery = (*it)->getcentery();
+	//		if ((*it)->collideswith(mainplayer,collisionvector))
+	//		{
+	//			//the magic is here
+	//			safe_delete(*it);
+	//			it = zombielist.erase(it);
+	//			//just to check here
+	//			int check = zombielist.size();
+	//		}
+	//		else {
+	//			it++;
+	//		}
+	//	}
+	//}
 	
 	 
-	for (list<Bullet*>::iterator it = bulletList.begin(); it != bulletList.end(); ) 
+	for (list<Bullet*>::iterator it = mainPlayer.BULLET_LIST.begin(); it != mainPlayer.BULLET_LIST.end(); ) 
 	{
 		/*float testZombieCenterX = (*it)->getCenterX();
 		float testZombieCenterY = (*it)->getCenterY();*/
@@ -345,7 +343,7 @@ void LastManStanding::collisions() {
 			{
 				//the magic is here
 				SAFE_DELETE(*it);
-				it = bulletList.erase(it);
+				it = mainPlayer.BULLET_LIST.erase(it);
 				SAFE_DELETE(*z);
 				z = zombieList.erase(z);
 				//just to check here
@@ -355,12 +353,11 @@ void LastManStanding::collisions() {
 				z++;
 			}
 		}
-		it++;
+		if (mainPlayer.BULLET_LIST.size() != 0 && zombieList.size() !=0)
+			it++;
+		else;
+
 	}
-	
-
-
-	
 }
 
 //=============================================================================

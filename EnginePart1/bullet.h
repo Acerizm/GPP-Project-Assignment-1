@@ -13,8 +13,9 @@ namespace bulletNS
 	const float BULLET_ANIMATION_DELAY = 0;
 	const int BULLET_HEIGHT = 47;
 	const int BULLET_WIDTH = 47;
-	const float BULLET_SCALE = 2;
+	const float BULLET_SCALE = 0.8;
 	const float BULLET_SPEED = 300.0f;
+
 
 
 }
@@ -57,9 +58,9 @@ class Bullet : Entity {
 		void setPositionVector(float x, float y) {
 			//pls change this in the future
 			this->setX(x + 10);
-			spriteData.x = x + 10;
+			spriteData.x = this->getX();
 			this->setY(y);
-			spriteData.y = y;
+			spriteData.y = this->getY();
 		}
 
 		//void move(Image &bulletImage, Image &playerImage, float gameWidth,float frameTime) {
@@ -71,9 +72,11 @@ class Bullet : Entity {
 
 		void move(float frameTime) {
 			this->setX(this->getX() + ((frameTime * bulletNS::BULLET_SPEED) * (cos(currentAngle*PI / 180))));
-			spriteData.x = this->getX() + ((frameTime * bulletNS::BULLET_SPEED) * (cos(currentAngle*PI / 180)));
+			/*spriteData.x = this->getX() + ((frameTime * bulletNS::BULLET_SPEED) * (cos(currentAngle*PI / 180)));*/
+			spriteData.x = this->getX();
 			this->setY(this->getY() + ((frameTime * bulletNS::BULLET_SPEED) * (sin(currentAngle*PI / 180))));
-			spriteData.y = this->getY() + ((frameTime * bulletNS::BULLET_SPEED) * (sin(currentAngle*PI / 180)));
+			/*spriteData.y = this->getY() + ((frameTime * bulletNS::BULLET_SPEED) * (sin(currentAngle*PI / 180)));*/
+			spriteData.y = this->getY();
 		}
 };
 

@@ -53,7 +53,7 @@ protected:
 	float currentHP;
 
 	//there is a need for me to store multiple images inside the array
-	list <Bullet*> bulletList;
+	// <Bullet*> bulletList;
 	list<Zombie*> zombieList;
 	int nextIntervalValue = 0;
 	TextDX  *hpText;
