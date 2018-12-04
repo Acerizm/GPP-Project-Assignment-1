@@ -28,19 +28,20 @@ private:
 	friend class LastManStanding;
 	float unitVectorXCor;
 	float unitVectorYCor;
-	TextureManager healthBarRedTexture;
+	/*TextureManager healthBarRedTexture;*/
 	Image healthBarRed;
 	const float zombieMaxHp = 100;
 	float zombieCurrentHP;
-	TextureManager enemyHealthBarBackGroundTexture;
+	//TextureManager enemyHealthBarBackGroundTexture;
 	Image enemyHealthBarBackGround;
-	TextDX *zombieHpText;
+	TextDX zombieHpText;
+	friend class LastManStanding;
 
 public:
 	Zombie();
 	~Zombie();
 	//void initialize(Graphics *graphics, TextureManager &texture, Image &image);
-	virtual bool initialize(Game *gamePtr, int width, int height, int ncols,TextureManager *textureM);
+	virtual bool initialize(Game *gamePtr, int width, int height, int ncols,TextureManager *textureM, TextureManager *textureHealthBar, TextureManager *textureEnemyHealthBar);
 
 	/*void setPositionVector(Image &image, float x, float y, float zombieScale, int zombieStartFrame, int zombieEndFrame, float zombieFrameDelay) {
 		image.setX(x);
@@ -60,6 +61,13 @@ public:
 
 	void getUnitVectorCoordinates(Player *mainPlayer);
 
+	TextDX getZombieHPText() {
+		return zombieHpText;
+	}
+
+	void setZombieHPText(TextDX text) {
+		zombieHpText = text;
+	}
 
 };
 

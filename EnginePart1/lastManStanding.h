@@ -46,6 +46,10 @@ protected:
 
 	TextureManager ZOMBIE_MOVING_TEXTURE;
 
+	TextureManager healthBarRedTexture;
+
+	TextureManager enemyHealthBarBackGroundTexture;
+
 	Player mainPlayer;
 	//Bullet testBullet;
 

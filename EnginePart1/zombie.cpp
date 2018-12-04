@@ -22,12 +22,30 @@ Zombie::~Zombie() {
 //		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing image"));
 //}
 
-bool Zombie::initialize(Game *gamePtr, int width, int height, int ncols, TextureManager *textureM) {
+bool Zombie::initialize(Game *gamePtr, int width, int height, int ncols, TextureManager *textureM,TextureManager *textureHealth,TextureManager *textureEnemyHealthBar) {
 	this->setFrames(zombieNS::ZOMBIE_MOVING_START_FRAME, zombieNS::ZOMBIE_MOVING_END_FRAME);
 	this->setCurrentFrame(zombieNS::ZOMBIE_MOVING_START_FRAME);
 	this->setFrameDelay(zombieNS::ZOMBIE_MOVING_ANIMATION_DELAY);
 	this->setLoop(true);                  // do not loop animation
-	//this->spriteData.x = 
+	/*if (!healthBarRedTexture.initialize(graphics, HEALTHBARRED_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed texture"));*/
+
+	if (!healthBarRed.initialize(graphics, 256, 32, 1, textureHealth))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed"));
+
+	/*if (!enemyHealthBarBackGroundTexture.initialize(graphics, HEALTHBARBACKGROUND_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarBackGround texture"));*/
+
+	if (!enemyHealthBarBackGround.initialize(graphics, 256, 32, 1, textureEnemyHealthBar))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarBackGround"));
+
+	if (!zombieHpText.initialize(graphics, 15, true, false, "Arial"))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing hpText font"));
+
+	zombieCurrentHP = zombieMaxHp;
+	healthBarRed.setScale(0.5f);
+	enemyHealthBarBackGround.setScale(0.5f);
+
 	return(Entity::initialize(gamePtr, width, height, ncols, textureM));
 }
 
