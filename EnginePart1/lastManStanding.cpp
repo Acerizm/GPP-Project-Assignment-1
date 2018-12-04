@@ -5,6 +5,8 @@
 #include <Mmsystem.h>
 #include <mciapi.h>
 #include "zombie.h"
+#include <sstream>
+#include <iomanip>
 #pragma comment(lib, "Winmm.lib")
 using namespace std;
 //=============================================================================
@@ -113,6 +115,12 @@ void LastManStanding::initialize(HWND hwnd)
 	healthBarBackGround.setScale(0.5f);
 
 	return;
+}
+
+std::string to_format(const int number) {
+	std::stringstream ss;
+	ss << std::setw(2) << std::setfill('0') << number;
+	return ss.str();
 }
 
 //=============================================================================
@@ -238,7 +246,6 @@ void LastManStanding::update(Timer *gameTimer)
 			//PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
 			
 			//To minus HP of Player by 5.
-			mainPlayer.playerCurrentHp= mainPlayer.playerCurrentHp - 5;
 			float currentHpBarPercentage = mainPlayer.playerCurrentHp / PLAYER_MAXHP;
 			healthBarGreen.setPercentage(currentHpBarPercentage);
 			mainPlayer.setFrameDelay(0.05f);
@@ -388,13 +395,10 @@ void LastManStanding::collisions() {
 				mainPlayer.playerCurrentHp -= 10;
 				float currentHpBarPercentage = mainPlayer.playerCurrentHp / PLAYER_MAXHP;
 				healthBarGreen.setPercentage(currentHpBarPercentage);
-				//if ((*it)->zombieCurrentHP <= 0)
-				//{
+				
 					SAFE_DELETE(*it);
 					it = zombieList.erase(it);
-				//}
-				//just to check here
-				//int check = zombieList.size();
+				
 			}
 			else {
 				it++;
@@ -403,10 +407,10 @@ void LastManStanding::collisions() {
 	}
 	
 	 
-	for (list<Bullet*>::iterator it = mainPlayer.BULLET_LIST.begin(); it != mainPlayer.BULLET_LIST.end(); ) 
+/*	for (list<Bullet*>::iterator it = mainPlayer.BULLET_LIST.begin(); it != mainPlayer.BULLET_LIST.end(); ) 
 	{
 		/*float testZombieCenterX = (*it)->getCenterX();
-		float testZombieCenterY = (*it)->getCenterY();*/
+		float testZombieCenterY = (*it)->getCenterY();
 		for (list<Zombie*>::iterator z = zombieList.begin(); z != zombieList.end();) 
 		{
 			Bullet *tempBullet = *it;
@@ -414,10 +418,15 @@ void LastManStanding::collisions() {
 			{
 				//the magic is here
 				/*SAFE_DELETE(*it);
-				it = mainPlayer.BULLET_LIST.erase(it);*/
-				(*it)->setIsCollided(true);
-				SAFE_DELETE(*z);
-				z = zombieList.erase(z);
+				it = mainPlayer.BULLET_LIST.erase(it);
+				
+				if ((*z)->zombieCurrentHP <=0)
+				{
+					(*it)->setIsCollided(true);
+					SAFE_DELETE(*z);
+					z = zombieList.erase(z);
+				}
+				
 				//just to check here
 				//int check = zombieList.size();
 			}
@@ -429,7 +438,7 @@ void LastManStanding::collisions() {
 		
 		/*if (mainPlayer.BULLET_LIST.size() != 0 && zombieList.size()
 			it++;
-		else;*/
+		else;
 
 		if ((*it)->getIsCollided()) {
 			bool test = (*it)->getIsCollided();
@@ -444,8 +453,46 @@ void LastManStanding::collisions() {
 
 
 
+	}*/
+	for (list<Zombie*>::iterator z = zombieList.begin(); z != zombieList.end();)
+	{
+		for (list<Bullet*>::iterator it = mainPlayer.BULLET_LIST.begin(); it != mainPlayer.BULLET_LIST.end(); )
+		{
+			Bullet *tempBullet = *it;
+			if ((*z)->collidesWith(*tempBullet, collisionVector))
+			{
+				(*z)->zombieCurrentHP -= 35;
+				float currentHpBarPercentage = ((*z)->zombieCurrentHP) / ((*z)->zombieMaxHp);
+				(*z)->setPercentage(currentHpBarPercentage);
+				(*z)->setIsCollided(true);
+				SAFE_DELETE(*it);
+				it = mainPlayer.BULLET_LIST.erase(it);
+			}
+			else
+			{
+				it++;
+			}
+		}
+		if ((*z)->getIsCollided())
+		{
+			if ((*z)->zombieCurrentHP <= 0)
+			{
+				
+				SAFE_DELETE(*z);
+				z = zombieList.erase(z);
+			}
+			else
+			{
+				z++;
+			}
+		}
+		else
+		{
+			z++;
+		}
 	}
-	
+
+
 }
 
 //=============================================================================
@@ -468,7 +515,12 @@ void LastManStanding::render()
 	healthBarGreen.draw();
 	//mainPlayer.drawBullets();
 	currentGameTime->setFontColor(graphicsNS::YELLOW);
-	currentGameTime->print(to_string(this->currentGameTimeCpp->getCurrentElapsedTime()), 0, 0);
+	int totalSeconds = this->currentGameTimeCpp->getCurrentElapsedTime();
+	int hours = totalSeconds / 3600;
+	int minutes = (totalSeconds / 60) % 60;
+	int seconds = totalSeconds % 60;
+	string currentTimeString = to_format(hours) + ":" + to_format(minutes) + ":" + to_format(seconds);
+	currentGameTime->print(currentTimeString, 0, 0);
 	hpText->setFontColor(graphicsNS::WHITE);
 	hpText->print(to_string((int)(mainPlayer.playerCurrentHp)) + "/" + to_string((int)(PLAYER_MAXHP)), mainPlayer.getX(), mainPlayer.getY() - 5);
 	if (isPaused)

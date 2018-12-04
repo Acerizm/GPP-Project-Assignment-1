@@ -36,6 +36,7 @@ private:
 	Image *enemyHealthBarBackGround;
 	TextDX *zombieHpText;
 	friend class LastManStanding;
+	bool isCollided = false;
 
 public:
 	Zombie();
@@ -84,7 +85,14 @@ public:
 	float getZombieMaxHp() {
 		return zombieMaxHp;
 	}
+	bool getIsCollided() {
+		return isCollided;
+	}
 
+	void setIsCollided(bool value) {
+		isCollided = value;
+	}
+	void setPercentage(float currentPercentage);
 
 };
 

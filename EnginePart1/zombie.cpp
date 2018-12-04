@@ -29,16 +29,14 @@ bool Zombie::initialize(Game *gamePtr, int width, int height, int ncols, Texture
 	this->setLoop(true);                  // do not loop animation
 	/*if (!healthBarRedTexture.initialize(graphics, HEALTHBARRED_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed texture"));*/
-
 	healthBarRed = new Image();
-	if (!healthBarRed->initialize(graphics, 256, 32, 1, textureHealth))
+	if (!this->getHealthBarRed()->initialize(graphics, 256, 32, 1, textureHealth))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed"));
 
 	///*if (!enemyHealthBarBackGroundTexture.initialize(graphics, HEALTHBARBACKGROUND_IMAGE))
 	//	throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarBackGround texture"));*/
-
 	enemyHealthBarBackGround = new Image();
-	if (!enemyHealthBarBackGround->initialize(graphics, 256, 32, 1, textureEnemyHealthBar))
+	if (!this->getEnemyHealthBarBackGround()->initialize(graphics, 256, 32, 1, textureEnemyHealthBar))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarBackGround"));
 
 	zombieHpText = new TextDX();
@@ -60,7 +58,11 @@ void Zombie::setPositionVector(float x, float y)
 	spriteData.y = y;
 }
 
-
+void Zombie :: setPercentage(float currentPercentage)
+{
+	healthBarRed->setPercentage(currentPercentage);
+	healthBarRed->setRect();
+}
 //void Zombie::attackPlayer(Graphics *graphics, Image &zombieImage, Image &playerImage,float frameTime) 
 //{
 //	//get the unit vector in the direction of the player's position
@@ -171,3 +173,5 @@ void Zombie::getUnitVectorCoordinates(Player *mainPlayer)
 			this->setDegrees(-angle);
 		}
 }
+
+
