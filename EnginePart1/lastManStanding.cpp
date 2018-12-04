@@ -497,7 +497,7 @@ void LastManStanding::drawZombieAIs() {
 			zombie->enemyHealthBarBackGround->draw();
 			zombie->healthBarRed->draw();
 			//zombie.zombieHpText.print(to_string((int)zombie->zombieCu
-			zombie->getZombieHPText()->print(to_string((int) zombie->getCurrentZombieHP())+ "/" + to_string((int)zombie->getZombieMaxHp()),zombie->ZOMBIE_MOVING_IMAGE.getX(),zombie->ZOMBIE_MOVING_IMAGE.getY()-5);
+			zombie->getZombieHPText()->print(to_string((int) zombie->getCurrentZombieHP())+ "/" + to_string((int)zombie->getZombieMaxHp()),zombie->getX(),zombie->getY()-5);
 		}
 	}
 }
