@@ -67,6 +67,7 @@ protected:
 	TextDX *deadText;
 	TextDX *currentGameTime;
 	float nextShootTime;
+	float nextHitTime;
 public:
 	// Constructor
 	LastManStanding();

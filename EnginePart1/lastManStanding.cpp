@@ -22,6 +22,7 @@ LastManStanding::LastManStanding()
 	currentGameTime = new TextDX();
 	testZombie = NULL;
 	nextShootTime = 0;
+	nextHitTime = 0;
 }
 
 //=============================================================================
@@ -252,7 +253,7 @@ void LastManStanding::update(Timer *gameTimer)
 			if (nextShootTime < gameTimer->getCurrentElapsedTime())
 			{
 				mainPlayer.shootBullet(BULLET_TEXTURE, &mainPlayer, this, mainPlayer.getDegrees());
-				nextShootTime = gameTimer->getCurrentElapsedTime() + 0.5 ;
+				nextShootTime = gameTimer->getCurrentElapsedTime() + 0.5 ;//set 0.5 seconds delay per shot
 			}
 
 		}
@@ -392,13 +393,22 @@ void LastManStanding::collisions() {
 			if ((*it)->collidesWith(mainPlayer,collisionVector))
 			{
 			//the magic is here
-				mainPlayer.playerCurrentHp -= 10;
+				if (nextHitTime < currentGameTimeCpp->getCurrentElapsedTime())
+				{
+					mainPlayer.playerCurrentHp -= 10;
+					nextHitTime = currentGameTimeCpp->getCurrentElapsedTime() + 2; //delay 2 seconds per hit by zombie
+				}
 				float currentHpBarPercentage = mainPlayer.playerCurrentHp / PLAYER_MAXHP;
 				healthBarGreen.setPercentage(currentHpBarPercentage);
-				
+				if (false)
+				{
 					SAFE_DELETE(*it);
 					it = zombieList.erase(it);
-				
+				}
+				else
+				{
+					it++;
+				}
 			}
 			else {
 				it++;
