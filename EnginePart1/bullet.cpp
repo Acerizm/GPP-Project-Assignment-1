@@ -19,6 +19,7 @@ Bullet::Bullet()
 	spriteData.x = 0;
 	spriteData.y = 0;
 	radius = 150;
+
 };
 
 Bullet::~Bullet() {

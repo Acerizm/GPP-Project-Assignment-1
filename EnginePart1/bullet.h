@@ -15,7 +15,8 @@ namespace bulletNS
 	const int BULLET_WIDTH = 47;
 	const float BULLET_SCALE = 0.8;
 	const float BULLET_SPEED = 300.0f;
-
+	//bool isCollided = false;
+	//friend class lastManStandi
 
 
 }
@@ -27,6 +28,7 @@ class Bullet : Entity {
 		friend class LastManStanding;
 		friend class Player;
 		float currentAngle;
+		bool isCollided = false;
 
 	public:
 		//Image BULLET_IMAGE;
@@ -77,6 +79,14 @@ class Bullet : Entity {
 			this->setY(this->getY() + ((frameTime * bulletNS::BULLET_SPEED) * (sin(currentAngle*PI / 180))));
 			/*spriteData.y = this->getY() + ((frameTime * bulletNS::BULLET_SPEED) * (sin(currentAngle*PI / 180)));*/
 			spriteData.y = this->getY();
+		}
+
+		bool getIsCollided() {
+			return isCollided;
+		}
+
+		void setIsCollided(bool value) {
+			isCollided = value;
 		}
 };
 

@@ -342,8 +342,9 @@ void LastManStanding::collisions() {
 			if ((*z)->collidesWith(*tempBullet, collisionVector))
 			{
 				//the magic is here
-				SAFE_DELETE(*it);
-				it = mainPlayer.BULLET_LIST.erase(it);
+				/*SAFE_DELETE(*it);
+				it = mainPlayer.BULLET_LIST.erase(it);*/
+				(*it)->setIsCollided(true);
 				SAFE_DELETE(*z);
 				z = zombieList.erase(z);
 				//just to check here
@@ -351,13 +352,28 @@ void LastManStanding::collisions() {
 			}
 			else {
 				z++;
+				//it++;
 			}
 		}
-		if (mainPlayer.BULLET_LIST.size() != 0 && zombieList.size() !=0)
+		
+		/*if (mainPlayer.BULLET_LIST.size() != 0 && zombieList.size()
 			it++;
-		else;
+		else;*/
+
+		if ((*it)->getIsCollided()) {
+			SAFE_DELETE(*it);
+			it = mainPlayer.BULLET_LIST.erase(it);
+			it++;
+		}
+		else {
+			it++;
+		}
+
+
+
 
 	}
+	
 }
 
 //=============================================================================
