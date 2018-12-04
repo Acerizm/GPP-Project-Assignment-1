@@ -36,6 +36,7 @@ class Obstacle : public Entity
 {
 private:
 	Image OBSTACLE_IMAGE;
+	bool isCollided = false;
 	friend class LastManStanding;
 
 public:
@@ -60,6 +61,13 @@ public:
 		spriteData.y = y;
 	}
 
+	bool getIsCollided() {
+		return isCollided;
+	}
+
+	void setIsCollided(bool value) {
+		isCollided = value;
+	}
 };
 
 #endif

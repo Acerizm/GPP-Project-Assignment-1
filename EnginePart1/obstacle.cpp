@@ -11,6 +11,7 @@ Obstacle::Obstacle() {
 	spriteData.x = 0;
 	spriteData.y = 0;
 	//set the radius here for collision
+	setCollisionRadius(100.0f);
 }
 
 Obstacle::~Obstacle() {
