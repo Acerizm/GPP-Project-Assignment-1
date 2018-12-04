@@ -12,6 +12,7 @@ using namespace std;
 //=============================================================================
 LastManStanding::LastManStanding()
 {
+	srand(time(NULL));
 	hpText = new TextDX();
 	isPaused = false;
 	pausedText = new TextDX();
@@ -20,11 +21,11 @@ LastManStanding::LastManStanding()
 	currentGameTime = new TextDX();
 	testZombie = NULL;
 	nextShootTime = 0;
-	for (int i = 0; i < 5; i++) {
-		obsTypeList.push_back(1);
+	for (int i = 0; i < 10; i++) {
+		float randomType = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / 2));
+		obsTypeList.push_back(2);
 	}
 
-	srand(time(NULL));
 }
 
 //=============================================================================
@@ -101,9 +102,8 @@ void LastManStanding::initialize(HWND hwnd)
 
 	if(!BARREL_TEXTURE.initialize(graphics,BARREL_TILE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing Barrel texture"));
-	/*tempObstacle = new Obstacle();
-	if(!tempObstacle->initialize(this,&BARREL_TEXTURE, GAME_WIDTH / 20, GAME_HEIGHT / 20,1))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing Barrel"));*/
+	if(!OBS1_TEXTURE.initialize(graphics,OBS1_TILE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing OBS1 texture"));
 
 	for (int i = 0; i < obsTypeList.size(); i++) 
 	{
@@ -121,6 +121,15 @@ void LastManStanding::initialize(HWND hwnd)
 			//then push it back to the obstacleList
 			obstacleList.push_back(tempObstacle);
 
+			//then gg
+		}
+		else if (obsTypeList[i] == 2) 
+		{
+			//need to random the position of the barrels
+			if (!tempObstacle->initialize(this, &OBS1_TEXTURE, randomX, randomY, 1))
+				throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing Barrel"));
+			//then push it back to the obstacleList
+			obstacleList.push_back(tempObstacle);
 			//then gg
 		}
 	}
@@ -317,6 +326,11 @@ void LastManStanding::update(Timer *gameTimer)
 
 		//edit here to chnage the direction of the bullet
 		mainPlayer.moveBullet(frameTime);
+	}
+
+	for each (Obstacle *obs in obstacleList) 
+	{
+		obs->update(frameTime);
 	}
 
 

@@ -69,6 +69,9 @@ protected:
 
 	vector<int> obsTypeList;
 
+	TextureManager OBS1_TEXTURE;
+
+
 
 
 	////////////////////////////////////////////////////////////////

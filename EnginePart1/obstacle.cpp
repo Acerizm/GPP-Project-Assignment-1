@@ -45,6 +45,20 @@ bool Obstacle::initialize(Game *gamePtr, TextureManager *textureM,float x, float
 		this->setFrameDelay(obstacleNS::BARREL_ANIMATION_DELAY);
 		return(Entity::initialize(gamePtr, width, height, textureColumns, textureM));
 
+	case(2):
+		width = obstacleNS::OBS1_WIDTH;
+		height = obstacleNS::OBS1_HEIGHT;
+		textureColumns = obstacleNS::OBS1_COLS;
+		spriteData.width = obstacleNS::OBS1_WIDTH;
+		spriteData.height = obstacleNS::OBS1_HEIGHT;
+		spriteData.scale = obstacleNS::OBS1_SCALE;
+		spriteData.x = x;
+		spriteData.y = y;
+		this->setFrames(obstacleNS::OBS1_START_FRAME, obstacleNS::OBS1_END_FRAME);
+		this->setCurrentFrame(obstacleNS::OBS1_START_FRAME);
+		this->setFrameDelay(obstacleNS::OBS1_ANIMATION_DELAY);
+		return(Entity::initialize(gamePtr, width, height, textureColumns, textureM));
+
 	default:
 		//for testing purposes
 		//use the barrel here as default

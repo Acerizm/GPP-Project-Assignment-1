@@ -89,7 +89,7 @@ const char BULLET_TILE[] = "pictures\\bullet.png";
 // Wx Here
 
 const char BARREL_TILE[] = "pictures\\tnt_barrel.png";
-
+const char OBS1_TILE[] = "pictures\\OBS1.png";
 
 
 ////////////////////////////////////////////////////////////////
