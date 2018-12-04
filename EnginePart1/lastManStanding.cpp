@@ -243,6 +243,17 @@ void LastManStanding::ai(Timer *gameTimer)
 	
 	//1. every 2 seconds , spawn a zombie
 
+	if (isPaused)
+	{
+
+	}
+	else if (isDead)
+	{
+
+	}
+	else
+	{
+
 	int numOfSecondsPassed = int(gameTimer->getCurrentElapsedTime());
 	// check if the time passed is a multiple of 5
 	if (numOfSecondsPassed % 5 == 0 && numOfSecondsPassed != 0 && numOfSecondsPassed != nextIntervalValue) {
@@ -280,8 +291,10 @@ void LastManStanding::ai(Timer *gameTimer)
 	}
 
 	//then attack the player
-	for each (Zombie * zombie in zombieList) {
-		zombie->attackPlayer(graphics, zombie->ZOMBIE_MOVING_IMAGE, PLAYER_SHOOTING_TILE_IMAGE, frameTime);
+
+		for each (Zombie * zombie in zombieList) {
+			zombie->attackPlayer(graphics, zombie->ZOMBIE_MOVING_IMAGE, PLAYER_SHOOTING_TILE_IMAGE, frameTime);
+		}
 	}
 
 }
