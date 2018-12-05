@@ -429,6 +429,7 @@ void LastManStanding::ai(Timer *gameTimer)
 				testZombie->initialize(this, zombieNS::ZOMBIE_MOVING_WIDTH, zombieNS::ZOMBIE_MOVING_HEIGHT, zombieNS::ZOMBIE_MOVING_COLS, &ZOMBIE_MOVING_TEXTURE, &healthBarRedTexture, &enemyHealthBarBackGroundTexture, graphics);
 				testZombie->setIsBoss();
 				testZombie->setScale(1.1);
+				testZombie->setZombieMaxHP(300);
 			}
 			else
 				testZombie->initialize(this, zombieNS::ZOMBIE_MOVING_WIDTH, zombieNS::ZOMBIE_MOVING_HEIGHT, zombieNS::ZOMBIE_MOVING_COLS, &ZOMBIE_MOVING_TEXTURE,&healthBarRedTexture,&enemyHealthBarBackGroundTexture, graphics);
