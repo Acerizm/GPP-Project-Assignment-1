@@ -545,7 +545,7 @@ void LastManStanding::collisions() {
 		}
 	}
 	/////////////////////////////////////////////////////////////////
-	// Scenario : Bullet Collide with obstacle
+	// Scenario : Bullet Collide with obstacle & obstacle checks for surrounding zombies & surround mainPlayer
 	/////////////////////////////////////////////////////////////////
 	for (list<Bullet*>::iterator bullet = mainPlayer.BULLET_LIST.begin(); bullet != mainPlayer.BULLET_LIST.end();) 
 	{
@@ -592,29 +592,36 @@ void LastManStanding::collisions() {
 				(*obs)->setIsCollided(true);
 				(*bullet)->setIsCollided(true);
 
-				bool test = (*obs)->getIsCollided();
-				//check if the obs has collided
-				if ((*obs)->getIsCollided())
-				{
-					SAFE_DELETE(*obs);
-					obs = obstacleList.erase(obs);
-				}
-				else
-				{
-					//reduce the collision radius to 10
-					//so that zombies/AI can collide with it
-					//immitating a pixel perfect scenario
-					(*obs)->setCollisionRadius(10.0f);
-					obs++;
-				}
+			}
+			//check if the obs also collides with the player
+			//not an else statement as multiple conditions may meet
+			if ((*obs)->collidesWith(mainPlayer, collisionVector)) 
+			{
+				mainPlayer.playerCurrentHp -= 30;
+				float currentHpBarPercentage = mainPlayer.playerCurrentHp / PLAYER_MAXHP;
+				healthBarGreen.setPercentage(currentHpBarPercentage);
+				//after decreasing the player's health
+				//remove the objects that has collided
+				(*obs)->setIsCollided(true);
 
 			}
-			else 
+			
+			//last check if obs has collided and remove them
+			if ((*obs)->getIsCollided())
 			{
+				//if the obstacles collides with the bullet
+
+				SAFE_DELETE(*obs);
+				obs = obstacleList.erase(obs);
+			}
+			else
+			{
+				//reduce the collision radius to 10
+				//so that zombies/AI can collide with it
+				//immitating a pixel perfect scenario
 				(*obs)->setCollisionRadius(10.0f);
 				obs++;
 			}
-
 		}
 		// end of obs loop
 
@@ -632,6 +639,16 @@ void LastManStanding::collisions() {
 	// end of bullet loop
 
 
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	// Scenario : The bullet collides with any obstacle and the obstacle is near other BARRELS (same Obstacle Type)
+
+
+
+
+
+
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 //=============================================================================
