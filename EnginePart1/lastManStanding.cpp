@@ -666,7 +666,16 @@ void LastManStanding::collisions() {
 				(*zombie)->bounce(collisionVector, **obs);
 				//get the unit Vector of the collision Vector
 				VECTOR2 unitCollisionVector; 
-				VECTOR2(*unitCollisionVector, *collisionVector);
+				//VECTOR2(*unitCollisionVector, *collisionVector);
+				Vector2Normalize(&unitCollisionVector, &collisionVector);
+
+
+				(*zombie)->setX(unitCollisionVector.x + frameTime * 100.0f);
+				(*zombie)->setSpriteDataX((*zombie)->getX());
+				(*zombie)->setY(unitCollisionVector.y + frameTime * 100.0f);
+				(*zombie)->setSpriteDataY((*zombie)->getY());
+
+				
 				obs++;
 			}
 			else 
@@ -678,6 +687,7 @@ void LastManStanding::collisions() {
 
 		zombie++;
 	}
+
 
 
 
