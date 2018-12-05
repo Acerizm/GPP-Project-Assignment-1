@@ -457,30 +457,46 @@ void LastManStanding::collisions() {
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	if (zombieList.size() != 0) {
 		for (list<Zombie*>::iterator it = zombieList.begin(); it != zombieList.end(); ) {
-			float testzombiecenterx = (*it)->getCenterX();
-			float testzombiecentery = (*it)->getCenterY();
-			if ((*it)->collidesWith(mainPlayer,collisionVector))
+			if ((*it)->collidesWith(mainPlayer, collisionVector))
 			{
-			//the magic is here
-			//LOL
+				//the magic is here
+				//LOL
+				//the zombie has already collided
+
 				if (nextHitTime < currentGameTimeCpp->getCurrentElapsedTime())
 				{
 					mainPlayer.playerCurrentHp -= 10;
-					nextHitTime = currentGameTimeCpp->getCurrentElapsedTime() + 2; //delay 2 seconds per hit by zombie
+					nextHitTime = currentGameTimeCpp->getCurrentElapsedTime() + 2; //delay 2 seconds per hit by zombie(s)
+					float currentHpBarPercentage = mainPlayer.playerCurrentHp / PLAYER_MAXHP;
+					healthBarGreen.setPercentage(currentHpBarPercentage);
+					//set the zombie already collided
+					(*it)->setIsCollided(true);
 				}
-				float currentHpBarPercentage = mainPlayer.playerCurrentHp / PLAYER_MAXHP;
-				healthBarGreen.setPercentage(currentHpBarPercentage);
-				if (false)
-				{
-					SAFE_DELETE(*it);
-					it = zombieList.erase(it);
-				}
-				else
-				{
+				/*float currentHpBarPercentage = mainPlayer.playerCurrentHp / PLAYER_MAXHP;
+				healthBarGreen.setPercentage(currentHpBarPercentage);*/
+
+				//	if (false)
+				//	{
+				//		SAFE_DELETE(*it);
+				//		it = zombieList.erase(it);
+				//	}
+				//	else
+				//	{
+				//		it++;
+				//	}
+				//}
+				//else {
+				//	it++;
+				//}
+				else {
+					//set the zombie not collided
+					(*it)->setIsCollided(false);
 					it++;
 				}
+				
 			}
 			else {
+				//no collision with the player
 				it++;
 			}
 		}
@@ -541,6 +557,10 @@ void LastManStanding::collisions() {
 				// check for the radius of the obstacle
 				// aka increase the radius of that shit
 				// when got time check for the mainPlayer also :D
+
+				//purposely make the radius big for the obs
+				//catch any zombie in the circle radius :D
+				(*obs)->setCollisionRadius(500);
  				for (list<Zombie*>::iterator zombie = zombieList.begin(); zombie != zombieList.end();) 
 				{
 					//now check if the zombie is within the radius of the object

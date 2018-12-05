@@ -16,8 +16,8 @@ TextDX::TextDX()
 	// set font position
 	fontRect.top = 0;
 	fontRect.left = 0;
-	fontRect.right = GAME_WIDTH;
-	fontRect.bottom = GAME_HEIGHT;
+	fontRect.right = LEVEL1_TILE_WIDTH*LEVEL1_TILE_SCALE;
+	fontRect.bottom = LEVEL1_TILE_HEIGHT * LEVEL1_TILE_SCALE;
 	dxFont = NULL;
 	angle = 0;
 }

@@ -87,18 +87,29 @@ void Zombie::attackPlayer(Player *mainPlayer, float frameTime) {
 	// ...add code here
 	getUnitVectorCoordinates(mainPlayer);
 
-	//2. move the zombie to the player image
-	if (this->getX() > GAME_WIDTH) {
-		this->setX(0);
-		//healthBarRed.setRect();
-		healthBarRed->setX(this->getX() - 8);
-		healthBarRed->setY(this->getY() - 5);
-		enemyHealthBarBackGround->setX(this->getX() - 8);
-		enemyHealthBarBackGround->setY(this->getY() - 5);
-		zombieHpText->setFontColor(graphicsNS::WHITE);
-	}
-	else {
-		// ... add code here later
+	////2. move the zombie to the player image
+	//if (this->getX() > GAME_WIDTH) {
+	//	this->setX(0);
+	//	//healthBarRed.setRect();
+	//	healthBarRed->setX(this->getX() - 8);
+	//	healthBarRed->setY(this->getY() - 5);
+	//	enemyHealthBarBackGround->setX(this->getX() - 8);
+	//	enemyHealthBarBackGround->setY(this->getY() - 5);
+	//	zombieHpText->setFontColor(graphicsNS::WHITE);
+	//}
+	//else {
+	//	// ... add code here later
+	//	this->setX(this->getX() + unitVectorXCor * frameTime*50.0f);
+	//	spriteData.x = this->getX() + unitVectorXCor * frameTime*50.0f;
+	//	this->setY(this->getY() + unitVectorYCor * frameTime*50.0f);
+	//	spriteData.y = (this->getY() + unitVectorYCor * frameTime*50.0f);
+	//	//healthBarRed.setRect();
+	//	healthBarRed->setX(this->getX() - 8);
+	//	healthBarRed->setY(this->getY() - 5);
+	//	enemyHealthBarBackGround->setX(this->getX() - 8);
+	//	enemyHealthBarBackGround->setY(this->getY() - 5);
+	//	zombieHpText->setFontColor(graphicsNS::WHITE);
+	//}
 		this->setX(this->getX() + unitVectorXCor * frameTime*50.0f);
 		spriteData.x = this->getX() + unitVectorXCor * frameTime*50.0f;
 		this->setY(this->getY() + unitVectorYCor * frameTime*50.0f);
@@ -109,7 +120,7 @@ void Zombie::attackPlayer(Player *mainPlayer, float frameTime) {
 		enemyHealthBarBackGround->setX(this->getX() - 8);
 		enemyHealthBarBackGround->setY(this->getY() - 5);
 		zombieHpText->setFontColor(graphicsNS::WHITE);
-	}
+
 }
 
 void Zombie::getUnitVectorCoordinates(Player *mainPlayer) 
