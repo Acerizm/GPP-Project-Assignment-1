@@ -13,7 +13,7 @@ namespace bulletNS
 	const float BULLET_ANIMATION_DELAY = 0;
 	const int BULLET_HEIGHT = 47;
 	const int BULLET_WIDTH = 47;
-	const float BULLET_SCALE = 0.8;
+	const float BULLET_SCALE = 0.4;
 	const float BULLET_SPEED = 300.0f;
 	//bool isCollided = false;
 	//friend class lastManStandi

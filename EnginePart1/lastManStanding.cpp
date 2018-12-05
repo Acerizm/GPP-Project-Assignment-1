@@ -428,14 +428,14 @@ void LastManStanding::ai(Timer *gameTimer)
 			};
 			//testZombie->setPositionVector(testZombie->ZOMBIE_MOVING_IMAGE, PLAYER_SHOOTING_TILE_IMAGE.getCenterX(), PLAYER_SHOOTING_TILE_IMAGE.getCenterY(), zombieNS::ZOMBIE_MOVING_SCALE, zombieNS::ZOMBIE_MOVING_START_FRAME, zombieNS::ZOMBIE_MOVING_END_FRAME, zombieNS::ZOMBIE_MOVING_ANIMATION_DELAY);
 			testZombie->setPositionVector(x, y);
-			float testing1 = testZombie->getCenterX();
-			float testing2 = testZombie->getCenterY();
 
 			//add the zombie to the array
 			zombieList.push_back(testZombie);
 		}
 
 		//then attack the player
+		// need to check for collision here
+		// let's do a cristmas maneuver
 		for each (Zombie * zombie in zombieList) {
 			zombie->attackPlayer(&mainPlayer, frameTime);
 
@@ -545,12 +545,16 @@ void LastManStanding::collisions() {
 		}
 	}
 	/////////////////////////////////////////////////////////////////
-	// Scenario : Bullet Collide with obstacle
+	// Scenario : Bullet Collide with obstacle & obstacle checks for surrounding zombies & surround mainPlayer
 	/////////////////////////////////////////////////////////////////
 	for (list<Bullet*>::iterator bullet = mainPlayer.BULLET_LIST.begin(); bullet != mainPlayer.BULLET_LIST.end();) 
 	{
 		for (list<Obstacle*>::iterator obs = obstacleList.begin(); obs != obstacleList.end();) 
 		{
+			//reduce the collision radius to 10
+			//so that zombies/AI can collide with it
+			//immitating a pixel perfect scenario
+			(*obs)->setCollisionRadius(10.0f);
 			if ((*obs)->collidesWith(**bullet, collisionVector)) 
 			{
 				//add another for loop here to check surrounding zombies near the obstacle
@@ -588,24 +592,36 @@ void LastManStanding::collisions() {
 				(*obs)->setIsCollided(true);
 				(*bullet)->setIsCollided(true);
 
-				bool test = (*obs)->getIsCollided();
-				//check if the obs has collided
-				if ((*obs)->getIsCollided())
-				{
-					SAFE_DELETE(*obs);
-					obs = obstacleList.erase(obs);
-				}
-				else
-				{
-					obs++;
-				}
+			}
+			//check if the obs also collides with the player
+			//not an else statement as multiple conditions may meet
+			if ((*obs)->collidesWith(mainPlayer, collisionVector)) 
+			{
+				mainPlayer.playerCurrentHp -= 30;
+				float currentHpBarPercentage = mainPlayer.playerCurrentHp / PLAYER_MAXHP;
+				healthBarGreen.setPercentage(currentHpBarPercentage);
+				//after decreasing the player's health
+				//remove the objects that has collided
+				(*obs)->setIsCollided(true);
 
 			}
-			else 
+			
+			//last check if obs has collided and remove them
+			if ((*obs)->getIsCollided())
 			{
+				//if the obstacles collides with the bullet
+
+				SAFE_DELETE(*obs);
+				obs = obstacleList.erase(obs);
+			}
+			else
+			{
+				//reduce the collision radius to 10
+				//so that zombies/AI can collide with it
+				//immitating a pixel perfect scenario
+				(*obs)->setCollisionRadius(10.0f);
 				obs++;
 			}
-
 		}
 		// end of obs loop
 
@@ -623,6 +639,16 @@ void LastManStanding::collisions() {
 	// end of bullet loop
 
 
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	// Scenario : The bullet collides with any obstacle and the obstacle is near other BARRELS (same Obstacle Type)
+
+
+
+
+
+
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 //=============================================================================
