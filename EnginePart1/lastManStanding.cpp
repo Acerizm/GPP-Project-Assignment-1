@@ -715,7 +715,38 @@ void LastManStanding::collisions(Timer *gameTimer) {
 
 	for each (Zombie *zombie in zombieList) 
 	{
+		for each (Zombie *zombie2 in zombieList) 
+		{
+			if (zombie == zombie2)
+				continue;
+			else 
+			{
+				if (zombie->collidesWith(*zombie2, collisionVector)) 
+				{
+					VECTOR2 unitCollisionVector;
+					(zombie)->bounce(collisionVector, *zombie2);
+					//get the unit Vector of the collision Vector
+					//VECTOR2(*unitCollisionVector, *collisionVector);
+					Vector2Normalize(&unitCollisionVector, &collisionVector);
 
+					(zombie)->setX(zombie->getX() - unitCollisionVector.x*frameTime * 300.0f);
+					(zombie)->setSpriteDataX(zombie->getX());
+					(zombie)->setY(zombie->getY() - unitCollisionVector.y*frameTime * 300.0f);
+					(zombie)->setSpriteDataY(zombie->getY());
+
+					(zombie2)->bounce(collisionVector, *zombie);
+					//get the unit Vector of the collision Vector
+					//VECTOR2(*unitCollisionVector, *collisionVector);
+					Vector2Normalize(&unitCollisionVector, &collisionVector);
+
+					(zombie2)->setX(zombie2->getX() + unitCollisionVector.x*frameTime * 300.0f);
+					(zombie2)->setSpriteDataX(zombie2->getX());
+					(zombie2)->setY(zombie2->getY() + unitCollisionVector.y*frameTime * 300.0f);
+					(zombie2)->setSpriteDataY(zombie2->getY());
+
+				}
+			}
+		}
 	}
 
 
