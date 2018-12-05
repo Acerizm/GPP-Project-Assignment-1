@@ -52,7 +52,7 @@ protected:
 	TextureManager healthBarRedTexture;
 
 	TextureManager enemyHealthBarBackGroundTexture;
-
+	
 	Player mainPlayer;
 	//Bullet testBullet;
 	friend class Camera;
@@ -87,6 +87,7 @@ protected:
 	bool isDead;
 	TextDX *pausedText;
 	TextDX *deadText;
+	TextDX *zombieKillCountText;
 	TextDX *currentGameTime;
 	float nextShootTime;
 	float nextHitTime;

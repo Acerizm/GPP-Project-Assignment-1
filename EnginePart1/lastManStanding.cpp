@@ -23,6 +23,7 @@ LastManStanding::LastManStanding()
 	isDead = false;
 	deadText = new TextDX();
 	currentGameTime = new TextDX();
+	zombieKillCountText = new TextDX();
 	testZombie = NULL;
 	nextShootTime = 0;
 	for (int i = 0; i < 50; i++) {
@@ -102,6 +103,8 @@ void LastManStanding::initialize(HWND hwnd)
 	if(currentGameTime->initialize(graphics,20,true,false,"Arial") == false)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing currentGameTime font"));
 
+	if(zombieKillCountText->initialize(graphics,20,true,false,"Arial")== false)
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing zombieKillCountText font"));
 
 	if (!healthBarRedTexture.initialize(graphics, HEALTHBARRED_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed texture"));
@@ -526,7 +529,7 @@ void LastManStanding::collisions() {
 		{
 			if ((*z)->zombieCurrentHP <= 0)
 			{
-				
+				mainPlayer.zombieKillCount += 1;
 				SAFE_DELETE(*z);
 				z = zombieList.erase(z);
 			}
@@ -574,7 +577,7 @@ void LastManStanding::collisions() {
 						float currentHpBarPercentage = ((*zombie)->zombieCurrentHP) / ((*zombie)->zombieMaxHp);
 						(*zombie)->setPercentage(currentHpBarPercentage);
 						(*zombie)->setIsCollided(true);
-
+						mainPlayer.zombieKillCount += 1;
 						SAFE_DELETE(*zombie);
 						zombie = zombieList.erase(zombie);
 					}
@@ -707,6 +710,8 @@ void LastManStanding::render()
 	healthBarBackGround.draw();
 	healthBarGreen.draw();
 	hpText->print(to_string((int)(mainPlayer.playerCurrentHp)) + "/" + to_string((int)(PLAYER_MAXHP)), camera->getCameraX() - (GAME_WIDTH / 2)*0.9, camera->getCameraY() - GAME_HEIGHT / 2);
+	zombieKillCountText->setFontColor(graphicsNS::BLACK);
+	zombieKillCountText->print("Zombie Kill Count:"+to_string(mainPlayer.zombieKillCount), camera->getCameraX() - (GAME_WIDTH / 2), camera->getCameraY() + GAME_HEIGHT / 2.2);
 	currentGameTime->print(currentTimeString, camera->getCameraX() + GAME_WIDTH / 3.3, camera->getCameraY() + GAME_HEIGHT / 2.2);
 	graphics->spriteEnd();                  // end drawing sprites
 
