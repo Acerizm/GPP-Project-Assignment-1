@@ -10,6 +10,7 @@ Player::Player() :Entity()
 	spriteData.scale = playerNS::PLAYER_SHOOTING_SCALE;
 	spriteData.x = 0;
 	spriteData.y = 0;
+	//spriteData.
 };
 
 Player::~Player() {

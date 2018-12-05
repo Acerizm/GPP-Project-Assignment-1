@@ -29,7 +29,7 @@ private:
 	float unitVectorXCor;
 	float unitVectorYCor;
 	/*TextureManager healthBarRedTexture;*/
-	const float zombieMaxHp = 100;
+	float zombieMaxHp = 100;
 	float zombieCurrentHP;
 	//TextureManager enemyHealthBarBackGroundTexture;
 	Image *healthBarRed;
@@ -37,6 +37,7 @@ private:
 	TextDX *zombieHpText;
 	friend class LastManStanding;
 	bool isCollided = false;
+	bool isBoss = false;
 
 public:
 	Zombie();
@@ -51,7 +52,7 @@ public:
 	//2. move the zombie to the player
 	// 3. if hit - > zombie move to (0,0) and restart as test
 	//void attackPlayer(Graphics *graphics, Image &zombieImage, Image &playerImage,float frameTime);
-	void attackPlayer(Player *mainPlayer, float frameTime);
+	void attackPlayer(Player *mainPlayer, float frameTime, float scalar);
 
 	void getUnitVectorCoordinates(Player *mainPlayer);
 
@@ -99,6 +100,18 @@ public:
 		spriteData.y = y;
 	}
 
+	bool getIsBoss() {
+		return isBoss;
+	}
+
+	void setIsBoss() {
+		isBoss = true;
+	}
+
+	void setZombieMaxHP(float hp) 
+	{
+		zombieMaxHp = hp;
+	}
 
 
 };

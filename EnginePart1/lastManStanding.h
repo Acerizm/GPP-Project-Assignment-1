@@ -57,6 +57,8 @@ protected:
 	TextureManager barrelExplosionTexture;
 	Image barrelExplosionImage;
 
+	//TextureManager ZombieBoss;
+
 	Background backgroundImage;
 	
 	Player mainPlayer;

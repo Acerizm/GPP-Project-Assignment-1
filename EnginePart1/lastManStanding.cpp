@@ -68,6 +68,8 @@ void LastManStanding::initialize(HWND hwnd)
 
 	mainPlayer.setPositionVector(LEVEL1_TILE_HEIGHT*LEVEL1_TILE_SCALE / 2, LEVEL1_TILE_WIDTH*LEVEL1_TILE_SCALE / 2);
 	mainPlayer.setSpriteDataXnY(LEVEL1_TILE_HEIGHT*LEVEL1_TILE_SCALE / 2, LEVEL1_TILE_WIDTH*LEVEL1_TILE_SCALE / 2);
+
+	mainPlayer.setCollisionRadius(10);
 	//initialize bullet texture here
 	if (!BULLET_TEXTURE.initialize(graphics, BULLET_TILE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet texture"));
@@ -200,6 +202,15 @@ std::string to_format(const int number) {
 //=============================================================================
 void LastManStanding::update(Timer *gameTimer)
 {
+	if (mainPlayer.getX() <= 0)
+	{
+		mainPlayer.setPositionVector(mainPlayer.getX() + 100.0f * frameTime, mainPlayer.getY());
+	}
+	else if (mainPlayer.getY() <= 0)
+	{
+		mainPlayer.setPositionVector(mainPlayer.getX(), mainPlayer.getY() + 10.0*frameTime);
+	}
+	
 	backgroundImage.update(frameTime);
 	barrelExplosionImage.update(frameTime);
 	mainPlayer.update(frameTime);
@@ -230,13 +241,13 @@ void LastManStanding::update(Timer *gameTimer)
 		auto test = &mainPlayer;
 		if (camera) 
 		{
-			if (input->isKeyDown(VK_F1)) {
+			if (input->isKeyDown(VK_F5)) {
 				if (!camera->isFollowing()) {
 					camera->Follow(&mainPlayer);
 				}
 			}
 
-			if (input->isKeyDown(VK_F2)) {
+			if (input->isKeyDown(VK_F6)) {
 				if (camera->isFollowing()) {
 					camera->UnFollow();
 				}
@@ -394,11 +405,7 @@ void LastManStanding::update(Timer *gameTimer)
 //=============================================================================
 void LastManStanding::ai(Timer *gameTimer)
 {
-	//add more zombies here
-	//int test = (int)(gameTimer->getCurrentElapsedTime());
-
-	//1. every 2 seconds , spawn a zombie
-
+	
 	if (isPaused)
 	{
 
@@ -417,7 +424,14 @@ void LastManStanding::ai(Timer *gameTimer)
 			nextIntervalValue = numOfSecondsPassed;
 			testZombie = new Zombie();
 			//testZombie->initialize(graphics, ZOMBIE_MOVING_TEXTURE, testZombie->ZOMBIE_MOVING_IMAGE);
-			testZombie->initialize(this, zombieNS::ZOMBIE_MOVING_WIDTH, zombieNS::ZOMBIE_MOVING_HEIGHT, zombieNS::ZOMBIE_MOVING_COLS, &ZOMBIE_MOVING_TEXTURE,&healthBarRedTexture,&enemyHealthBarBackGroundTexture, graphics);
+			if (numOfSecondsPassed % 3 == 0)
+			{
+				testZombie->initialize(this, zombieNS::ZOMBIE_MOVING_WIDTH, zombieNS::ZOMBIE_MOVING_HEIGHT, zombieNS::ZOMBIE_MOVING_COLS, &ZOMBIE_MOVING_TEXTURE, &healthBarRedTexture, &enemyHealthBarBackGroundTexture, graphics);
+				testZombie->setIsBoss();
+				testZombie->setScale(1.1);
+			}
+			else
+				testZombie->initialize(this, zombieNS::ZOMBIE_MOVING_WIDTH, zombieNS::ZOMBIE_MOVING_HEIGHT, zombieNS::ZOMBIE_MOVING_COLS, &ZOMBIE_MOVING_TEXTURE,&healthBarRedTexture,&enemyHealthBarBackGroundTexture, graphics);
 
 			//have to do rng here
 			int condition = 0;
@@ -455,7 +469,7 @@ void LastManStanding::ai(Timer *gameTimer)
 		// need to check for collision here
 		// let's do a cristmas maneuver
 		for each (Zombie * zombie in zombieList) {
-			zombie->attackPlayer(&mainPlayer, frameTime);
+			zombie->attackPlayer(&mainPlayer, frameTime,30.0f);
 
 		}
 
@@ -469,6 +483,62 @@ void LastManStanding::collisions(Timer *gameTimer) {
 	VECTOR2 collisionVector;
 	VECTOR2 collisionVector2;
 	//this is where the magic happens
+
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	for each (Zombie *boss in zombieList) 
+	{
+		if (!boss->getIsBoss())
+			continue;
+		else 
+		{
+			boss->setCollisionRadius(100);
+			for each (Zombie *smallZombie in zombieList) 
+			{
+
+				if (smallZombie->getIsBoss())
+					continue;
+				else 
+				{
+					if (boss->collidesWith(*smallZombie, collisionVector))
+					{
+						smallZombie->attackPlayer(&mainPlayer, frameTime, 150.0f);
+					}
+					else
+						continue;
+				}
+			}
+			break;
+		}
+	}
+
+	/*for each(Zombie *boss in zombieList) 
+	{
+		if (!boss->getIsBoss())
+			continue;
+		else 
+		{
+			boss->setCollisionRadius(100.0f);
+
+			for each (Obstacle *obs in obstacleList) 
+			{
+				if (boss->collidesWith(*obs, collisionVector)) 
+				{
+					obstacleList.remove(obs);
+					obs = nullptr;
+					
+					continue;
+				}
+				else {
+					continue;
+				}
+			}
+
+		}
+	}*/
+
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	//Scenario : Zombie collide with mainPlayer and vice-versa

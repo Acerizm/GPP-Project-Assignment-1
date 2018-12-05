@@ -80,36 +80,15 @@ void Zombie :: setPercentage(float currentPercentage)
 //	}
 //}
 
-void Zombie::attackPlayer(Player *mainPlayer, float frameTime) {
+void Zombie::attackPlayer(Player *mainPlayer, float frameTime, float scalar) {
 
 	//1. get the unit vector in the direction of the player's position
 
 	// ...add code here
 	getUnitVectorCoordinates(mainPlayer);
 
-	////2. move the zombie to the player image
-	//if (this->getX() > GAME_WIDTH) {
-	//	this->setX(0);
-	//	//healthBarRed.setRect();
-	//	healthBarRed->setX(this->getX() - 8);
-	//	healthBarRed->setY(this->getY() - 5);
-	//	enemyHealthBarBackGround->setX(this->getX() - 8);
-	//	enemyHealthBarBackGround->setY(this->getY() - 5);
-	//	zombieHpText->setFontColor(graphicsNS::WHITE);
-	//}
-	//else {
-	//	// ... add code here later
-	//	this->setX(this->getX() + unitVectorXCor * frameTime*50.0f);
-	//	spriteData.x = this->getX() + unitVectorXCor * frameTime*50.0f;
-	//	this->setY(this->getY() + unitVectorYCor * frameTime*50.0f);
-	//	spriteData.y = (this->getY() + unitVectorYCor * frameTime*50.0f);
-	//	//healthBarRed.setRect();
-	//	healthBarRed->setX(this->getX() - 8);
-	//	healthBarRed->setY(this->getY() - 5);
-	//	enemyHealthBarBackGround->setX(this->getX() - 8);
-	//	enemyHealthBarBackGround->setY(this->getY() - 5);
-	//	zombieHpText->setFontColor(graphicsNS::WHITE);
-	//}
+	if (this->getIsBoss()) 
+	{
 		this->setX(this->getX() + unitVectorXCor * frameTime*50.0f);
 		spriteData.x = this->getX() + unitVectorXCor * frameTime*50.0f;
 		this->setY(this->getY() + unitVectorYCor * frameTime*50.0f);
@@ -119,7 +98,22 @@ void Zombie::attackPlayer(Player *mainPlayer, float frameTime) {
 		healthBarRed->setY(this->getY() - 5);
 		enemyHealthBarBackGround->setX(this->getX() - 8);
 		enemyHealthBarBackGround->setY(this->getY() - 5);
+		zombieHpText->setFontColor(graphicsNS::BLACK);
+	}
+	else 
+	{
+		this->setX(this->getX() + unitVectorXCor * frameTime*scalar);
+		spriteData.x = this->getX() + unitVectorXCor * frameTime*scalar;
+		this->setY(this->getY() + unitVectorYCor * frameTime*scalar);
+		spriteData.y = (this->getY() + unitVectorYCor * frameTime*scalar);
+		//healthBarRed.setRect();
+		healthBarRed->setX(this->getX() - 8);
+		healthBarRed->setY(this->getY() - 5);
+		enemyHealthBarBackGround->setX(this->getX() - 8);
+		enemyHealthBarBackGround->setY(this->getY() - 5);
 		zombieHpText->setFontColor(graphicsNS::WHITE);
+	}
+
 
 }
 
