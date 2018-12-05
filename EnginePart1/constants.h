@@ -76,7 +76,7 @@ const float PLAYER_RELOADING_SCALE = 0.3f;
 
 //zombie moving
 const char ZOMBIE_MOVING_TILE[] = "pictures\\ZombieMoveSet1.png";
-
+const char BARREL_EXPLOSION_IMAGE[] = "pictures\\BarrelExplode\\explosion.png";
 
 //HP Bar
 const float PLAYER_MAXHP = 100.0f;

@@ -24,6 +24,7 @@ LastManStanding::LastManStanding()
 	deadText = new TextDX();
 	currentGameTime = new TextDX();
 	zombieKillCountText = new TextDX();
+	isExploded = false;
 	testZombie = NULL;
 	nextShootTime = 0;
 	for (int i = 0; i < 50; i++) {
@@ -69,7 +70,14 @@ void LastManStanding::initialize(HWND hwnd)
 	//initialize bullet texture here
 	if (!BULLET_TEXTURE.initialize(graphics, BULLET_TILE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet texture"));
-
+	
+	
+	if (!barrelExplosionTexture.initialize(graphics, BARREL_EXPLOSION_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing barrelExplosion texture"));
+	if(!barrelExplosionImage.initialize(graphics,64,85,3,&barrelExplosionTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing explosionImage"));
+	
+	
 	if (!ZOMBIE_MOVING_TEXTURE.initialize(graphics, ZOMBIE_MOVING_TILE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing zombie texture"));
 
@@ -168,6 +176,10 @@ void LastManStanding::initialize(HWND hwnd)
 
 	mainPlayer.playerCurrentHp = PLAYER_MAXHP;
 
+	barrelExplosionImage.setFrames(0, 16);
+	barrelExplosionImage.setFrameDelay(0.1f);
+
+
 	healthBarGreen.setX(mainPlayer.getX() - 8);
 	healthBarGreen.setY(mainPlayer.getY() - 5);
 	healthBarBackGround.setX(mainPlayer.getX() - 8);
@@ -187,6 +199,7 @@ std::string to_format(const int number) {
 //=============================================================================
 void LastManStanding::update(Timer *gameTimer)
 {
+	barrelExplosionImage.update(frameTime);
 	mainPlayer.update(frameTime);
 	float test = gameTimer->getCurrentElapsedTime();
 	
@@ -611,7 +624,10 @@ void LastManStanding::collisions() {
 			if ((*obs)->getIsCollided())
 			{
 				//if the obstacles collides with the bullet
-
+				barrelExplosionImage.setX((*obs)->getX());
+				barrelExplosionImage.setY((*obs)->getY());
+				barrelExplosionImage.setToFrame(0);
+				isExploded = true;
 				SAFE_DELETE(*obs);
 				obs = obstacleList.erase(obs);
 			}
@@ -713,6 +729,15 @@ void LastManStanding::render()
 	zombieKillCountText->setFontColor(graphicsNS::BLACK);
 	zombieKillCountText->print("Zombie Kill Count:"+to_string(mainPlayer.zombieKillCount), camera->getCameraX() - (GAME_WIDTH / 2), camera->getCameraY() + GAME_HEIGHT / 2.2);
 	currentGameTime->print(currentTimeString, camera->getCameraX() + GAME_WIDTH / 3.3, camera->getCameraY() + GAME_HEIGHT / 2.2);
+	if (isExploded)
+	{
+		barrelExplosionImage.draw();
+		if (barrelExplosionImage.getCurrentFrame() == barrelExplosionImage.getEndFrame())
+		{
+			isExploded = false;
+		}
+	}
+	
 	graphics->spriteEnd();                  // end drawing sprites
 
 }

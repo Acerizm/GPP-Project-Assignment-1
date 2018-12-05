@@ -52,6 +52,9 @@ protected:
 	TextureManager healthBarRedTexture;
 
 	TextureManager enemyHealthBarBackGroundTexture;
+
+	TextureManager barrelExplosionTexture;
+	Image barrelExplosionImage;
 	
 	Player mainPlayer;
 	//Bullet testBullet;
@@ -85,6 +88,7 @@ protected:
 	TextDX  *hpText;
 	bool isPaused;
 	bool isDead;
+	bool isExploded;
 	TextDX *pausedText;
 	TextDX *deadText;
 	TextDX *zombieKillCountText;
