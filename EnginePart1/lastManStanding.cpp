@@ -639,7 +639,7 @@ void LastManStanding::collisions() {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// Scenario : The bullet collides with any obstacle and the obstacle is near other BARRELS (same Obstacle Type)
-
+	// WX here
 
 
 
@@ -647,6 +647,43 @@ void LastManStanding::collisions() {
 
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	//Scenario : zombie wallked near the obstacles and needs to move away in another direction
+	// this should be ez
+	// 1. track the previous node/obstacle
+	// 2.bounch but not to the opposite side but to an angle;
+
+	for (list<Zombie*>::iterator zombie = zombieList.begin(); zombie != zombieList.end();) 
+	{
+		//check will all obstacles 
+		for (list<Obstacle*>::iterator obs = obstacleList.begin(); obs != obstacleList.end();) 
+		{
+			//check if the zombie collided with the obs
+			if ((*zombie)->collidesWith(**obs, collisionVector)) 
+			{
+				(*zombie)->bounce(collisionVector, **obs);
+				//get the unit Vector of the collision Vector
+				VECTOR2 unitCollisionVector; 
+				VECTOR2(*unitCollisionVector, *collisionVector);
+				obs++;
+			}
+			else 
+			{
+				obs++;
+			}
+
+		}
+
+		zombie++;
+	}
+
+
+
+
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 //=============================================================================

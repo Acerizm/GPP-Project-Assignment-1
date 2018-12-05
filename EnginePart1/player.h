@@ -11,6 +11,7 @@
 #include "entity.h"
 #include "constants.h"
 #define VECTOR2 D3DXVECTOR2
+#define Vector2Normalize D3DXVec2Normalize()
 using namespace std;
 
 // I have refactored all codes as they need to be inherited from the entity class
