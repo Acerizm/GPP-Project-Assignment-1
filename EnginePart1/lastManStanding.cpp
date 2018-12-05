@@ -7,6 +7,7 @@
 #include "zombie.h"
 #include <sstream>
 #include <iomanip>
+#include "background.h"
 #pragma comment(lib, "Winmm.lib")
 
 
@@ -27,7 +28,7 @@ LastManStanding::LastManStanding()
 	isExploded = false;
 	testZombie = NULL;
 	nextShootTime = 0;
-	for (int i = 0; i < 50; i++) {
+	for (int i = 0; i < 30; i++) {
 		float randomType = static_cast<int>(rand()) / (static_cast<int> (RAND_MAX / 2)) + 1;
 		obsTypeList.push_back(randomType);
 	}
@@ -85,10 +86,13 @@ void LastManStanding::initialize(HWND hwnd)
 	if (!LEVEL1_TILE_TEXTURE.initialize(graphics, LEVEL1_TILE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing texture"));
 
-	//implement the LEVEL1_TILE_IMAGE image here
-	if (!LEVEL1_TILE_IMAGE.initialize(graphics, LEVEL1_TILE_WIDTH, LEVEL1_TILE_HEIGHT, 0, &LEVEL1_TILE_TEXTURE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing "));
-	
+	////implement the LEVEL1_TILE_IMAGE image here
+	//if (!LEVEL1_TILE_IMAGE.initialize(graphics, LEVEL1_TILE_WIDTH, LEVEL1_TILE_HEIGHT, 0, &LEVEL1_TILE_TEXTURE))
+	//	throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing "));
+
+	if (!backgroundImage.initialize(this, backgroundNS::LEVEL1_TILE_WIDTH, backgroundNS::LEVEL1_TILE_HEIGHT, 0, &LEVEL1_TILE_TEXTURE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing image"));
+
 	if (!healthBarGreenTexture.initialize(graphics, HEALTHBARGREEN_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarGreen texture"));
 
@@ -160,10 +164,6 @@ void LastManStanding::initialize(HWND hwnd)
 		}
 	}
 
-
-
-
-
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -172,7 +172,7 @@ void LastManStanding::initialize(HWND hwnd)
 	mciSendString("open \"audio\\backGroundMusic.wav\" type waveaudio alias backGroundMusic", NULL, 0, NULL);
 
 	//set x or set y for the initial position vector of the object
-	LEVEL1_TILE_IMAGE.setScale(LEVEL1_TILE_SCALE);
+	//	LEVEL1_TILE_IMAGE.setScale(LEVEL1_TILE_SCALE);
 
 
 	mainPlayer.playerCurrentHp = PLAYER_MAXHP;
@@ -200,6 +200,7 @@ std::string to_format(const int number) {
 //=============================================================================
 void LastManStanding::update(Timer *gameTimer)
 {
+	backgroundImage.update(frameTime);
 	barrelExplosionImage.update(frameTime);
 	mainPlayer.update(frameTime);
 	float test = gameTimer->getCurrentElapsedTime();
@@ -444,6 +445,8 @@ void LastManStanding::ai(Timer *gameTimer)
 			//testZombie->setPositionVector(testZombie->ZOMBIE_MOVING_IMAGE, PLAYER_SHOOTING_TILE_IMAGE.getCenterX(), PLAYER_SHOOTING_TILE_IMAGE.getCenterY(), zombieNS::ZOMBIE_MOVING_SCALE, zombieNS::ZOMBIE_MOVING_START_FRAME, zombieNS::ZOMBIE_MOVING_END_FRAME, zombieNS::ZOMBIE_MOVING_ANIMATION_DELAY);
 			testZombie->setPositionVector(x, y);
 
+			//each zombie the speed rng
+
 			//add the zombie to the array
 			zombieList.push_back(testZombie);
 		}
@@ -559,9 +562,9 @@ void LastManStanding::collisions(Timer *gameTimer) {
 			z++;
 		}
 	}
-	/////////////////////////////////////////////////////////////////
-	// Scenario : Bullet Collide with obstacle & obstacle checks for surrounding zombies & surround mainPlayer
-	/////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////
+	//// Scenario : Bullet Collide with obstacle & obstacle checks for surrounding zombies & surround mainPlayer
+	///////////////////////////////////////////////////////////////////
 	for (list<Bullet*>::iterator bullet = mainPlayer.BULLET_LIST.begin(); bullet != mainPlayer.BULLET_LIST.end();) 
 	{
 		for (list<Obstacle*>::iterator obs = obstacleList.begin(); obs != obstacleList.end();) 
@@ -654,18 +657,73 @@ void LastManStanding::collisions(Timer *gameTimer) {
 			bullet++;
 		}
 	}
-	// end of bullet loop
+	//// end of bullet loop
 
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
-	// Scenario : The bullet collides with any obstacle and the obstacle is near other BARRELS (same Obstacle Type)
+	// Scenario : The bullet collides with any obstacle and the obstacle is near obstacles (same Obstacle Type)
 	// WX here
+	// feature not working
+	//try {
+	//	for each (Bullet* bullet in mainPlayer.BULLET_LIST)
+	//	{
+	//		for each (Obstacle* obs in obstacleList)
+	//		{
+	//			obs->setCollisionRadius(200.0f);
+	//			if (bullet->collidesWith(*obs, collisionVector))
+	//			{
+	//				//then check other obstacles
+	//				for each (Obstacle *obs2 in obstacleList)
+	//				{
+	//					obs2->setCollisionRadius(200.0f);
+	//					//when the barrel is the same
+	//					if (obs == obs2)
+	//						continue;
+	//					else
+	//					{
+	//						if (obs->collidesWith(*obs2, collisionVector))
+	//						{
+	//							barrelExplosionImage.setX(obs2->getX());
+	//							barrelExplosionImage.setY(obs2->getY());
+	//							barrelExplosionImage.setToFrame(0);
+	//							isExploded = true;
+	//							obstacleList.remove(obs2);
+	//							SAFE_DELETE(obs2);
+	//							break;
+	//						}
+	//						else
+	//						{
+	//							//if no other obs collides with the current obs
+	//							continue;
+	//						}
+	//					}
+	//				}
 
+	//				barrelExplosionImage.setX(obs->getX());
+	//				barrelExplosionImage.setY(obs->getY());
+	//				barrelExplosionImage.setToFrame(0);
+	//				isExploded = true;
+	//				obstacleList.remove(obs);
+	//				SAFE_DELETE(obs);
+	//				//delete the bullet also
+	//				mainPlayer.BULLET_LIST.remove(bullet);
+	//				SAFE_DELETE(bullet);
+	//				int test = mainPlayer.BULLET_LIST.size();
+	//				break;
+	//			}
+	//			else
+	//			{
+	//				// when bullet never collide with the current obs
+	//				continue;
+	//			}
 
-
-
-
-
+	//		}
+	//		continue;
+	//	}
+	//}
+	//catch (exception e) {
+	//	throw(e);
+	//}
 	////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -725,18 +783,13 @@ void LastManStanding::collisions(Timer *gameTimer) {
 				{
 					VECTOR2 unitCollisionVector;
 					(zombie)->bounce(collisionVector, *zombie2);
-					//get the unit Vector of the collision Vector
-					//VECTOR2(*unitCollisionVector, *collisionVector);
 					Vector2Normalize(&unitCollisionVector, &collisionVector);
 
 					(zombie)->setX(zombie->getX() - unitCollisionVector.x*frameTime * 300.0f);
 					(zombie)->setSpriteDataX(zombie->getX());
 					(zombie)->setY(zombie->getY() - unitCollisionVector.y*frameTime * 300.0f);
 					(zombie)->setSpriteDataY(zombie->getY());
-
 					(zombie2)->bounce(collisionVector, *zombie);
-					//get the unit Vector of the collision Vector
-					//VECTOR2(*unitCollisionVector, *collisionVector);
 					Vector2Normalize(&unitCollisionVector, &collisionVector);
 
 					(zombie2)->setX(zombie2->getX() + unitCollisionVector.x*frameTime * 300.0f);
@@ -748,12 +801,6 @@ void LastManStanding::collisions(Timer *gameTimer) {
 			}
 		}
 	}
-
-
-
-
-
-
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
 }
@@ -767,16 +814,22 @@ void LastManStanding::render()
 	// aka need to render again?
 
 	graphics->spriteBegin();                // begin drawing sprites
-
+	backgroundImage.draw();
 	if (camera) 
 	{
 		camera->setTransform(graphics);
 	}
-	LEVEL1_TILE_IMAGE.draw();
+	//LEVEL1_TILE_IMAGE.draw();
 	//PLAYER_SHOOTING_TILE_IMAGE.draw();
 	//PLAYER_RELOADING_IMAGE.draw();
 	mainPlayer.draw();
-	mainPlayer.drawBullets();
+	try {
+		mainPlayer.drawBullets();
+	}
+	catch (exception e) {
+		throw(e);
+	}
+
 	//testBullet.draw();
 	
 	//mainPlayer.drawBullets();
@@ -795,10 +848,16 @@ void LastManStanding::render()
 
 	//tempObstacle->draw();
 	//draw each object here
-	for (list<Obstacle*>::iterator it = obstacleList.begin(); it != obstacleList.end();) {
-		(*it)->draw();
-		it++;
+	try {
+		for (list<Obstacle*>::iterator it = obstacleList.begin(); it != obstacleList.end();) {
+			(*it)->draw();
+			it++;
+		}
 	}
+	catch (exception e) {
+		throw(e);
+	}
+	
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	if (isPaused)

@@ -27,6 +27,57 @@ void Camera::Update()
 	{
 		cameraX = this->mainPlayer->getX() + 130;
 		cameraY = this->mainPlayer->getY() + 130;
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//ggwp hardest code
+		//Right Code
+		if (cameraX >= LEVEL1_TILE_WIDTH * LEVEL1_TILE_SCALE - GAME_WIDTH / 2 && cameraY <= GAME_HEIGHT / 2 && cameraY <= LEVEL1_TILE_HEIGHT * LEVEL1_TILE_SCALE - GAME_HEIGHT / 2)
+		{
+			cameraX = LEVEL1_TILE_WIDTH * LEVEL1_TILE_SCALE - GAME_WIDTH / 2;
+		}
+		if (cameraX >= LEVEL1_TILE_WIDTH * LEVEL1_TILE_SCALE - GAME_WIDTH / 2 && cameraY >= GAME_HEIGHT / 2 && cameraY <= LEVEL1_TILE_HEIGHT * LEVEL1_TILE_SCALE - GAME_HEIGHT / 2)
+		{
+			cameraX = LEVEL1_TILE_WIDTH * LEVEL1_TILE_SCALE - GAME_WIDTH / 2;
+		}
+		if (cameraX >= LEVEL1_TILE_WIDTH * LEVEL1_TILE_SCALE - GAME_WIDTH / 2 && cameraY >= GAME_HEIGHT / 2 && cameraY >= LEVEL1_TILE_HEIGHT * LEVEL1_TILE_SCALE - GAME_HEIGHT / 2)
+		{
+			cameraX = LEVEL1_TILE_WIDTH * LEVEL1_TILE_SCALE - GAME_WIDTH / 2;
+		}
+
+		//Left Code
+		if (cameraX <= GAME_WIDTH / 2 && cameraY <= GAME_HEIGHT / 2 && cameraY <= LEVEL1_TILE_HEIGHT * LEVEL1_TILE_SCALE - GAME_HEIGHT / 2)
+		{
+			cameraX = GAME_WIDTH / 2;
+		}
+		if (cameraX <= GAME_WIDTH / 2 && cameraY >= GAME_HEIGHT / 2 && cameraY <= LEVEL1_TILE_HEIGHT * LEVEL1_TILE_SCALE - GAME_HEIGHT / 2)
+		{
+			cameraX = GAME_WIDTH / 2;
+		}
+		if (cameraX <= GAME_WIDTH / 2 && cameraY >= GAME_HEIGHT / 2 && cameraY >= LEVEL1_TILE_HEIGHT * LEVEL1_TILE_SCALE - GAME_HEIGHT / 2)
+		{
+			cameraX = GAME_WIDTH / 2;
+		}
+
+		//Top Code
+		if (cameraX <= GAME_WIDTH / 2 && cameraY <= GAME_HEIGHT / 2)
+		{
+			cameraY = GAME_HEIGHT / 2;
+		}
+		if (cameraX >= GAME_WIDTH / 2 && cameraY <= GAME_HEIGHT / 2)
+		{
+			cameraY = GAME_HEIGHT / 2;
+		}
+		//bottom code
+		if (cameraX <= GAME_WIDTH / 2 && cameraY >= LEVEL1_TILE_HEIGHT * LEVEL1_TILE_SCALE - GAME_HEIGHT/2)
+		{
+			cameraY = LEVEL1_TILE_HEIGHT * LEVEL1_TILE_SCALE - GAME_HEIGHT / 2;
+		}
+		if (cameraX >= GAME_WIDTH / 2 && cameraY >= LEVEL1_TILE_HEIGHT * LEVEL1_TILE_SCALE - GAME_HEIGHT / 2)
+		{
+			cameraY = LEVEL1_TILE_HEIGHT * LEVEL1_TILE_SCALE - GAME_HEIGHT / 2;
+		}
+		////////////////////////////////////////////////////////////////////////////////////////////
+
+
 	}
 
 	this->viewMatrix = D3DXMATRIX(
