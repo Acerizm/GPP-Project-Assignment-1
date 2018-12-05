@@ -185,7 +185,7 @@ std::string to_format(const int number) {
 //=============================================================================
 void LastManStanding::update(Timer *gameTimer)
 {
-	
+	mainPlayer.update(frameTime);
 	float test = gameTimer->getCurrentElapsedTime();
 	
 	mciSendString("play backGroundMusic", NULL, 0, NULL);
@@ -228,7 +228,7 @@ void LastManStanding::update(Timer *gameTimer)
 			camera->Update();
 		}
 		//update the animation here
-		mainPlayer.update(frameTime);
+		
 		healthBarBackGround.update(frameTime);
 		//healthBarRed.update(frameTime);
 		////PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(playerNS::PLAYER_SHOOTING_ANIMATION_DELAY);
@@ -598,9 +598,9 @@ void LastManStanding::render()
 	int minutes = (totalSeconds / 60) % 60;
 	int seconds = totalSeconds % 60;
 	string currentTimeString = to_format(hours) + ":" + to_format(minutes) + ":" + to_format(seconds);
-	currentGameTime->print(currentTimeString, 0, 0);
+	currentGameTime->print(currentTimeString, camera->getCameraX()-GAME_WIDTH/2, camera->getCameraY()-GAME_HEIGHT/2);
 	hpText->setFontColor(graphicsNS::WHITE);
-	hpText->print(to_string((int)(mainPlayer.playerCurrentHp)) + "/" + to_string((int)(PLAYER_MAXHP)), mainPlayer.getX(), mainPlayer.getY() - 5);
+	hpText->print(to_string((int)(mainPlayer.playerCurrentHp)) + "/" + to_string((int)(PLAYER_MAXHP)), camera->getCameraX(), camera->getCameraY());
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//Wx Here
