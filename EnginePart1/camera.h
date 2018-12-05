@@ -14,6 +14,8 @@ private:
 	D3DXMATRIX identityMatrix;
 	D3DXMATRIX viewMatrix;
 	//Player *mainPlayer;
+	float cameraX;
+	float cameraY;
 
 public:
 	Player * mainPlayer;
@@ -32,6 +34,8 @@ public:
 	int width;
 	int height;
 
+	float getCameraX();
+	float getCameraY();
 
 };
 
