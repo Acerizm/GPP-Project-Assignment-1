@@ -132,6 +132,7 @@ void LastManStanding::initialize(HWND hwnd)
 				throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing Barrel"));
 
 			//then push it back to the obstacleList
+			
 			obstacleList.push_back(tempObstacle);
 
 			//then gg
@@ -450,84 +451,59 @@ void LastManStanding::collisions() {
 	VECTOR2 collisionVector;
 	VECTOR2 collisionVector2;
 	//this is where the magic happens
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	//Scenario : Zombie collide with mainPlayer and vice-versa
+	////////////////////////////////////////////////////////////////////////////////////////////////
 	if (zombieList.size() != 0) {
 		for (list<Zombie*>::iterator it = zombieList.begin(); it != zombieList.end(); ) {
-			float testzombiecenterx = (*it)->getCenterX();
-			float testzombiecentery = (*it)->getCenterY();
-			if ((*it)->collidesWith(mainPlayer,collisionVector))
+			if ((*it)->collidesWith(mainPlayer, collisionVector))
 			{
-			//the magic is here
+				//the magic is here
+				//LOL
+				//the zombie has already collided
+
 				if (nextHitTime < currentGameTimeCpp->getCurrentElapsedTime())
 				{
 					mainPlayer.playerCurrentHp -= 10;
-					nextHitTime = currentGameTimeCpp->getCurrentElapsedTime() + 2; //delay 2 seconds per hit by zombie
+					nextHitTime = currentGameTimeCpp->getCurrentElapsedTime() + 2; //delay 2 seconds per hit by zombie(s)
+					float currentHpBarPercentage = mainPlayer.playerCurrentHp / PLAYER_MAXHP;
+					healthBarGreen.setPercentage(currentHpBarPercentage);
+					//set the zombie already collided
+					(*it)->setIsCollided(true);
 				}
-				float currentHpBarPercentage = mainPlayer.playerCurrentHp / PLAYER_MAXHP;
-				healthBarGreen.setPercentage(currentHpBarPercentage);
-				if (false)
-				{
-					SAFE_DELETE(*it);
-					it = zombieList.erase(it);
-				}
-				else
-				{
+				/*float currentHpBarPercentage = mainPlayer.playerCurrentHp / PLAYER_MAXHP;
+				healthBarGreen.setPercentage(currentHpBarPercentage);*/
+
+				//	if (false)
+				//	{
+				//		SAFE_DELETE(*it);
+				//		it = zombieList.erase(it);
+				//	}
+				//	else
+				//	{
+				//		it++;
+				//	}
+				//}
+				//else {
+				//	it++;
+				//}
+				else {
+					//set the zombie not collided
+					(*it)->setIsCollided(false);
 					it++;
 				}
+				
 			}
 			else {
+				//no collision with the player
 				it++;
 			}
 		}
 	}
-	
-	 
-/*	for (list<Bullet*>::iterator it = mainPlayer.BULLET_LIST.begin(); it != mainPlayer.BULLET_LIST.end(); ) 
-	{
-		/*float testZombieCenterX = (*it)->getCenterX();
-		float testZombieCenterY = (*it)->getCenterY();
-		for (list<Zombie*>::iterator z = zombieList.begin(); z != zombieList.end();) 
-		{
-			Bullet *tempBullet = *it;
-			if ((*z)->collidesWith(*tempBullet, collisionVector))
-			{
-				//the magic is here
-				/*SAFE_DELETE(*it);
-				it = mainPlayer.BULLET_LIST.erase(it);
-				
-				if ((*z)->zombieCurrentHP <=0)
-				{
-					(*it)->setIsCollided(true);
-					SAFE_DELETE(*z);
-					z = zombieList.erase(z);
-				}
-				
-				//just to check here
-				//int check = zombieList.size();
-			}
-			else {
-				z++;
-				//it++;
-			}
-		}
-		
-		/*if (mainPlayer.BULLET_LIST.size() != 0 && zombieList.size()
-			it++;
-		else;
-
-		if ((*it)->getIsCollided()) {
-			bool test = (*it)->getIsCollided();
-			SAFE_DELETE(*it);
-			it = mainPlayer.BULLET_LIST.erase(it);
-			//it++;
-		}
-		else {
-			it++;
-		}
-
-
-
-
-	}*/
+	/////////////////////////////////////////////////////////////////////////////////////////
+	// Scenario : Zombie collide with Bullet and vice-versa
+	/////////////////////////////////////////////////////////////////////////////////////////
 	for (list<Zombie*>::iterator z = zombieList.begin(); z != zombieList.end();)
 	{
 		for (list<Bullet*>::iterator it = mainPlayer.BULLET_LIST.begin(); it != mainPlayer.BULLET_LIST.end(); )
@@ -547,6 +523,7 @@ void LastManStanding::collisions() {
 				it++;
 			}
 		}
+
 		if ((*z)->getIsCollided())
 		{
 			if ((*z)->zombieCurrentHP <= 0)
@@ -557,6 +534,8 @@ void LastManStanding::collisions() {
 			}
 			else
 			{
+				//need to tweak here as the zobie isCollide need to use in scenario below
+				(*z)->setIsCollided(false);
 				z++;
 			}
 		}
@@ -565,6 +544,83 @@ void LastManStanding::collisions() {
 			z++;
 		}
 	}
+	/////////////////////////////////////////////////////////////////
+	// Scenario : Bullet Collide with obstacle
+	/////////////////////////////////////////////////////////////////
+	for (list<Bullet*>::iterator bullet = mainPlayer.BULLET_LIST.begin(); bullet != mainPlayer.BULLET_LIST.end();) 
+	{
+		for (list<Obstacle*>::iterator obs = obstacleList.begin(); obs != obstacleList.end();) 
+		{
+			if ((*obs)->collidesWith(**bullet, collisionVector)) 
+			{
+				//add another for loop here to check surrounding zombies near the obstacle
+				// check for the radius of the obstacle
+				// aka increase the radius of that shit
+				// when got time check for the mainPlayer also :D
+
+				//purposely make the radius big for the obs
+				//catch any zombie in the circle radius :D
+				(*obs)->setCollisionRadius(500);
+ 				for (list<Zombie*>::iterator zombie = zombieList.begin(); zombie != zombieList.end();) 
+				{
+					//now check if the zombie is within the radius of the object
+					if ((*zombie)->collidesWith(**obs, collisionVector)) 
+					{
+						// instant death for the damn zombie
+						//imba
+						(*zombie)->zombieCurrentHP -= (*zombie)->zombieCurrentHP;
+						float currentHpBarPercentage = ((*zombie)->zombieCurrentHP) / ((*zombie)->zombieMaxHp);
+						(*zombie)->setPercentage(currentHpBarPercentage);
+						(*zombie)->setIsCollided(true);
+
+						SAFE_DELETE(*zombie);
+						zombie = zombieList.erase(zombie);
+					}
+					else 
+					{
+						zombie++;
+						
+					}
+				} 
+				// end of zombie for-loop
+				//zombie near the radius of the barrel is dead
+
+				(*obs)->setIsCollided(true);
+				(*bullet)->setIsCollided(true);
+
+				bool test = (*obs)->getIsCollided();
+				//check if the obs has collided
+				if ((*obs)->getIsCollided())
+				{
+					SAFE_DELETE(*obs);
+					obs = obstacleList.erase(obs);
+				}
+				else
+				{
+					obs++;
+				}
+
+			}
+			else 
+			{
+				obs++;
+			}
+
+		}
+		// end of obs loop
+
+		//check if bullet has collided
+		if ((*bullet)->getIsCollided()) 
+		{
+			SAFE_DELETE(*bullet);
+			bullet = mainPlayer.BULLET_LIST.erase(bullet);
+		}
+		else 
+		{
+			bullet++;
+		}
+	}
+	// end of bullet loop
 
 
 }
