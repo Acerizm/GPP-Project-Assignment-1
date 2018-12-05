@@ -428,14 +428,14 @@ void LastManStanding::ai(Timer *gameTimer)
 			};
 			//testZombie->setPositionVector(testZombie->ZOMBIE_MOVING_IMAGE, PLAYER_SHOOTING_TILE_IMAGE.getCenterX(), PLAYER_SHOOTING_TILE_IMAGE.getCenterY(), zombieNS::ZOMBIE_MOVING_SCALE, zombieNS::ZOMBIE_MOVING_START_FRAME, zombieNS::ZOMBIE_MOVING_END_FRAME, zombieNS::ZOMBIE_MOVING_ANIMATION_DELAY);
 			testZombie->setPositionVector(x, y);
-			float testing1 = testZombie->getCenterX();
-			float testing2 = testZombie->getCenterY();
 
 			//add the zombie to the array
 			zombieList.push_back(testZombie);
 		}
 
 		//then attack the player
+		// need to check for collision here
+		// let's do a cristmas maneuver
 		for each (Zombie * zombie in zombieList) {
 			zombie->attackPlayer(&mainPlayer, frameTime);
 
@@ -551,6 +551,10 @@ void LastManStanding::collisions() {
 	{
 		for (list<Obstacle*>::iterator obs = obstacleList.begin(); obs != obstacleList.end();) 
 		{
+			//reduce the collision radius to 10
+			//so that zombies/AI can collide with it
+			//immitating a pixel perfect scenario
+			(*obs)->setCollisionRadius(10.0f);
 			if ((*obs)->collidesWith(**bullet, collisionVector)) 
 			{
 				//add another for loop here to check surrounding zombies near the obstacle
@@ -597,12 +601,17 @@ void LastManStanding::collisions() {
 				}
 				else
 				{
+					//reduce the collision radius to 10
+					//so that zombies/AI can collide with it
+					//immitating a pixel perfect scenario
+					(*obs)->setCollisionRadius(10.0f);
 					obs++;
 				}
 
 			}
 			else 
 			{
+				(*obs)->setCollisionRadius(10.0f);
 				obs++;
 			}
 
