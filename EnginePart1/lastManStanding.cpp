@@ -72,9 +72,9 @@ void LastManStanding::initialize(HWND hwnd)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet texture"));
 	
 	
-	if (!barrelExplosionTexture.initialize(graphics, BARREL_EXPLOSION_IMAGE))
+	if (!barrelExplosionTexture.initialize(graphics, OBS1_TILE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing barrelExplosion texture"));
-	if(!barrelExplosionImage.initialize(graphics,64,85,3,&barrelExplosionTexture))
+	if(!barrelExplosionImage.initialize(graphics,450,450,4,&barrelExplosionTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing explosionImage"));
 	
 	
@@ -177,9 +177,9 @@ void LastManStanding::initialize(HWND hwnd)
 
 	mainPlayer.playerCurrentHp = PLAYER_MAXHP;
 
-	barrelExplosionImage.setFrames(0, 16);
+	barrelExplosionImage.setFrames(0, 9);
 	barrelExplosionImage.setFrameDelay(0.1f);
-
+	barrelExplosionImage.setScale(0.3f);
 
 	healthBarGreen.setX(mainPlayer.getX() - 8);
 	healthBarGreen.setY(mainPlayer.getY() - 5);
@@ -480,7 +480,11 @@ void LastManStanding::collisions(Timer *gameTimer) {
 
 				if (nextHitTime < currentGameTimeCpp->getCurrentElapsedTime())
 				{
-					mainPlayer.playerCurrentHp -= 10;
+					if (mainPlayer.playerCurrentHp > 0)
+					{
+						mainPlayer.playerCurrentHp -= 10;
+
+					}
 					nextHitTime = currentGameTimeCpp->getCurrentElapsedTime() + 2; //delay 2 seconds per hit by zombie(s)
 					float currentHpBarPercentage = mainPlayer.playerCurrentHp / PLAYER_MAXHP;
 					healthBarGreen.setPercentage(currentHpBarPercentage);
@@ -625,8 +629,8 @@ void LastManStanding::collisions(Timer *gameTimer) {
 			if ((*obs)->getIsCollided())
 			{
 				//if the obstacles collides with the bullet
-				barrelExplosionImage.setX((*obs)->getX());
-				barrelExplosionImage.setY((*obs)->getY());
+				barrelExplosionImage.setX((*obs)->getCenterX()- (barrelExplosionImage.getWidth()*0.3/2));
+				barrelExplosionImage.setY((*obs)->getCenterY()- (barrelExplosionImage.getHeight()*0.3/2));
 				barrelExplosionImage.setToFrame(0);
 				isExploded = true;
 				SAFE_DELETE(*obs);
