@@ -10,6 +10,7 @@ Player::Player() :Entity()
 	spriteData.scale = playerNS::PLAYER_SHOOTING_SCALE;
 	spriteData.x = 0;
 	spriteData.y = 0;
+	//spriteData.
 };
 
 Player::~Player() {
@@ -83,27 +84,33 @@ void Player::moveBullet(float frameTime) {
 
 void Player::drawBullets() 
 {
-	if (BULLET_LIST.size() != 0) {
-		for (list<Bullet*>::iterator it = BULLET_LIST.begin(); it != BULLET_LIST.end(); ) {
-			if ((*it)->BULLET_IMAGE.getX() > GAME_WIDTH || (*it)->BULLET_IMAGE.getX() < 0 || (*it)->BULLET_IMAGE.getY() > GAME_HEIGHT || (*it)->BULLET_IMAGE.getY() < 0)
+	try {
+		if (BULLET_LIST.size() != 0) {
+			for (list<Bullet*>::iterator it = BULLET_LIST.begin(); it != BULLET_LIST.end(); ) {
+				if ((*it)->BULLET_IMAGE.getX() > GAME_WIDTH || (*it)->BULLET_IMAGE.getX() < 0 || (*it)->BULLET_IMAGE.getY() > GAME_HEIGHT || (*it)->BULLET_IMAGE.getY() < 0)
+				{
+					SAFE_DELETE(*it);
+					it = BULLET_LIST.erase(it);
+					//just to check here
+					int check = BULLET_LIST.size();
+					//bool test = false;
+				}
+				else {
+					it++;
+				}
+			}
+
+			//when all okay go and draw the bullet
+			for each(Bullet* bullet in BULLET_LIST)
 			{
-				SAFE_DELETE(*it);
-				it = BULLET_LIST.erase(it);
-				//just to check here
-				int check = BULLET_LIST.size();
-				//bool test = false;
+				bullet->draw();
 			}
-			else {
-				it++;
-			}
-		}
-	
-		//when all okay go and draw the bullet
-		for each(Bullet* bullet in BULLET_LIST)
-		{
-			bullet->draw();
 		}
 	}
+	catch (exception e) {
+		throw(e);
+	}
+
 }
 
 //void Player::initialize(Graphics *graphics, TextureManager &texture, Image &image) {

@@ -14,6 +14,7 @@
 #include "obstacle.h"
 #include <vector>
 #include "camera.h"
+#include "background.h"
 using namespace std;
 
 //=============================================================================
@@ -27,7 +28,7 @@ protected:
 
 	//the textures & images here
 	TextureManager LEVEL1_TILE_TEXTURE;
-	Image LEVEL1_TILE_IMAGE;
+	//Image LEVEL1_TILE_IMAGE;
 
 	TextureManager PLAYER_SHOOTING_TILE_TEXTURE;
 	//Image PLAYER_SHOOTING_TILE_IMAGE;
@@ -55,6 +56,10 @@ protected:
 
 	TextureManager barrelExplosionTexture;
 	Image barrelExplosionImage;
+
+	//TextureManager ZombieBoss;
+
+	Background backgroundImage;
 	
 	Player mainPlayer;
 	//Bullet testBullet;
