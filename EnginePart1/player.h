@@ -47,6 +47,7 @@ private:
 
 	Image PLAYER_SHOOTING_TILE_IMAGE;
 	float playerCurrentHp;
+	int zombieKillCount;
 
 public:
 	Player();

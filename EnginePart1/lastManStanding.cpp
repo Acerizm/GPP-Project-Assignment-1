@@ -23,6 +23,7 @@ LastManStanding::LastManStanding()
 	isDead = false;
 	deadText = new TextDX();
 	currentGameTime = new TextDX();
+	zombieKillCountText = new TextDX();
 	testZombie = NULL;
 	nextShootTime = 0;
 	for (int i = 0; i < 50; i++) {
@@ -101,7 +102,10 @@ void LastManStanding::initialize(HWND hwnd)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing pausedText font"));
 	if(currentGameTime->initialize(graphics,20,true,false,"Arial") == false)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing currentGameTime font"));
+	if(zombieKillCountText->initialize(graphics,20,true,false,"Arial") == false)
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing zombieKillCountText font"));
 
+	
 
 	if (!healthBarRedTexture.initialize(graphics, HEALTHBARRED_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarRed texture"));
@@ -463,7 +467,10 @@ void LastManStanding::collisions() {
 
 				if (nextHitTime < currentGameTimeCpp->getCurrentElapsedTime())
 				{
-					mainPlayer.playerCurrentHp -= 10;
+					if (mainPlayer.playerCurrentHp > 0)
+					{
+						mainPlayer.playerCurrentHp -= 10;
+					}
 					nextHitTime = currentGameTimeCpp->getCurrentElapsedTime() + 2; //delay 2 seconds per hit by zombie(s)
 					float currentHpBarPercentage = mainPlayer.playerCurrentHp / PLAYER_MAXHP;
 					healthBarGreen.setPercentage(currentHpBarPercentage);
@@ -526,7 +533,7 @@ void LastManStanding::collisions() {
 		{
 			if ((*z)->zombieCurrentHP <= 0)
 			{
-				
+				mainPlayer.zombieKillCount++;
 				SAFE_DELETE(*z);
 				z = zombieList.erase(z);
 			}
@@ -669,18 +676,22 @@ void LastManStanding::render()
 	if (isPaused)
 	{
 		pausedText->setFontColor(graphicsNS::RED);
-		pausedText->print("Game is Paused Press F2 to Resume", 0,0);
+		pausedText->print("Game is Paused Press F2 to Resume", camera->getCameraX(), camera->getCameraY());
 	}
 	if (isDead)
 	{
 		deadText->setFontColor(graphicsNS::RED);
-		deadText->print("YOU DIED! Press Esc to close game", 0, 0);
+		deadText->print("YOU DIED! Press Esc to close game", camera->getCameraX(), camera->getCameraY());
 	}
 
 	drawZombieAIs();
 	healthBarBackGround.draw();
 	healthBarGreen.draw();
 	hpText->print(to_string((int)(mainPlayer.playerCurrentHp)) + "/" + to_string((int)(PLAYER_MAXHP)), camera->getCameraX() - (GAME_WIDTH / 2)*0.9, camera->getCameraY() - GAME_HEIGHT / 2);
+	
+	zombieKillCountText->setFontColor(graphicsNS::BLACK);
+	zombieKillCountText->print("Zombie Killed:" + to_string(mainPlayer.zombieKillCount),camera->getCameraX() - GAME_WIDTH / 2, camera->getCameraY() + GAME_HEIGHT / 2.2);
+
 	currentGameTime->print(currentTimeString, camera->getCameraX() + GAME_WIDTH / 3.3, camera->getCameraY() + GAME_HEIGHT / 2.2);
 	graphics->spriteEnd();                  // end drawing sprites
 

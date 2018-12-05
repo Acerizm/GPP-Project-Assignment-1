@@ -88,6 +88,7 @@ protected:
 	TextDX *pausedText;
 	TextDX *deadText;
 	TextDX *currentGameTime;
+	TextDX *zombieKillCountText;
 	float nextShootTime;
 	float nextHitTime;
 
