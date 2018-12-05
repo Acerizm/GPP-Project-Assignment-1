@@ -122,6 +122,7 @@ bool Player::initialize(Game *gamePtr, int width, int height, int ncols,
 	this->setCurrentFrame(playerNS::PLAYER_SHOOTING_START_FRAME);
 	this->setFrameDelay(playerNS::PLAYER_SHOOTING_ANIMATION_DELAY);
 	this->setLoop(true);                  // do not loop animation
+	zombieKillCount = 0;
 	return(Entity::initialize(gamePtr, width, height, ncols, textureM));
 }
 

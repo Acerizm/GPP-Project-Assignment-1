@@ -44,7 +44,7 @@ private:
 	friend class Camera;
 	//take in lastManStanding to use graphics xd
 	//LastManStanding last_Man_Standing;
-
+	int zombieKillCount;
 	Image PLAYER_SHOOTING_TILE_IMAGE;
 	float playerCurrentHp;
 
