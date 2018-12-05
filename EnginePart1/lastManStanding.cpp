@@ -713,11 +713,11 @@ void LastManStanding::collisions(Timer *gameTimer) {
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	//Scenario : zombie collided with one another
 
-	for (list<Zombie*>::iterator zombie = zombieList.begin(); zombie != zombieList.end();)
+	/*for (list<Zombie*>::iterator zombie = zombieList.begin(); zombie != zombieList.end();)
 	{
 		Zombie *tempZombie = *zombie;
 
-	}
+	}*/
 
 
 
