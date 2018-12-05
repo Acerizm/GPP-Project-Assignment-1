@@ -92,7 +92,7 @@ void LastManStanding::initialize(HWND hwnd)
 	if (!healthBarBackGround.initialize(graphics, 256, 32, 1, &healthBarBackGroundTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing healthBarBackGround"));
 
-	if (hpText->initialize(graphics, 15, true, false, "Arial") == false)
+	if (hpText->initialize(graphics, 32, true, false, "Arial") == false)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing hpText font"));
 
 	if (pausedText->initialize(graphics, 30, true, false, "Arial") == false)
@@ -169,8 +169,6 @@ void LastManStanding::initialize(HWND hwnd)
 	healthBarGreen.setY(mainPlayer.getY() - 5);
 	healthBarBackGround.setX(mainPlayer.getX() - 8);
 	healthBarBackGround.setY(mainPlayer.getY() - 5);
-	healthBarGreen.setScale(0.5f);
-	healthBarBackGround.setScale(0.5f);
 
 	return;
 }
@@ -354,12 +352,12 @@ void LastManStanding::update(Timer *gameTimer)
 		{
 			isDead = false;
 		}
+		
+		healthBarGreen.setX(camera->getCameraX() - GAME_WIDTH/2);
+		healthBarGreen.setY(camera->getCameraY() - GAME_HEIGHT/2);
+		healthBarBackGround.setX(camera->getCameraX() - GAME_WIDTH/2);
+		healthBarBackGround.setY(camera->getCameraY() - GAME_HEIGHT/2);
 		healthBarGreen.setRect();
-		healthBarGreen.setX(mainPlayer.getX() - 8);
-		healthBarGreen.setY(mainPlayer.getY() - 5);
-		healthBarBackGround.setX(mainPlayer.getX() - 8);
-		healthBarBackGround.setY(mainPlayer.getY() - 5);
-
 		//edit here to chnage the direction of the bullet
 		mainPlayer.moveBullet(frameTime);
 	}
@@ -645,18 +643,17 @@ void LastManStanding::render()
 	mainPlayer.draw();
 	mainPlayer.drawBullets();
 	//testBullet.draw();
-	healthBarBackGround.draw();
-	healthBarGreen.draw();
+	
 	//mainPlayer.drawBullets();
-	currentGameTime->setFontColor(graphicsNS::YELLOW);
+	currentGameTime->setFontColor(graphicsNS::BLACK);
 	int totalSeconds = this->currentGameTimeCpp->getCurrentElapsedTime();
 	int hours = totalSeconds / 3600;
 	int minutes = (totalSeconds / 60) % 60;
 	int seconds = totalSeconds % 60;
-	string currentTimeString = to_format(hours) + ":" + to_format(minutes) + ":" + to_format(seconds);
-	currentGameTime->print(currentTimeString, camera->getCameraX()-GAME_WIDTH/2, camera->getCameraY()-GAME_HEIGHT/2);
+	string currentTimeString ="Elapsed Time:" + to_format(hours) + ":" + to_format(minutes) + ":" + to_format(seconds);
+	
 	hpText->setFontColor(graphicsNS::WHITE);
-	hpText->print(to_string((int)(mainPlayer.playerCurrentHp)) + "/" + to_string((int)(PLAYER_MAXHP)), camera->getCameraX(), camera->getCameraY());
+	
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//Wx Here
@@ -679,7 +676,12 @@ void LastManStanding::render()
 		deadText->setFontColor(graphicsNS::RED);
 		deadText->print("YOU DIED! Press Esc to close game", 0, 0);
 	}
+
 	drawZombieAIs();
+	healthBarBackGround.draw();
+	healthBarGreen.draw();
+	hpText->print(to_string((int)(mainPlayer.playerCurrentHp)) + "/" + to_string((int)(PLAYER_MAXHP)), camera->getCameraX() - (GAME_WIDTH / 2)*0.9, camera->getCameraY() - GAME_HEIGHT / 2);
+	currentGameTime->print(currentTimeString, camera->getCameraX() + GAME_WIDTH / 3.3, camera->getCameraY() + GAME_HEIGHT / 2.2);
 	graphics->spriteEnd();                  // end drawing sprites
 
 }
