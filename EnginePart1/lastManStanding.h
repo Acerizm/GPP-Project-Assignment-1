@@ -104,7 +104,7 @@ public:
 	void initialize(HWND hwnd);
 	void update(Timer *gameTimer);      // must override pure virtual from Game
 	void ai(Timer *gameTimer);          // "
-	void collisions();  // "
+	void collisions(Timer *gameTimer);  // "
 	void render();      // "
 	void releaseAll();
 	void resetAll();

@@ -132,7 +132,7 @@ void LastManStanding::initialize(HWND hwnd)
 				throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing Barrel"));
 
 			//then push it back to the obstacleList
-			
+			tempObstacle->setCollisionRadius(10.0f);
 			obstacleList.push_back(tempObstacle);
 
 			//then gg
@@ -143,6 +143,7 @@ void LastManStanding::initialize(HWND hwnd)
 			if (!tempObstacle->initialize(this, &OBS1_TEXTURE, randomX, randomY, 2))
 				throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing Barrel"));
 			//then push it back to the obstacleList
+			tempObstacle->setCollisionRadius(10.0f);
 			obstacleList.push_back(tempObstacle);
 			//then gg
 		}
@@ -445,7 +446,7 @@ void LastManStanding::ai(Timer *gameTimer)
 //=============================================================================
 // Handle collisions
 //=============================================================================
-void LastManStanding::collisions() {
+void LastManStanding::collisions(Timer *gameTimer) {
 	VECTOR2 collisionVector;
 	VECTOR2 collisionVector2;
 	//this is where the magic happens
@@ -669,13 +670,12 @@ void LastManStanding::collisions() {
 				//VECTOR2(*unitCollisionVector, *collisionVector);
 				Vector2Normalize(&unitCollisionVector, &collisionVector);
 
-
-				(*zombie)->setX(unitCollisionVector.x + frameTime * 100.0f);
+				float elapsedTime = gameTimer->getCurrentElapsedTime();
+				(*zombie)->setX((*zombie)->getX() - unitCollisionVector.x*frameTime * 300.0f);
 				(*zombie)->setSpriteDataX((*zombie)->getX());
-				(*zombie)->setY(unitCollisionVector.y + frameTime * 100.0f);
+				(*zombie)->setY((*zombie)->getY() - unitCollisionVector.y*frameTime * 300.0f);
 				(*zombie)->setSpriteDataY((*zombie)->getY());
-
-				
+			
 				obs++;
 			}
 			else 
@@ -687,6 +687,19 @@ void LastManStanding::collisions() {
 
 		zombie++;
 	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	//Scenario : zombie collided with one another
+
+	for (list<Zombie*>::iterator zombie = zombieList.begin(); zombie != zombieList.end();)
+	{
+		Zombie *tempZombie = *zombie;
+
+	}
+
 
 
 
