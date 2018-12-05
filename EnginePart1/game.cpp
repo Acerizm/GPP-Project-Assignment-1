@@ -202,7 +202,7 @@ void Game::run(HWND hwnd,Timer *gameTimer)
     {
         update(gameTimer);                   // update all game items
         ai(gameTimer);                       // artificial intelligence
-        collisions();               // handle collisions
+        collisions(gameTimer);               // handle collisions
         input->vibrateControllers(frameTime); // handle controller vibration
     }
     renderGame();                   // draw all game items

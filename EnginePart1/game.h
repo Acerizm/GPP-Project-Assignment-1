@@ -81,7 +81,7 @@ public:
     virtual void ai(Timer *gameTimer) = 0;
 
     // Check for collisions.
-    virtual void collisions() = 0;
+    virtual void collisions(Timer *gameTimer) = 0;
 
     // Render graphics.
     // Call graphics->spriteBegin();

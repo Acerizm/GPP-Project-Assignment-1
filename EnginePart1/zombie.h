@@ -83,6 +83,24 @@ public:
 	}
 	void setPercentage(float currentPercentage);
 
+	float getSpriteDataX() {
+		return spriteData.x;
+	}
+
+	float getSpriteDataY() {
+		return spriteData.y;
+	}
+
+	void setSpriteDataX(float x) {
+		spriteData.x = x;
+	}
+
+	void setSpriteDataY(float y) {
+		spriteData.y = y;
+	}
+
+
+
 };
 
 #endif

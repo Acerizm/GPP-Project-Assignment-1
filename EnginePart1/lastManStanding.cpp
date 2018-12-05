@@ -143,7 +143,7 @@ void LastManStanding::initialize(HWND hwnd)
 				throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing Barrel"));
 
 			//then push it back to the obstacleList
-			
+			tempObstacle->setCollisionRadius(10.0f);
 			obstacleList.push_back(tempObstacle);
 
 			//then gg
@@ -154,6 +154,7 @@ void LastManStanding::initialize(HWND hwnd)
 			if (!tempObstacle->initialize(this, &OBS1_TEXTURE, randomX, randomY, 2))
 				throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing Barrel"));
 			//then push it back to the obstacleList
+			tempObstacle->setCollisionRadius(10.0f);
 			obstacleList.push_back(tempObstacle);
 			//then gg
 		}
@@ -461,7 +462,7 @@ void LastManStanding::ai(Timer *gameTimer)
 //=============================================================================
 // Handle collisions
 //=============================================================================
-void LastManStanding::collisions() {
+void LastManStanding::collisions(Timer *gameTimer) {
 	VECTOR2 collisionVector;
 	VECTOR2 collisionVector2;
 	//this is where the magic happens
@@ -658,7 +659,7 @@ void LastManStanding::collisions() {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// Scenario : The bullet collides with any obstacle and the obstacle is near other BARRELS (same Obstacle Type)
-
+	// WX here
 
 
 
@@ -666,6 +667,65 @@ void LastManStanding::collisions() {
 
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	//Scenario : zombie wallked near the obstacles and needs to move away in another direction
+	// this should be ez
+	// 1. track the previous node/obstacle
+	// 2.bounch but not to the opposite side but to an angle;
+
+	for (list<Zombie*>::iterator zombie = zombieList.begin(); zombie != zombieList.end();) 
+	{
+		//check will all obstacles 
+		for (list<Obstacle*>::iterator obs = obstacleList.begin(); obs != obstacleList.end();) 
+		{
+			//check if the zombie collided with the obs
+			if ((*zombie)->collidesWith(**obs, collisionVector)) 
+			{
+				(*zombie)->bounce(collisionVector, **obs);
+				//get the unit Vector of the collision Vector
+				VECTOR2 unitCollisionVector; 
+				//VECTOR2(*unitCollisionVector, *collisionVector);
+				Vector2Normalize(&unitCollisionVector, &collisionVector);
+
+				float elapsedTime = gameTimer->getCurrentElapsedTime();
+				(*zombie)->setX((*zombie)->getX() - unitCollisionVector.x*frameTime * 300.0f);
+				(*zombie)->setSpriteDataX((*zombie)->getX());
+				(*zombie)->setY((*zombie)->getY() - unitCollisionVector.y*frameTime * 300.0f);
+				(*zombie)->setSpriteDataY((*zombie)->getY());
+			
+				obs++;
+			}
+			else 
+			{
+				obs++;
+			}
+
+		}
+
+		zombie++;
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	//Scenario : zombie collided with one another
+
+	for (list<Zombie*>::iterator zombie = zombieList.begin(); zombie != zombieList.end();)
+	{
+		Zombie *tempZombie = *zombie;
+
+	}
+
+
+
+
+
+
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 //=============================================================================
