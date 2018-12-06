@@ -140,8 +140,8 @@ void LastManStanding::initialize(HWND hwnd)
 		//the address of tempObstacle keeps changing in lastManStanding.h fyi
 		tempObstacle = new Obstacle();
 		//rng here
-		float randomX = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / (LEVEL1_TILE_HEIGHT*LEVEL1_TILE_SCALE - 100)));
-		float randomY = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / (LEVEL1_TILE_WIDTH*LEVEL1_TILE_SCALE - 100)));
+		float randomX = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / (LEVEL1_TILE_HEIGHT*LEVEL1_TILE_SCALE - LEVEL1_TILE_HEIGHT*0.1)));
+		float randomY = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / (LEVEL1_TILE_WIDTH*LEVEL1_TILE_SCALE - LEVEL1_TILE_WIDTH*0.1)));
 		//check if the type = "1" which represent barrel
 		if (obsTypeList[i] == 1) {
 			//need to random the position of the barrels
@@ -510,6 +510,7 @@ void LastManStanding::collisions(Timer *gameTimer) {
 			continue;
 		else 
 		{
+			// check the surrounding of the zombie boss
 			boss->setCollisionRadius(200);
 			for each (Zombie *smallZombie in zombieList) 
 			{
@@ -520,6 +521,7 @@ void LastManStanding::collisions(Timer *gameTimer) {
 				{
 					if (boss->collidesWith(*smallZombie, collisionVector))
 					{
+						// after 300, will walk normal
 						smallZombie->attackPlayer(&mainPlayer, frameTime, 300.0f);
 					}
 					else
@@ -556,6 +558,7 @@ void LastManStanding::collisions(Timer *gameTimer) {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	//Scenario : Zombie collide with mainPlayer and vice-versa
+	//wx
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	if (zombieList.size() != 0) {
 		for (list<Zombie*>::iterator it = zombieList.begin(); it != zombieList.end(); ) {
@@ -565,6 +568,7 @@ void LastManStanding::collisions(Timer *gameTimer) {
 				//LOL
 				//the zombie has already collided
 
+				// if current = 0
 				if (nextHitTime < currentGameTimeCpp->getCurrentElapsedTime())
 				{
 					if (mainPlayer.playerCurrentHp > 0)
@@ -578,22 +582,7 @@ void LastManStanding::collisions(Timer *gameTimer) {
 					//set the zombie already collided
 					(*it)->setIsCollided(true);
 				}
-				/*float currentHpBarPercentage = mainPlayer.playerCurrentHp / PLAYER_MAXHP;
-				healthBarGreen.setPercentage(currentHpBarPercentage);*/
-
-				//	if (false)
-				//	{
-				//		SAFE_DELETE(*it);
-				//		it = zombieList.erase(it);
-				//	}
-				//	else
-				//	{
-				//		it++;
-				//	}
-				//}
-				//else {
-				//	it++;
-				//}
+				
 				else {
 					//set the zombie not collided
 					(*it)->setIsCollided(false);
