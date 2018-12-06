@@ -487,6 +487,7 @@ void LastManStanding::collisions(Timer *gameTimer) {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// Scenario : Player colliding with other objects
+	// LJ
 	for each (Obstacle * obs in obstacleList)
 	{
 		obs->setCollisionRadius(100);
@@ -502,13 +503,14 @@ void LastManStanding::collisions(Timer *gameTimer) {
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 	// Scenario : Zombie boss tossing other zombies to the main player
+	// WX
 	for each (Zombie *boss in zombieList) 
 	{
 		if (!boss->getIsBoss())
 			continue;
 		else 
 		{
-			boss->setCollisionRadius(500);
+			boss->setCollisionRadius(200);
 			for each (Zombie *smallZombie in zombieList) 
 			{
 
@@ -528,30 +530,28 @@ void LastManStanding::collisions(Timer *gameTimer) {
 		}
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////
-	/*for each(Zombie *boss in zombieList) 
+	//Scenario : When the Boss collides with the environment
+	// WX
+	if (zombieList.size() > 0 && obstacleList.size() > 0)
 	{
-		if (!boss->getIsBoss())
-			continue;
-		else 
-		{
-			boss->setCollisionRadius(100.0f);
+		for (list<Zombie*>::iterator zombie = zombieList.begin(); zombie != zombieList.end();) {
+			if (!(*zombie)->getIsBoss())
+				zombie++;
+			else {
+				for (list<Obstacle*>::iterator obs = obstacleList.begin(); obs != obstacleList.end();) {
+					if ((*zombie)->collidesWith(**obs, collisionVector)) {
+						// destroy the objects around the boss
+						SAFE_DELETE(*obs);
+						obs = obstacleList.erase(obs);
+					}
+					else
+						obs++;
+				}
 
-			for each (Obstacle *obs in obstacleList) 
-			{
-				if (boss->collidesWith(*obs, collisionVector)) 
-				{
-					obstacleList.remove(obs);
-					obs = nullptr;
-					
-					continue;
-				}
-				else {
-					continue;
-				}
+				zombie++;
 			}
-
 		}
-	}*/
+	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -609,6 +609,7 @@ void LastManStanding::collisions(Timer *gameTimer) {
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////
 	// Scenario : Zombie collide with Bullet and vice-versa
+	//Darren
 	/////////////////////////////////////////////////////////////////////////////////////////
 	for (list<Zombie*>::iterator z = zombieList.begin(); z != zombieList.end();)
 	{
@@ -652,6 +653,7 @@ void LastManStanding::collisions(Timer *gameTimer) {
 	}
 	///////////////////////////////////////////////////////////////////
 	//// Scenario : Bullet Collide with obstacle & obstacle checks for surrounding zombies & surround mainPlayer
+	// HQL
 	///////////////////////////////////////////////////////////////////
 	for (list<Bullet*>::iterator bullet = mainPlayer.BULLET_LIST.begin(); bullet != mainPlayer.BULLET_LIST.end();) 
 	{
@@ -748,79 +750,13 @@ void LastManStanding::collisions(Timer *gameTimer) {
 	//// end of bullet loop
 
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	// Scenario : The bullet collides with any obstacle and the obstacle is near obstacles (same Obstacle Type)
-	// WX here
-	// feature not working
-	//try {
-	//	for each (Bullet* bullet in mainPlayer.BULLET_LIST)
-	//	{
-	//		for each (Obstacle* obs in obstacleList)
-	//		{
-	//			obs->setCollisionRadius(200.0f);
-	//			if (bullet->collidesWith(*obs, collisionVector))
-	//			{
-	//				//then check other obstacles
-	//				for each (Obstacle *obs2 in obstacleList)
-	//				{
-	//					obs2->setCollisionRadius(200.0f);
-	//					//when the barrel is the same
-	//					if (obs == obs2)
-	//						continue;
-	//					else
-	//					{
-	//						if (obs->collidesWith(*obs2, collisionVector))
-	//						{
-	//							barrelExplosionImage.setX(obs2->getX());
-	//							barrelExplosionImage.setY(obs2->getY());
-	//							barrelExplosionImage.setToFrame(0);
-	//							isExploded = true;
-	//							obstacleList.remove(obs2);
-	//							SAFE_DELETE(obs2);
-	//							break;
-	//						}
-	//						else
-	//						{
-	//							//if no other obs collides with the current obs
-	//							continue;
-	//						}
-	//					}
-	//				}
-
-	//				barrelExplosionImage.setX(obs->getX());
-	//				barrelExplosionImage.setY(obs->getY());
-	//				barrelExplosionImage.setToFrame(0);
-	//				isExploded = true;
-	//				obstacleList.remove(obs);
-	//				SAFE_DELETE(obs);
-	//				//delete the bullet also
-	//				mainPlayer.BULLET_LIST.remove(bullet);
-	//				SAFE_DELETE(bullet);
-	//				int test = mainPlayer.BULLET_LIST.size();
-	//				break;
-	//			}
-	//			else
-	//			{
-	//				// when bullet never collide with the current obs
-	//				continue;
-	//			}
-
-	//		}
-	//		continue;
-	//	}
-	//}
-	//catch (exception e) {
-	//	throw(e);
-	//}
-	////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//Scenario : zombie wallked near the obstacles and needs to move away in another direction
 	// this should be ez
 	// 1. track the previous node/obstacle
 	// 2.bounch but not to the opposite side but to an angle;
-
+	// HQL
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	for (list<Zombie*>::iterator zombie = zombieList.begin(); zombie != zombieList.end();) 
 	{
 		//check will all obstacles 
@@ -858,7 +794,7 @@ void LastManStanding::collisions(Timer *gameTimer) {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	//Scenario : zombie collided with one another
-
+	// Darren
 	for each (Zombie *zombie in zombieList) 
 	{
 		for each (Zombie *zombie2 in zombieList) 
@@ -889,7 +825,6 @@ void LastManStanding::collisions(Timer *gameTimer) {
 			}
 		}
 	}
-
 	//////////////////////////////////////////////////////////////////////////////////////////////
 }
 
