@@ -361,7 +361,7 @@ void LastManStanding::update(Timer *gameTimer)
 		else if (input->wasKeyPressed(VK_F2))
 		{
 			//To Recover 5 health.
-			mainPlayer.playerCurrentHp = mainPlayer.playerCurrentHp + 5;
+			//mainPlayer.playerCurrentHp = mainPlayer.playerCurrentHp + 5;
 			float currentHpBarPercentage = mainPlayer.playerCurrentHp / PLAYER_MAXHP;
 			healthBarGreen.setPercentage(currentHpBarPercentage);
 			isPaused = !isPaused;
@@ -381,6 +381,8 @@ void LastManStanding::update(Timer *gameTimer)
 		{
 			isDead = false;
 		}
+
+		// place the player healthbar at the top left of the game camera.
 		
 		healthBarGreen.setX(camera->getCameraX() - GAME_WIDTH/2);
 		healthBarGreen.setY(camera->getCameraY() - GAME_HEIGHT/2);
@@ -492,6 +494,7 @@ void LastManStanding::collisions(Timer *gameTimer) {
 	{
 		obs->setCollisionRadius(100);
 		if (mainPlayer.collidesWith(*obs, collisionVector)) {
+			// the player will bounce around the object
 			(mainPlayer).bounce(collisionVector, *obs);
 			VECTOR2 unitCollisionVector;
 			Vector2Normalize(&unitCollisionVector, &collisionVector);
@@ -883,15 +886,16 @@ void LastManStanding::render()
 	
 
 	///////////////////////////////////////////////////////////////////////////////////////////
+	//Lj
 	if (isPaused)
 	{
 		pausedText->setFontColor(graphicsNS::RED);
-		pausedText->print("Game is Paused Press F2 to Resume", 0,0);
+		pausedText->print("Game is Paused Press F2 to Resume", camera->getCameraX(),camera->getCameraY());
 	}
 	if (isDead)
 	{
 		deadText->setFontColor(graphicsNS::RED);
-		deadText->print("YOU DIED! Press Esc to close game", 0, 0);
+		deadText->print("YOU DIED! Press Esc to close game", camera->getCameraX(), camera->getCameraY());
 	}
 
 	drawZombieAIs();
