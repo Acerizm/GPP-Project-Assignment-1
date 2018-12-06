@@ -69,7 +69,7 @@ void LastManStanding::initialize(HWND hwnd)
 	mainPlayer.setPositionVector(LEVEL1_TILE_HEIGHT*LEVEL1_TILE_SCALE / 2, LEVEL1_TILE_WIDTH*LEVEL1_TILE_SCALE / 2);
 	mainPlayer.setSpriteDataXnY(LEVEL1_TILE_HEIGHT*LEVEL1_TILE_SCALE / 2, LEVEL1_TILE_WIDTH*LEVEL1_TILE_SCALE / 2);
 
-	mainPlayer.setCollisionRadius(10);
+	mainPlayer.setCollisionRadius(100);
 	//initialize bullet texture here
 	if (!BULLET_TEXTURE.initialize(graphics, BULLET_TILE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet texture"));
@@ -485,15 +485,30 @@ void LastManStanding::collisions(Timer *gameTimer) {
 	VECTOR2 collisionVector2;
 	//this is where the magic happens
 
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	// Scenario : Player colliding with other objects
+	for each (Obstacle * obs in obstacleList)
+	{
+		obs->setCollisionRadius(100);
+		if (mainPlayer.collidesWith(*obs, collisionVector)) {
+			(mainPlayer).bounce(collisionVector, *obs);
+			VECTOR2 unitCollisionVector;
+			Vector2Normalize(&unitCollisionVector, &collisionVector);
+			mainPlayer.setX(mainPlayer.getX() - unitCollisionVector.x * frameTime*100.0f);
+			mainPlayer.setY(mainPlayer.getY() - unitCollisionVector.y * frameTime*100.0f);
+			mainPlayer.setSpriteDataXnY(mainPlayer.getX(),mainPlayer.getY());
+		}
+	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////
+	// Scenario : Zombie boss tossing other zombies to the main player
 	for each (Zombie *boss in zombieList) 
 	{
 		if (!boss->getIsBoss())
 			continue;
 		else 
 		{
-			boss->setCollisionRadius(100);
+			boss->setCollisionRadius(500);
 			for each (Zombie *smallZombie in zombieList) 
 			{
 
@@ -503,7 +518,7 @@ void LastManStanding::collisions(Timer *gameTimer) {
 				{
 					if (boss->collidesWith(*smallZombie, collisionVector))
 					{
-						smallZombie->attackPlayer(&mainPlayer, frameTime, 150.0f);
+						smallZombie->attackPlayer(&mainPlayer, frameTime, 300.0f);
 					}
 					else
 						continue;
@@ -512,7 +527,7 @@ void LastManStanding::collisions(Timer *gameTimer) {
 			break;
 		}
 	}
-
+	////////////////////////////////////////////////////////////////////////////////////////////
 	/*for each(Zombie *boss in zombieList) 
 	{
 		if (!boss->getIsBoss())
@@ -537,8 +552,6 @@ void LastManStanding::collisions(Timer *gameTimer) {
 
 		}
 	}*/
-
-
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
