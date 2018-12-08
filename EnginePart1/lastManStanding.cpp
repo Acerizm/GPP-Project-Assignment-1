@@ -140,8 +140,8 @@ void LastManStanding::initialize(HWND hwnd)
 		//the address of tempObstacle keeps changing in lastManStanding.h fyi
 		tempObstacle = new Obstacle();
 		//rng here
-		float randomX = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / (LEVEL1_TILE_HEIGHT*LEVEL1_TILE_SCALE - LEVEL1_TILE_HEIGHT*0.1)));
-		float randomY = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / (LEVEL1_TILE_WIDTH*LEVEL1_TILE_SCALE - LEVEL1_TILE_WIDTH*0.1)));
+		float randomX = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / (LEVEL1_TILE_HEIGHT*LEVEL1_TILE_SCALE/* - LEVEL1_TILE_HEIGHT*0.1*/)));
+		float randomY = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / (LEVEL1_TILE_WIDTH*LEVEL1_TILE_SCALE/* - LEVEL1_TILE_WIDTH*0.1*/)));
 		//check if the type = "1" which represent barrel
 		if (obsTypeList[i] == 1) {
 			//need to random the position of the barrels
@@ -521,7 +521,7 @@ void LastManStanding::collisions(Timer *gameTimer) {
 				{
 					if (boss->collidesWith(*smallZombie, collisionVector))
 					{
-						// after 300, will walk normal
+						// boost 300 only
 						smallZombie->attackPlayer(&mainPlayer, frameTime, 300.0f);
 					}
 					else
@@ -568,7 +568,7 @@ void LastManStanding::collisions(Timer *gameTimer) {
 				//LOL
 				//the zombie has already collided
 
-				// if current = 0
+				// if "" less than the next to kill
 				if (nextHitTime < currentGameTimeCpp->getCurrentElapsedTime())
 				{
 					if (mainPlayer.playerCurrentHp > 0)
