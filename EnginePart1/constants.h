@@ -94,6 +94,9 @@ const char OBS1_TILE[] = "pictures\\OBS1.png";
 
 ////////////////////////////////////////////////////////////////
 
+// Menu here
+const char MENU_TILE[] = "pictures\\Menu.png";
+
 
 
 

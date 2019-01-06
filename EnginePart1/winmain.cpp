@@ -8,6 +8,8 @@
 #include "lastManStanding.h"
 #include <chrono>
 #include "timer.h"
+#include <thread>
+
 #define SDL_MAIN_HANDLED
 //#pragma comment(lib,"SDL2.lib")
 //#pragma comment(lib,"SDL2main.lib") 
@@ -49,6 +51,9 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
         return 1;
 
     try{
+		//need to add the menu here
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
         game->initialize(hwnd);     // throws GameError
         // main message loop
         int done = 0;
@@ -64,8 +69,9 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
                 TranslateMessage(&msg);
                 DispatchMessage(&msg);
             } 
-			else
-                game->run(hwnd,gameTimer);    // run the game loop
+			else {
+				game->run(hwnd, gameTimer);    // run the game loop
+			}
         }
         SAFE_DELETE (game);     // free memory before exit
         return msg.wParam;

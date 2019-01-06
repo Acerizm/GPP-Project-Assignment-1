@@ -60,7 +60,8 @@ protected:
 	//TextureManager ZombieBoss;
 
 	Background backgroundImage;
-	
+	Background backgroundImage2;
+
 	Player mainPlayer;
 	//Bullet testBullet;
 	friend class Camera;
@@ -102,6 +103,13 @@ protected:
 	float nextHitTime;
 
 	Camera *camera;
+
+	//menu here
+	TextureManager MenuTexture;
+	Image MenuImage;
+
+	list<string> MenuState;
+	string _MenuState;
 
 public:
 	// Constructor
