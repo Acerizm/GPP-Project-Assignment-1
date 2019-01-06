@@ -266,17 +266,38 @@ void LastManStanding::update(Timer *gameTimer)
 			}
 		}
 
+		//////// Make Player Face Mouse!
+		VECTOR2 playerPosition = VECTOR2(mainPlayer.getX(), mainPlayer.getY());
+		POINT mousePos;
+		GetCursorPos(&mousePos);
+		VECTOR2 mousePosVector = VECTOR2(mousePos.x, mousePos.y);
+		float cameraDifferenceX = 0;
+		float cameraDifferenceY = 0;
+		if ((camera->getCameraX() + GAME_WIDTH / 2) > GAME_WIDTH)
+		{
+			cameraDifferenceX = (camera->getCameraX() + GAME_WIDTH / 2) - GAME_WIDTH;
+		}
+		if ((camera->getCameraY() + GAME_HEIGHT / 2) > GAME_HEIGHT)
+		{
+			cameraDifferenceY = (camera->getCameraY() + GAME_HEIGHT / 2) - GAME_HEIGHT;
+		}
+		float dx = playerPosition.x - (mousePosVector.x + cameraDifferenceX);
+		float dy = playerPosition.y - (mousePosVector.y + cameraDifferenceY);
+		float rotation = (atan2(dy, dx)) * 180 / PI;
+		mainPlayer.setDegrees(rotation + 180);
+
+		
 
 		////////////////////////////////////////////////////////////////////////////
-		if (input->isKeyDown(VK_LEFT))  //left arrow key is pressed down
+		if (input->isKeyDown('A'))  //left arrow key is pressed down
 		{
 			//PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - frameTime * PLAYER_MOVEMENTSPEED);
 			//PLAYER_SHOOTING_TILE_IMAGE.setDegrees(180);
 			mainPlayer.setX(mainPlayer.getX() - frameTime * playerNS::PLAYER_MOVEMENTSPEED);
 			mainPlayer.setSpriteDataXnY(mainPlayer.getX() - frameTime * playerNS::PLAYER_MOVEMENTSPEED, mainPlayer.getY());
-			mainPlayer.setDegrees(180);
+			//mainPlayer.setDegrees(180);
 
-			if (input->isKeyDown(VK_SPACE))
+			if ((GetKeyState(VK_LBUTTON) & 0x100) != 0)
 			{
 				//PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
 				mainPlayer.setFrameDelay(0.05f);
@@ -288,14 +309,14 @@ void LastManStanding::update(Timer *gameTimer)
 			}
 
 		}
-		else if (input->isKeyDown(VK_RIGHT)) //right arrow key is pressed down
+		else if (input->isKeyDown('D')) //right arrow key is pressed down
 		{
 			//PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() + frameTime * PLAYER_MOVEMENTSPEED);
 			//PLAYER_SHOOTING_TILE_IMAGE.setDegrees(0);
 			mainPlayer.setX(mainPlayer.getX() + frameTime * playerNS::PLAYER_MOVEMENTSPEED);
 			mainPlayer.setSpriteDataXnY(mainPlayer.getX() + frameTime * playerNS::PLAYER_MOVEMENTSPEED, mainPlayer.getY());
-			mainPlayer.setDegrees(0);
-			if (input->isKeyDown(VK_SPACE))
+			//mainPlayer.setDegrees(0);
+			if ((GetKeyState(VK_LBUTTON) & 0x100) != 0)
 			{
 				//PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
 				mainPlayer.setFrameDelay(0.05f);
@@ -306,14 +327,14 @@ void LastManStanding::update(Timer *gameTimer)
 				}
 			}
 		}
-		else if (input->isKeyDown(VK_UP)) // up arrow key is pressed down
+		else if (input->isKeyDown('W')) // up arrow key is pressed down
 		{
 			//PLAYER_SHOOTING_TILE_IMAGE.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - frameTime * PLAYER_MOVEMENTSPEED);
 			//PLAYER_SHOOTING_TILE_IMAGE.setDegrees(270);
 			mainPlayer.setY(mainPlayer.getY() - frameTime * playerNS::PLAYER_MOVEMENTSPEED);
 			mainPlayer.setSpriteDataXnY(mainPlayer.getX(), mainPlayer.getY() - frameTime * playerNS::PLAYER_MOVEMENTSPEED);
-			mainPlayer.setDegrees(270);
-			if (input->isKeyDown(VK_SPACE))
+			//mainPlayer.setDegrees(270);
+			if ((GetKeyState(VK_LBUTTON) & 0x100) != 0)
 			{
 				//PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
 				mainPlayer.setFrameDelay(0.05f);
@@ -324,14 +345,14 @@ void LastManStanding::update(Timer *gameTimer)
 				}
 			}
 		}
-		else if (input->isKeyDown(VK_DOWN))// down arrow key is pressed down
+		else if (input->isKeyDown('S'))// down arrow key is pressed down
 		{
 			//PLAYER_SHOOTING_TILE_IMAGE.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() + frameTime * PLAYER_MOVEMENTSPEED);
 			//PLAYER_SHOOTING_TILE_IMAGE.setDegrees(90);
 			mainPlayer.setY(mainPlayer.getY() + frameTime * playerNS::PLAYER_MOVEMENTSPEED);
 			mainPlayer.setSpriteDataXnY(mainPlayer.getX(), mainPlayer.getY() + frameTime * playerNS::PLAYER_MOVEMENTSPEED);
-			mainPlayer.setDegrees(90);
-			if (input->isKeyDown(VK_SPACE))
+			//mainPlayer.setDegrees(90);
+			if ((GetKeyState(VK_LBUTTON) & 0x100) != 0)
 			{
 				//PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
 				mainPlayer.setFrameDelay(0.05f);
@@ -342,7 +363,7 @@ void LastManStanding::update(Timer *gameTimer)
 				}
 			}
 		}
-		else if (input->wasKeyPressed(VK_SPACE))
+		else if ((GetKeyState(VK_LBUTTON) & 0x100) != 0)
 		{
 			//Shooting animation
 			//PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
@@ -361,7 +382,7 @@ void LastManStanding::update(Timer *gameTimer)
 		else if (input->wasKeyPressed(VK_F2))
 		{
 			//To Recover 5 health.
-			mainPlayer.playerCurrentHp = mainPlayer.playerCurrentHp + 5;
+			//mainPlayer.playerCurrentHp = mainPlayer.playerCurrentHp + 5;
 			float currentHpBarPercentage = mainPlayer.playerCurrentHp / PLAYER_MAXHP;
 			healthBarGreen.setPercentage(currentHpBarPercentage);
 			isPaused = !isPaused;
@@ -872,21 +893,23 @@ void LastManStanding::render()
 	
 
 	///////////////////////////////////////////////////////////////////////////////////////////
+	healthBarBackGround.draw();
+	healthBarGreen.draw();
+	hpText->print(to_string((int)(mainPlayer.playerCurrentHp)) + "/" + to_string((int)(PLAYER_MAXHP)), camera->getCameraX() - (GAME_WIDTH / 2)*0.9, camera->getCameraY() - GAME_HEIGHT / 2);
 	if (isPaused)
 	{
 		pausedText->setFontColor(graphicsNS::RED);
-		pausedText->print("Game is Paused Press F2 to Resume", 0,0);
+		pausedText->print("Game is Paused Press F2 to Resume", camera->getCameraX() - GAME_WIDTH/2,camera->getCameraY() - GAME_HEIGHT/2);
 	}
 	if (isDead)
 	{
 		deadText->setFontColor(graphicsNS::RED);
-		deadText->print("YOU DIED! Press Esc to close game", 0, 0);
+		deadText->print("YOU DIED! Press Esc to close game", camera->getCameraX() - GAME_WIDTH / 2, camera->getCameraY() - GAME_HEIGHT / 2);
 	}
 
 	drawZombieAIs();
-	healthBarBackGround.draw();
-	healthBarGreen.draw();
-	hpText->print(to_string((int)(mainPlayer.playerCurrentHp)) + "/" + to_string((int)(PLAYER_MAXHP)), camera->getCameraX() - (GAME_WIDTH / 2)*0.9, camera->getCameraY() - GAME_HEIGHT / 2);
+	
+	
 	zombieKillCountText->setFontColor(graphicsNS::BLACK);
 	zombieKillCountText->print("Zombie Kill Count:"+to_string(mainPlayer.zombieKillCount), camera->getCameraX() - (GAME_WIDTH / 2), camera->getCameraY() + GAME_HEIGHT / 2.2);
 	currentGameTime->print(currentTimeString, camera->getCameraX() + GAME_WIDTH / 3.3, camera->getCameraY() + GAME_HEIGHT / 2.2);
