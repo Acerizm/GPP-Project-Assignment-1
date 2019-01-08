@@ -220,8 +220,6 @@ void LastManStanding::initialize(HWND hwnd)
 	
 	//instructionImage.setX(camera->getCameraX());
 	//instructionImage.setY(camera->getCameraY());
-	instructionImage.setX(0);
-	instructionImage.setY(0);
 
 	return;
 }
@@ -296,10 +294,10 @@ void LastManStanding::update(Timer *gameTimer)
 				menuOptionNo += 1;
 			}
 		}
-		if (input->wasKeyPressed(VK_ESCAPE))
+		/*if (input->wasKeyPressed(VK_ESCAPE))
 		{
 			isPaused = !isPaused;
-		}
+		}*/
 		if (input->wasKeyPressed(VK_RETURN))
 		{
 			if (menuOptionNo == 2)
@@ -310,10 +308,21 @@ void LastManStanding::update(Timer *gameTimer)
 			{
 				//show instructions here
 				showInstruction = true;
+				if ( input->wasKeyPressed(VK_ESCAPE))
+				{
+					showInstruction = false;
+				}
 			}
 			else if (menuOptionNo == 0)
 			{
 				PostQuitMessage(0);
+			}
+		}
+		if (showInstruction)
+		{
+			if (input->wasKeyPressed(VK_ESCAPE))
+			{
+				showInstruction = false;
 			}
 		}
 	}
@@ -500,7 +509,10 @@ void LastManStanding::update(Timer *gameTimer)
 		healthBarGreen.setY(camera->getCameraY() - GAME_HEIGHT/2);
 		healthBarBackGround.setX(camera->getCameraX() - GAME_WIDTH/2);
 		healthBarBackGround.setY(camera->getCameraY() - GAME_HEIGHT/2);
+
 		healthBarGreen.setRect();
+		instructionImage.setX(camera->getCameraX() - GAME_WIDTH / 2);
+		instructionImage.setY(camera->getCameraY() - GAME_HEIGHT / 2);
 		//edit here to chnage the direction of the bullet
 		mainPlayer.moveBullet(frameTime);
 	}
@@ -865,7 +877,7 @@ void LastManStanding::render()
 	// aka need to render again?
 
 	graphics->spriteBegin();                // begin drawing sprites
-	//backgroundImage.draw();
+	backgroundImage.draw();
 	if (camera) 
 	{
 		camera->setTransform(graphics);
@@ -941,7 +953,7 @@ void LastManStanding::render()
 	if (isPaused)
 	{
 		
-		//backgroundImage.draw();
+		backgroundImage.draw();
 
 		//startText->setFontColor(graphicsNS::BLACK);
 		//instructionsText->setFontColor(graphicsNS::BLACK);
@@ -952,10 +964,17 @@ void LastManStanding::render()
 
 		if (showInstruction)
 		{
+			instructionImage.setVisible(true);
 			instructionImage.draw();
+			pausedText->setFontColor(graphicsNS::WHITE);
+			pausedText->print("Press Esc To Go Back To Menu", camera->getCameraX() - GAME_WIDTH / 2, camera->getCameraY() - GAME_HEIGHT / 2);
 		}
-		//pausedText->setFontColor(graphicsNS::RED);
-		//pausedText->print("Game is Paused Press F2 to Resume", camera->getCameraX() - GAME_WIDTH / 2, camera->getCameraY() - GAME_HEIGHT / 2);
+		else if (showInstruction)
+		{
+			instructionImage.setVisible(false);
+
+		}
+		
 		
 	}
 	
