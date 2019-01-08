@@ -267,7 +267,7 @@ void LastManStanding::update(Timer *gameTimer)
 		}
 
 		//////// Make Player Face Mouse!
-		VECTOR2 playerPosition = VECTOR2(mainPlayer.getX(), mainPlayer.getY());
+		VECTOR2 playerPosition = VECTOR2(mainPlayer.getCenterX(), mainPlayer.getCenterY());
 		POINT mousePos;
 		GetCursorPos(&mousePos);
 		VECTOR2 mousePosVector = VECTOR2(mousePos.x, mousePos.y);
