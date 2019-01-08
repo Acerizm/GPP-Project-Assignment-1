@@ -941,7 +941,7 @@ void LastManStanding::render()
 	
 	zombieKillCountText->setFontColor(graphicsNS::BLACK);
 	zombieKillCountText->print("Zombie Kill Count:"+to_string(mainPlayer.zombieKillCount), camera->getCameraX() - (GAME_WIDTH / 2), camera->getCameraY() + GAME_HEIGHT / 2.2);
-	currentGameTime->print(currentTimeString, camera->getCameraX() + GAME_WIDTH / 3.3, camera->getCameraY() + GAME_HEIGHT / 2.2);
+	currentGameTime->print(currentTimeString, camera->getCameraX() + GAME_WIDTH / 3.6, camera->getCameraY() + GAME_HEIGHT / 2.2);
 	if (isExploded)
 	{
 		barrelExplosionImage.draw();

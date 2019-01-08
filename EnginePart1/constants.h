@@ -27,9 +27,9 @@
 // window
 const char CLASS_NAME[] = "LastManStanding";
 const char GAME_TITLE[] = "LastManStanding";
-const bool FULLSCREEN = false;              // windowed or fullscreen
-const UINT GAME_WIDTH =  1000;               // width of game in pixels
-const UINT GAME_HEIGHT = 500;               // height of game in pixels
+const bool FULLSCREEN = true;              // windowed or fullscreen
+const UINT GAME_WIDTH =  800;               // width of game in pixels
+const UINT GAME_HEIGHT = 600;               // height of game in pixels
  
 // game
 const double PI = 3.14159265;
@@ -58,8 +58,8 @@ const float LEVEL1_TILE_SCALE = 2.0;
 
 //instruction image
 const char INSTRUCTION_IMAGE[] = "pictures\\GameInstruction.png";
-const int INSTRUCTION_HEIGHT = 500;
-const int INSTRUCTION_WIDTH = 1000;
+const int INSTRUCTION_HEIGHT = 600;
+const int INSTRUCTION_WIDTH = 800;
 
 
 
