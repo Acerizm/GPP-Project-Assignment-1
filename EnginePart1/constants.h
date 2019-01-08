@@ -62,9 +62,11 @@ const int INSTRUCTION_HEIGHT = 600;
 const int INSTRUCTION_WIDTH = 800;
 
 //cursor Image
-const char CURSOR_IMAGE[] = "pictures\\NewCursor.jpg";
-const int cursor_HEIGHT = 49;
-const int cursor_WIDTH = 50;
+const char CURSOR_IMAGE[] = "pictures\\NewCursor.png";
+const int cursor_HEIGHT = 397;
+const int cursor_WIDTH = 416;
+const float cursor_Scale = 0.15f;
+
 
 //Health Bar
 const char HEALTHBARGREEN_IMAGE[] = "pictures\\healthbarGreen.png";

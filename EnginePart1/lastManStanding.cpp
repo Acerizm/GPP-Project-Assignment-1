@@ -963,6 +963,7 @@ void LastManStanding::render()
 			isExploded = false;
 		}
 	}
+	cursorImage.setScale(cursor_Scale);
 	cursorImage.draw();
 	if (isPaused)
 	{
