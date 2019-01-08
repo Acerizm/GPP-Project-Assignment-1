@@ -87,7 +87,7 @@ void LastManStanding::initialize(HWND hwnd)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing instruction texture"));
 
 
-	if(!instructionImage.initialize(graphics,INSTRUCTION_WIDTH,INSTRUCTION_HEIGHT,1,&instructionTexture))
+	if(!instructionImage.initialize(graphics,INSTRUCTION_WIDTH,INSTRUCTION_HEIGHT,0,&instructionTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing instructionImage"));
 
 
@@ -218,8 +218,10 @@ void LastManStanding::initialize(HWND hwnd)
 	healthBarBackGround.setX(mainPlayer.getX() - 8);
 	healthBarBackGround.setY(mainPlayer.getY() - 5);
 	
-	instructionImage.setX(camera->getCameraX());
-	instructionImage.setY(camera->getCameraY());
+	//instructionImage.setX(camera->getCameraX());
+	//instructionImage.setY(camera->getCameraY());
+	instructionImage.setX(0);
+	instructionImage.setY(0);
 
 	return;
 }
@@ -863,7 +865,7 @@ void LastManStanding::render()
 	// aka need to render again?
 
 	graphics->spriteBegin();                // begin drawing sprites
-	backgroundImage.draw();
+	//backgroundImage.draw();
 	if (camera) 
 	{
 		camera->setTransform(graphics);
@@ -939,7 +941,7 @@ void LastManStanding::render()
 	if (isPaused)
 	{
 		
-		backgroundImage.draw();
+		//backgroundImage.draw();
 
 		//startText->setFontColor(graphicsNS::BLACK);
 		//instructionsText->setFontColor(graphicsNS::BLACK);
