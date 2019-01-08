@@ -57,6 +57,11 @@ protected:
 	TextureManager barrelExplosionTexture;
 	Image barrelExplosionImage;
 
+
+
+	TextureManager instructionTexture;
+	Image instructionImage;
+
 	//TextureManager ZombieBoss;
 
 	Background backgroundImage;
@@ -94,7 +99,14 @@ protected:
 	bool isPaused;
 	bool isDead;
 	bool isExploded;
+	bool showInstruction;
 	TextDX *pausedText;
+	//menu texts
+	TextDX *startText;
+	TextDX *instructionsText;
+	TextDX *quitText;
+	int menuOptionNo;
+
 	TextDX *deadText;
 	TextDX *zombieKillCountText;
 	TextDX *currentGameTime;

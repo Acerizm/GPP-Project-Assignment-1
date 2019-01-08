@@ -20,7 +20,11 @@ LastManStanding::LastManStanding()
 	srand(time(NULL));
 	hpText = new TextDX();
 	isPaused = false;
+	showInstruction = false;
 	pausedText = new TextDX();
+	startText = new TextDX();
+	instructionsText = new TextDX();
+	quitText = new TextDX();
 	isDead = false;
 	deadText = new TextDX();
 	currentGameTime = new TextDX();
@@ -28,6 +32,7 @@ LastManStanding::LastManStanding()
 	isExploded = false;
 	testZombie = NULL;
 	nextShootTime = 0;
+	menuOptionNo = 2; //2 is start, 1 is instructions 0 is quit game
 	for (int i = 0; i < 30; i++) {
 		float randomType = static_cast<int>(rand()) / (static_cast<int> (RAND_MAX / 2)) + 1;
 		obsTypeList.push_back(randomType);
@@ -75,6 +80,22 @@ void LastManStanding::initialize(HWND hwnd)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet texture"));
 	
 	
+	
+	
+	
+	if(!instructionTexture.initialize(graphics,INSTRUCTION_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing instruction texture"));
+
+
+	if(!instructionImage.initialize(graphics,INSTRUCTION_WIDTH,INSTRUCTION_HEIGHT,1,&instructionTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing instructionImage"));
+
+
+
+
+
+
+
 	if (!barrelExplosionTexture.initialize(graphics, OBS1_TILE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing barrelExplosion texture"));
 	if(!barrelExplosionImage.initialize(graphics,450,450,4,&barrelExplosionTexture))
@@ -112,6 +133,15 @@ void LastManStanding::initialize(HWND hwnd)
 
 	if (pausedText->initialize(graphics, 30, true, false, "Arial") == false)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing pausedText font"));
+
+	if (startText->initialize(graphics, 30, false, false, "Arial") == false)
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing pausedText font"));
+	if (instructionsText->initialize(graphics, 30, false, false, "Arial") == false)
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing pausedText font"));
+	if (quitText->initialize(graphics, 30, false, false, "Arial") == false)
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing pausedText font"));
+
+
 	if (deadText->initialize(graphics, 30, true, false, "Arial") == false)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing pausedText font"));
 	if(currentGameTime->initialize(graphics,20,true,false,"Arial") == false)
@@ -187,6 +217,9 @@ void LastManStanding::initialize(HWND hwnd)
 	healthBarGreen.setY(mainPlayer.getY() - 5);
 	healthBarBackGround.setX(mainPlayer.getX() - 8);
 	healthBarBackGround.setY(mainPlayer.getY() - 5);
+	
+	instructionImage.setX(camera->getCameraX());
+	instructionImage.setY(camera->getCameraY());
 
 	return;
 }
@@ -204,24 +237,82 @@ void LastManStanding::update(Timer *gameTimer)
 {
 	if (mainPlayer.getX() <= 0)
 	{
-		mainPlayer.setPositionVector(mainPlayer.getX() + 100.0f * frameTime, mainPlayer.getY());
+		mainPlayer.setPositionVector(mainPlayer.getX() + playerNS::PLAYER_MOVEMENTSPEED * frameTime, mainPlayer.getY());
 	}
 	else if (mainPlayer.getY() <= 0)
 	{
-		mainPlayer.setPositionVector(mainPlayer.getX(), mainPlayer.getY() + 10.0*frameTime);
+		mainPlayer.setPositionVector(mainPlayer.getX(), mainPlayer.getY() + playerNS::PLAYER_MOVEMENTSPEED *frameTime);
+	}
+	else if ((mainPlayer.getX() + mainPlayer.getWidth()) >= LEVEL1_TILE_WIDTH*2.2)
+	{
+		mainPlayer.setPositionVector(mainPlayer.getX() - playerNS::PLAYER_MOVEMENTSPEED * frameTime, mainPlayer.getY());
+	}
+	else if ((mainPlayer.getY() + mainPlayer.getHeight()) >= LEVEL1_TILE_HEIGHT*2.13)
+	{
+		mainPlayer.setPositionVector(mainPlayer.getX(), mainPlayer.getY() - playerNS::PLAYER_MOVEMENTSPEED * frameTime);
 	}
 	
 	backgroundImage.update(frameTime);
 	barrelExplosionImage.update(frameTime);
+	instructionImage.update(frameTime);
 	mainPlayer.update(frameTime);
-	float test = gameTimer->getCurrentElapsedTime();
+	float test = gameTimer->getCurrentElapsedTime(isPaused);
 	
 	mciSendString("play backGroundMusic", NULL, 0, NULL);
 	if (isPaused)
 	{
-		if (input->wasKeyPressed(VK_F2))
+		if (menuOptionNo == 2)
+		{
+			startText->setFontColor(graphicsNS::YELLOW);
+			instructionsText->setFontColor(graphicsNS::BLACK);
+			quitText->setFontColor(graphicsNS::BLACK);
+		}
+		if (menuOptionNo == 1)
+		{
+			startText->setFontColor(graphicsNS::BLACK);
+			instructionsText->setFontColor(graphicsNS::YELLOW);
+			quitText->setFontColor(graphicsNS::BLACK);
+		}
+		if (menuOptionNo == 0)
+		{
+			startText->setFontColor(graphicsNS::BLACK);
+			instructionsText->setFontColor(graphicsNS::BLACK);
+			quitText->setFontColor(graphicsNS::YELLOW);
+		}
+
+		if (input->wasKeyPressed(VK_DOWN))
+		{
+			if (menuOptionNo != 0)
+			{
+				menuOptionNo -= 1;
+			}
+		}
+		if (input->wasKeyPressed(VK_UP))
+		{
+			if (menuOptionNo != 2)
+			{
+				menuOptionNo += 1;
+			}
+		}
+		if (input->wasKeyPressed(VK_ESCAPE))
 		{
 			isPaused = !isPaused;
+		}
+		if (input->wasKeyPressed(VK_RETURN))
+		{
+			if (menuOptionNo == 2)
+			{
+				isPaused = !isPaused;
+			}
+			else if (menuOptionNo == 1)
+			{
+				//show instructions here
+				showInstruction = true;
+			}
+			else if (menuOptionNo == 0)
+			{
+				PostQuitMessage(0);
+			}
 		}
 	}
 	else if (isDead)
@@ -294,17 +385,17 @@ void LastManStanding::update(Timer *gameTimer)
 			//PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() - frameTime * PLAYER_MOVEMENTSPEED);
 			//PLAYER_SHOOTING_TILE_IMAGE.setDegrees(180);
 			mainPlayer.setX(mainPlayer.getX() - frameTime * playerNS::PLAYER_MOVEMENTSPEED);
-			mainPlayer.setSpriteDataXnY(mainPlayer.getX() - frameTime * playerNS::PLAYER_MOVEMENTSPEED, mainPlayer.getY());
+			//mainPlayer.setSpriteDataXnY(mainPlayer.getX() - frameTime * playerNS::PLAYER_MOVEMENTSPEED, mainPlayer.getY());
 			//mainPlayer.setDegrees(180);
 
 			if ((GetKeyState(VK_LBUTTON) & 0x100) != 0)
 			{
 				//PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
 				mainPlayer.setFrameDelay(0.05f);
-				if (nextShootTime < gameTimer->getCurrentElapsedTime())
+				if (nextShootTime < gameTimer->getCurrentElapsedTime(isPaused))
 				{
 					mainPlayer.shootBullet(BULLET_TEXTURE, &mainPlayer, this, mainPlayer.getDegrees());
-					nextShootTime = gameTimer->getCurrentElapsedTime() + 0.5;
+					nextShootTime = gameTimer->getCurrentElapsedTime(isPaused) + 0.5;
 				}
 			}
 
@@ -314,16 +405,16 @@ void LastManStanding::update(Timer *gameTimer)
 			//PLAYER_SHOOTING_TILE_IMAGE.setX(PLAYER_SHOOTING_TILE_IMAGE.getX() + frameTime * PLAYER_MOVEMENTSPEED);
 			//PLAYER_SHOOTING_TILE_IMAGE.setDegrees(0);
 			mainPlayer.setX(mainPlayer.getX() + frameTime * playerNS::PLAYER_MOVEMENTSPEED);
-			mainPlayer.setSpriteDataXnY(mainPlayer.getX() + frameTime * playerNS::PLAYER_MOVEMENTSPEED, mainPlayer.getY());
+			//mainPlayer.setSpriteDataXnY(mainPlayer.getX() + frameTime * playerNS::PLAYER_MOVEMENTSPEED, mainPlayer.getY());
 			//mainPlayer.setDegrees(0);
 			if ((GetKeyState(VK_LBUTTON) & 0x100) != 0)
 			{
 				//PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
 				mainPlayer.setFrameDelay(0.05f);
-				if (nextShootTime < gameTimer->getCurrentElapsedTime())
+				if (nextShootTime < gameTimer->getCurrentElapsedTime(isPaused))
 				{
 					mainPlayer.shootBullet(BULLET_TEXTURE, &mainPlayer, this, mainPlayer.getDegrees());
-					nextShootTime = gameTimer->getCurrentElapsedTime() + 0.5;
+					nextShootTime = gameTimer->getCurrentElapsedTime(isPaused) + 0.5;
 				}
 			}
 		}
@@ -332,16 +423,16 @@ void LastManStanding::update(Timer *gameTimer)
 			//PLAYER_SHOOTING_TILE_IMAGE.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() - frameTime * PLAYER_MOVEMENTSPEED);
 			//PLAYER_SHOOTING_TILE_IMAGE.setDegrees(270);
 			mainPlayer.setY(mainPlayer.getY() - frameTime * playerNS::PLAYER_MOVEMENTSPEED);
-			mainPlayer.setSpriteDataXnY(mainPlayer.getX(), mainPlayer.getY() - frameTime * playerNS::PLAYER_MOVEMENTSPEED);
+			//mainPlayer.setSpriteDataXnY(mainPlayer.getX(), mainPlayer.getY() - frameTime * playerNS::PLAYER_MOVEMENTSPEED);
 			//mainPlayer.setDegrees(270);
 			if ((GetKeyState(VK_LBUTTON) & 0x100) != 0)
 			{
 				//PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
 				mainPlayer.setFrameDelay(0.05f);
-				if (nextShootTime < gameTimer->getCurrentElapsedTime())
+				if (nextShootTime < gameTimer->getCurrentElapsedTime(isPaused))
 				{
 					mainPlayer.shootBullet(BULLET_TEXTURE, &mainPlayer, this, mainPlayer.getDegrees());
-					nextShootTime = gameTimer->getCurrentElapsedTime() + 0.5;
+					nextShootTime = gameTimer->getCurrentElapsedTime(isPaused) + 0.5;
 				}
 			}
 		}
@@ -350,16 +441,16 @@ void LastManStanding::update(Timer *gameTimer)
 			//PLAYER_SHOOTING_TILE_IMAGE.setY(PLAYER_SHOOTING_TILE_IMAGE.getY() + frameTime * PLAYER_MOVEMENTSPEED);
 			//PLAYER_SHOOTING_TILE_IMAGE.setDegrees(90);
 			mainPlayer.setY(mainPlayer.getY() + frameTime * playerNS::PLAYER_MOVEMENTSPEED);
-			mainPlayer.setSpriteDataXnY(mainPlayer.getX(), mainPlayer.getY() + frameTime * playerNS::PLAYER_MOVEMENTSPEED);
+			//mainPlayer.setSpriteDataXnY(mainPlayer.getX(), mainPlayer.getY() + frameTime * playerNS::PLAYER_MOVEMENTSPEED);
 			//mainPlayer.setDegrees(90);
 			if ((GetKeyState(VK_LBUTTON) & 0x100) != 0)
 			{
 				//PLAYER_SHOOTING_TILE_IMAGE.setFrameDelay(0.05f);
 				mainPlayer.setFrameDelay(0.05f);
-				if (nextShootTime < gameTimer->getCurrentElapsedTime())
+				if (nextShootTime < gameTimer->getCurrentElapsedTime(isPaused))
 				{
 					mainPlayer.shootBullet(BULLET_TEXTURE, &mainPlayer, this, mainPlayer.getDegrees());
-					nextShootTime = gameTimer->getCurrentElapsedTime() + 0.5;
+					nextShootTime = gameTimer->getCurrentElapsedTime(isPaused) + 0.5;
 				}
 			}
 		}
@@ -372,14 +463,14 @@ void LastManStanding::update(Timer *gameTimer)
 			float currentHpBarPercentage = mainPlayer.playerCurrentHp / PLAYER_MAXHP;
 			healthBarGreen.setPercentage(currentHpBarPercentage);
 			mainPlayer.setFrameDelay(0.05f);
-			if (nextShootTime < gameTimer->getCurrentElapsedTime())
+			if (nextShootTime < gameTimer->getCurrentElapsedTime(isPaused))
 			{
 				mainPlayer.shootBullet(BULLET_TEXTURE, &mainPlayer, this, mainPlayer.getDegrees());
-				nextShootTime = gameTimer->getCurrentElapsedTime() + 0.5 ;//set 0.5 seconds delay per shot
+				nextShootTime = gameTimer->getCurrentElapsedTime(isPaused) + 0.5 ;//set 0.5 seconds delay per shot
 			}
 
 		}
-		else if (input->wasKeyPressed(VK_F2))
+		else if (input->wasKeyPressed(VK_ESCAPE))
 		{
 			//To Recover 5 health.
 			//mainPlayer.playerCurrentHp = mainPlayer.playerCurrentHp + 5;
@@ -421,82 +512,7 @@ void LastManStanding::update(Timer *gameTimer)
 	///////////////////////////////////////////////////////////////////////////////
 }
 
-//=============================================================================
-// Artificial Intelligence
-//=============================================================================
-void LastManStanding::ai(Timer *gameTimer)
-{
-	
-	if (isPaused)
-	{
 
-	}
-	else if (isDead)
-	{
-
-	}
-	else
-	{
-
-		int numOfSecondsPassed = int(gameTimer->getCurrentElapsedTime());
-		// check if the time passed is a multiple of 5
-		if (numOfSecondsPassed % 5 == 0 && numOfSecondsPassed != 0 && numOfSecondsPassed != nextIntervalValue) {
-
-			nextIntervalValue = numOfSecondsPassed;
-			testZombie = new Zombie();
-			//testZombie->initialize(graphics, ZOMBIE_MOVING_TEXTURE, testZombie->ZOMBIE_MOVING_IMAGE);
-			if (numOfSecondsPassed % 3 == 0)
-			{
-				testZombie->initialize(this, zombieNS::ZOMBIE_MOVING_WIDTH, zombieNS::ZOMBIE_MOVING_HEIGHT, zombieNS::ZOMBIE_MOVING_COLS, &ZOMBIE_MOVING_TEXTURE, &healthBarRedTexture, &enemyHealthBarBackGroundTexture, graphics);
-				testZombie->setIsBoss();
-				testZombie->setScale(1.1);
-				testZombie->setZombieMaxHP(300);
-			}
-			else
-				testZombie->initialize(this, zombieNS::ZOMBIE_MOVING_WIDTH, zombieNS::ZOMBIE_MOVING_HEIGHT, zombieNS::ZOMBIE_MOVING_COLS, &ZOMBIE_MOVING_TEXTURE,&healthBarRedTexture,&enemyHealthBarBackGroundTexture, graphics);
-
-			//have to do rng here
-			int condition = 0;
-			float x;
-			float y;
-
-			//redo this algo again when have time
-			while (!condition) {
-				float x2 = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / GAME_WIDTH));
-				float y2 = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / GAME_HEIGHT));
-
-				//if ((x2 <= (PLAYER_SHOOTING_TILE_IMAGE.getCenterX() - (PLAYER_SHOOTING_TILE_IMAGE.getWidth() / 2) * 10)) || (x2 >= (PLAYER_SHOOTING_TILE_IMAGE.getCenterX() + (PLAYER_SHOOTING_TILE_IMAGE.getWidth() / 2) * 10)))
-				if ((x2 <= (mainPlayer.getCenterX() - (mainPlayer.getWidth() / 2) * 10)) || (x2 >= (mainPlayer.getCenterX() + (mainPlayer.getWidth() / 2) * 10)))
-				{
-					//continue the loop xd
-					int x = 2;
-				}
-				else
-				{
-					x = x2;
-					y = y2;
-					condition = 1;
-				}
-			};
-			//testZombie->setPositionVector(testZombie->ZOMBIE_MOVING_IMAGE, PLAYER_SHOOTING_TILE_IMAGE.getCenterX(), PLAYER_SHOOTING_TILE_IMAGE.getCenterY(), zombieNS::ZOMBIE_MOVING_SCALE, zombieNS::ZOMBIE_MOVING_START_FRAME, zombieNS::ZOMBIE_MOVING_END_FRAME, zombieNS::ZOMBIE_MOVING_ANIMATION_DELAY);
-			testZombie->setPositionVector(x, y);
-
-			//each zombie the speed rng
-
-			//add the zombie to the array
-			zombieList.push_back(testZombie);
-		}
-
-		//then attack the player
-		// need to check for collision here
-		// let's do a cristmas maneuver
-		for each (Zombie * zombie in zombieList) {
-			zombie->attackPlayer(&mainPlayer, frameTime,30.0f);
-
-		}
-
-	}
-}
 
 //=============================================================================
 // Handle collisions
@@ -590,14 +606,14 @@ void LastManStanding::collisions(Timer *gameTimer) {
 				//the zombie has already collided
 
 				// if "" less than the next to kill
-				if (nextHitTime < currentGameTimeCpp->getCurrentElapsedTime())
+				if (nextHitTime < currentGameTimeCpp->getCurrentElapsedTime(isPaused))
 				{
 					if (mainPlayer.playerCurrentHp > 0)
 					{
 						mainPlayer.playerCurrentHp -= 10;
 
 					}
-					nextHitTime = currentGameTimeCpp->getCurrentElapsedTime() + 2; //delay 2 seconds per hit by zombie(s)
+					nextHitTime = currentGameTimeCpp->getCurrentElapsedTime(isPaused) + 2; //delay 2 seconds per hit by zombie(s)
 					float currentHpBarPercentage = mainPlayer.playerCurrentHp / PLAYER_MAXHP;
 					healthBarGreen.setPercentage(currentHpBarPercentage);
 					//set the zombie already collided
@@ -781,7 +797,7 @@ void LastManStanding::collisions(Timer *gameTimer) {
 				//VECTOR2(*unitCollisionVector, *collisionVector);
 				Vector2Normalize(&unitCollisionVector, &collisionVector);
 
-				float elapsedTime = gameTimer->getCurrentElapsedTime();
+				float elapsedTime = gameTimer->getCurrentElapsedTime(isPaused);
 				(*zombie)->setX((*zombie)->getX() - unitCollisionVector.x*frameTime * 300.0f);
 				(*zombie)->setSpriteDataX((*zombie)->getX());
 				(*zombie)->setY((*zombie)->getY() - unitCollisionVector.y*frameTime * 300.0f);
@@ -867,12 +883,15 @@ void LastManStanding::render()
 	
 	//mainPlayer.drawBullets();
 	currentGameTime->setFontColor(graphicsNS::BLACK);
-	int totalSeconds = this->currentGameTimeCpp->getCurrentElapsedTime();
+	int totalSeconds = this->currentGameTimeCpp->getCurrentElapsedTime(isPaused);
 	int hours = totalSeconds / 3600;
 	int minutes = (totalSeconds / 60) % 60;
 	int seconds = totalSeconds % 60;
 	string currentTimeString ="Elapsed Time:" + to_format(hours) + ":" + to_format(minutes) + ":" + to_format(seconds);
-	
+	if (totalSeconds == 0)
+	{
+		isPaused = true;
+	}
 	hpText->setFontColor(graphicsNS::WHITE);
 	
 
@@ -896,11 +915,7 @@ void LastManStanding::render()
 	healthBarBackGround.draw();
 	healthBarGreen.draw();
 	hpText->print(to_string((int)(mainPlayer.playerCurrentHp)) + "/" + to_string((int)(PLAYER_MAXHP)), camera->getCameraX() - (GAME_WIDTH / 2)*0.9, camera->getCameraY() - GAME_HEIGHT / 2);
-	if (isPaused)
-	{
-		pausedText->setFontColor(graphicsNS::RED);
-		pausedText->print("Game is Paused Press F2 to Resume", camera->getCameraX() - GAME_WIDTH/2,camera->getCameraY() - GAME_HEIGHT/2);
-	}
+	
 	if (isDead)
 	{
 		deadText->setFontColor(graphicsNS::RED);
@@ -921,9 +936,108 @@ void LastManStanding::render()
 			isExploded = false;
 		}
 	}
+	if (isPaused)
+	{
+		
+		backgroundImage.draw();
+
+		//startText->setFontColor(graphicsNS::BLACK);
+		//instructionsText->setFontColor(graphicsNS::BLACK);
+		//quitText->setFontColor(graphicsNS::BLACK);
+		startText->print("START", camera->getCameraX() - (GAME_WIDTH / 2), camera->getCameraY()  - GAME_HEIGHT / 2 );
+		instructionsText->print("INSTRUCTIONS", camera->getCameraX() - (GAME_WIDTH / 2), camera->getCameraY() + 30 - GAME_HEIGHT / 2);
+		quitText->print("QUIT GAME", camera->getCameraX() - (GAME_WIDTH / 2), camera->getCameraY() + 60 - GAME_HEIGHT / 2);
+
+		if (showInstruction)
+		{
+			instructionImage.draw();
+		}
+		//pausedText->setFontColor(graphicsNS::RED);
+		//pausedText->print("Game is Paused Press F2 to Resume", camera->getCameraX() - GAME_WIDTH / 2, camera->getCameraY() - GAME_HEIGHT / 2);
+		
+	}
+	
+	
 	
 	graphics->spriteEnd();                  // end drawing sprites
 
+}
+
+//=============================================================================
+// Artificial Intelligence
+//=============================================================================
+void LastManStanding::ai(Timer *gameTimer)
+{
+
+	if (isPaused)
+	{
+
+	}
+	else if (isDead)
+	{
+
+	}
+	else
+	{
+
+		int numOfSecondsPassed = int(gameTimer->getCurrentElapsedTime(isPaused));
+		// check if the time passed is a multiple of 5
+		if (numOfSecondsPassed % 5 == 0 && numOfSecondsPassed != 0 && numOfSecondsPassed != nextIntervalValue) {
+
+			nextIntervalValue = numOfSecondsPassed;
+			testZombie = new Zombie();
+			//testZombie->initialize(graphics, ZOMBIE_MOVING_TEXTURE, testZombie->ZOMBIE_MOVING_IMAGE);
+			if (numOfSecondsPassed % 3 == 0)
+			{
+				testZombie->initialize(this, zombieNS::ZOMBIE_MOVING_WIDTH, zombieNS::ZOMBIE_MOVING_HEIGHT, zombieNS::ZOMBIE_MOVING_COLS, &ZOMBIE_MOVING_TEXTURE, &healthBarRedTexture, &enemyHealthBarBackGroundTexture, graphics);
+				testZombie->setIsBoss();
+				testZombie->setScale(1.1);
+				testZombie->setZombieMaxHP(300);
+			}
+			else
+				testZombie->initialize(this, zombieNS::ZOMBIE_MOVING_WIDTH, zombieNS::ZOMBIE_MOVING_HEIGHT, zombieNS::ZOMBIE_MOVING_COLS, &ZOMBIE_MOVING_TEXTURE, &healthBarRedTexture, &enemyHealthBarBackGroundTexture, graphics);
+
+			//have to do rng here
+			int condition = 0;
+			float x;
+			float y;
+
+			//redo this algo again when have time
+			while (!condition) {
+				float x2 = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / GAME_WIDTH));
+				float y2 = static_cast<float>(rand()) / (static_cast<float> (RAND_MAX / GAME_HEIGHT));
+
+				//if ((x2 <= (PLAYER_SHOOTING_TILE_IMAGE.getCenterX() - (PLAYER_SHOOTING_TILE_IMAGE.getWidth() / 2) * 10)) || (x2 >= (PLAYER_SHOOTING_TILE_IMAGE.getCenterX() + (PLAYER_SHOOTING_TILE_IMAGE.getWidth() / 2) * 10)))
+				if ((x2 <= (mainPlayer.getCenterX() - (mainPlayer.getWidth() / 2) * 10)) || (x2 >= (mainPlayer.getCenterX() + (mainPlayer.getWidth() / 2) * 10)))
+				{
+					//continue the loop xd
+					int x = 2;
+				}
+				else
+				{
+					x = x2;
+					y = y2;
+					condition = 1;
+				}
+			};
+			//testZombie->setPositionVector(testZombie->ZOMBIE_MOVING_IMAGE, PLAYER_SHOOTING_TILE_IMAGE.getCenterX(), PLAYER_SHOOTING_TILE_IMAGE.getCenterY(), zombieNS::ZOMBIE_MOVING_SCALE, zombieNS::ZOMBIE_MOVING_START_FRAME, zombieNS::ZOMBIE_MOVING_END_FRAME, zombieNS::ZOMBIE_MOVING_ANIMATION_DELAY);
+			testZombie->setPositionVector(x, y);
+
+			//each zombie the speed rng
+
+			//add the zombie to the array
+			zombieList.push_back(testZombie);
+		}
+
+		//then attack the player
+		// need to check for collision here
+		// let's do a cristmas maneuver
+		for each (Zombie * zombie in zombieList) {
+			zombie->attackPlayer(&mainPlayer, frameTime, 30.0f);
+
+		}
+
+	}
 }
 
 //=============================================================================

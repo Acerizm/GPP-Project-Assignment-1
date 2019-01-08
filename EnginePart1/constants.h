@@ -56,6 +56,12 @@ const int LEVEL1_TILE_HEIGHT = 1024;
 const int LEVEL1_TILE_WIDTH = 1024;
 const float LEVEL1_TILE_SCALE = 2.0;
 
+//instruction image
+const char INSTRUCTION_IMAGE[] = "pictures\\GameInstruction.png";
+const int INSTRUCTION_HEIGHT = 500;
+const int INSTRUCTION_WIDTH = 1000;
+
+
 
 //Health Bar
 const char HEALTHBARGREEN_IMAGE[] = "pictures\\healthbarGreen.png";

@@ -12,7 +12,6 @@ private:
 	std::chrono::time_point<std::chrono::steady_clock> start, end;
 	std::chrono::duration<float> duration;
 
-
 public:
 
 	Timer() {
@@ -26,14 +25,16 @@ public:
 	}
 
 	//this is to get how many seconds have passed since the start of the game
-	float getCurrentElapsedTime() {
+	float getCurrentElapsedTime(bool isPaused) {
+		
 		std::chrono::time_point<std::chrono::steady_clock>  currentTimePoint;
+		
 		currentTimePoint = std::chrono::steady_clock::now();
 		std::chrono::duration<float> currentTimeDuration;
-
-		currentTimeDuration = currentTimePoint - start;
+		currentTimeDuration = (currentTimePoint - start);
 		return currentTimeDuration.count();
 	}
+
 };
 
 
