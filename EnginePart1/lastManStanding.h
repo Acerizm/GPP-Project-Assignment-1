@@ -57,7 +57,8 @@ protected:
 	TextureManager barrelExplosionTexture;
 	Image barrelExplosionImage;
 
-
+	TextureManager cursorTexture;
+	Image cursorImage;
 
 	TextureManager instructionTexture;
 	Image instructionImage;

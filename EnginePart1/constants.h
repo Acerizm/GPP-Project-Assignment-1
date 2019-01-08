@@ -61,7 +61,10 @@ const char INSTRUCTION_IMAGE[] = "pictures\\GameInstruction.png";
 const int INSTRUCTION_HEIGHT = 600;
 const int INSTRUCTION_WIDTH = 800;
 
-
+//cursor Image
+const char CURSOR_IMAGE[] = "pictures\\NewCursor.jpg";
+const int cursor_HEIGHT = 49;
+const int cursor_WIDTH = 50;
 
 //Health Bar
 const char HEALTHBARGREEN_IMAGE[] = "pictures\\healthbarGreen.png";

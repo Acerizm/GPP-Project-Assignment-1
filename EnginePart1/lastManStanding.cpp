@@ -92,6 +92,10 @@ void LastManStanding::initialize(HWND hwnd)
 
 
 
+	if(!cursorTexture.initialize(graphics,CURSOR_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing cursorTexture texture"));
+	if (!cursorImage.initialize(graphics, cursor_WIDTH, cursor_HEIGHT, 0, &cursorTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing cursorImage"));
 
 
 
@@ -256,6 +260,7 @@ void LastManStanding::update(Timer *gameTimer)
 	barrelExplosionImage.update(frameTime);
 	instructionImage.update(frameTime);
 	mainPlayer.update(frameTime);
+	cursorImage.update(frameTime);
 	float test = gameTimer->getCurrentElapsedTime(isPaused);
 	
 	mciSendString("play backGroundMusic", NULL, 0, NULL);
@@ -368,6 +373,9 @@ void LastManStanding::update(Timer *gameTimer)
 			}
 		}
 
+		
+
+
 		//////// Make Player Face Mouse!
 		VECTOR2 playerPosition = VECTOR2(mainPlayer.getCenterX(), mainPlayer.getCenterY());
 		POINT mousePos;
@@ -387,6 +395,11 @@ void LastManStanding::update(Timer *gameTimer)
 		float dy = playerPosition.y - (mousePosVector.y + cameraDifferenceY);
 		float rotation = (atan2(dy, dx)) * 180 / PI;
 		mainPlayer.setDegrees(rotation + 180);
+
+		//show new cursor
+		ShowCursor(false);
+		cursorImage.setX(mousePosVector.x + cameraDifferenceX);
+		cursorImage.setY(mousePosVector.y + cameraDifferenceY);
 
 		
 
@@ -950,6 +963,7 @@ void LastManStanding::render()
 			isExploded = false;
 		}
 	}
+	cursorImage.draw();
 	if (isPaused)
 	{
 		
@@ -977,6 +991,7 @@ void LastManStanding::render()
 		
 		
 	}
+	
 	
 	
 	
