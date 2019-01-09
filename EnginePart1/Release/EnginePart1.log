@@ -1,0 +1,73 @@
+﻿  background.cpp
+  camera.cpp
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\bullet.h(16): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\bullet.h(76): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\bullet.h(79): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\camera.cpp(11): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\camera.cpp(23): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\camera.cpp(24): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  obstacle.cpp
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\bullet.h(16): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\bullet.h(76): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\bullet.h(79): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  bullet.cpp
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\bullet.h(16): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\bullet.h(76): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\bullet.h(79): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  entity.cpp
+  game.cpp
+  graphics.cpp
+  image.cpp
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\image.cpp(125): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  input.cpp
+  lastManStanding.cpp
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\bullet.h(16): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\bullet.h(76): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\bullet.h(79): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(20): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(37): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(38): warning C4244: 'argument': conversion from 'float' to 'const int', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(172): warning C4018: '<': signed/unsigned mismatch
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(383): warning C4244: 'argument': conversion from 'LONG' to 'FLOAT', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(396): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(422): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(441): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(459): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(477): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(493): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(774): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(775): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(913): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(944): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(944): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(949): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(956): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(956): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(957): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(976): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(977): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(978): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(985): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(1031): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\lastmanstanding.cpp(1131): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  player.cpp
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\bullet.h(16): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\bullet.h(76): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\bullet.h(79): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  textDX.cpp
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\textdx.cpp(19): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\textdx.cpp(20): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
+  textureManager.cpp
+  winmain.cpp
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\bullet.h(16): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\bullet.h(76): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\bullet.h(79): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  zombie.cpp
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\bullet.h(16): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\bullet.h(76): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\bullet.h(79): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\student\documents\github\gpp-project-assignment-1\enginepart1\zombie.cpp(154): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  Generating code
+  All 947 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  EnginePart1.vcxproj -> C:\Users\Student\Documents\GitHub\GPP-Project-Assignment-1\EnginePart1\Release\EnginePart1.exe

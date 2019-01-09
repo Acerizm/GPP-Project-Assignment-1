@@ -1019,12 +1019,12 @@ void LastManStanding::ai(Timer *gameTimer)
 
 		int numOfSecondsPassed = int(gameTimer->getCurrentElapsedTime(isPaused));
 		// check if the time passed is a multiple of 5
-		if (numOfSecondsPassed % 5 == 0 && numOfSecondsPassed != 0 && numOfSecondsPassed != nextIntervalValue) {
+		if (numOfSecondsPassed % 1 == 0 && numOfSecondsPassed != 0 && numOfSecondsPassed != nextIntervalValue) {
 
 			nextIntervalValue = numOfSecondsPassed;
 			testZombie = new Zombie();
 			//testZombie->initialize(graphics, ZOMBIE_MOVING_TEXTURE, testZombie->ZOMBIE_MOVING_IMAGE);
-			if (numOfSecondsPassed % 3 == 0)
+			if (numOfSecondsPassed % 2 == 0)
 			{
 				testZombie->initialize(this, zombieNS::ZOMBIE_MOVING_WIDTH, zombieNS::ZOMBIE_MOVING_HEIGHT, zombieNS::ZOMBIE_MOVING_COLS, &ZOMBIE_MOVING_TEXTURE, &healthBarRedTexture, &enemyHealthBarBackGroundTexture, graphics);
 				testZombie->setIsBoss();
