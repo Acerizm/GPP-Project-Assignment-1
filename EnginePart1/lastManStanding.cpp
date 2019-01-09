@@ -915,7 +915,7 @@ void LastManStanding::render()
 	int minutes = (totalSeconds / 60) % 60;
 	int seconds = totalSeconds % 60;
 	string currentTimeString ="Elapsed Time:" + to_format(hours) + ":" + to_format(minutes) + ":" + to_format(seconds);
-	if (totalSeconds == 0)
+	if (totalSeconds == 1)
 	{
 		isPaused = true;
 	}
